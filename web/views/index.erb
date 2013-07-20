@@ -1,5 +1,5 @@
 <div class='hero-unit'>
-  <p> Easily export <a href='http://www.evernote.com' target='_blank'>Evernote</a> notebooks to <a href='http://lab.hakim.se/reveal-js/#/' target='_blank'>reveal.js</a> presentations!!</p>
+  <p>Easily change permissions for all drive files in your Google Domain!</p>
 </div>
 
 <% if !@message.empty? %>
@@ -8,17 +8,16 @@
 		<strong><%= @message %></strong>
 	</div>
 <% end %>
-<p class="pull-right">
-  <a href="http://evernote.com/evernote/guide/web/#7" target='_blank'>
-    What is an evernote public notebook?
-  </a>
-</p>
 
-<form method='POST' action='/arrange' name='url_form' id='url_form'>
+<form method='POST' action='/users' name='url_form' id='url_form'>
   <fieldset>
-    <label>Public Evernote notebook URL</label>
+    <label>Email</label>
     <div class="input-append">
-      <input placeholder="http://www.evernote.com/pub/user/notebook" name='publicUrl' id='publicUrl'/>
+      <input type="text" placeholder="Insert your email" name='email' id='email'/>
+    </div>
+    <label>Password</label>
+    <div class="input-append">
+      <input type="password" placeholder="Insert your password" name='password' id='password'/>
       <button type='submit' id="submit" class="btn arrange">
         <div id="imgBtnDiv" width="15px" height="15px"><img src='img/arrange.png' alt='Arrange' id="submitImg"/></div>
       </button>
@@ -26,12 +25,6 @@
     <div id="loading"></div>
   </fieldset>
 </form>
-
-<p class="pull-right">
-  <a href="img/where.png" target='_blank'>
-    Where can i find the URL?
-  </a>
-</p>
 
 <script>
   window.onload = function(){

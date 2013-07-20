@@ -1,0 +1,35 @@
+<p class="lead">
+    Drag &amp; Drop notes to arrange order
+</p>
+
+<ul id="users">
+	<% @userNames.each do |userName| %>
+		<li class="ui-state-default" id="<%= userName %>"><%= userName %></li>
+	<% end %>
+</ul>
+
+<div id='hiddenForm'>
+	<form method='POST' action='/files' name='files-form' id='files-form'>
+	  <fieldset>
+	    <input name='sortedIdsStr' id='sortedIdsStr' />
+	  </fieldset>
+	</form>
+</div>
+
+<button id="getFiles" class="btn arrange">
+	<div id="imgBtnDiv" width="15px" height="15px">
+		<img src='img/slides.png' alt='Generate slideshow' id="submitImg"/></div>
+</button>
+
+  <script>
+  	window.onload = function(){
+  		$("#users").sortable();
+  		$("#getFiles").click(function(){
+  					$('#sortedIdsStr').val($('#users').sortable('toArray').toString());
+  					$('#files-form').submit();
+				      $('#submitImg').css('visibility', 'hidden');
+				      $('#imgBtnDiv').spin(APP.spinOpts);
+  				});
+  	};
+  </script>
+

@@ -114,7 +114,7 @@ select{
 	color: #656959;
 }
 
-#publicUrl, #publicUrl:focus{
+input[type="password"], input[type="text"]{
 	background-color: #F5F7E7;
 	width: 600px;
 	height:55px;
@@ -138,7 +138,7 @@ select{
     margin: 15px 0 15px 0;
 }
 
-#publicUrl:focus{
+input:focus{
 	background-color: #Ffffff;
 	outline:none;
 }
@@ -193,7 +193,33 @@ select{
   overflow: hidden;
 }
 
-#sortable li span {
+#users li span {
+	position: absolute;
+	margin-left: -1.3em; 
+}
+
+#users {
+ 	list-style-type: none;
+ 	margin: 0;
+ 	padding: 0; 
+}
+
+#users li {
+ 	background-color: #F5F7E7;
+	height:55px;
+	font-family: 'Noto Serif', serif;
+	font-size: 23px;
+	color: #656959;
+	border-radius: 10px;
+	border: 5px solid  #656959; 
+	font-size: 23px;
+  height: 34px;
+  margin: 10px 20px;
+  padding: 15px;
+  overflow: hidden;
+}
+
+#users li span {
 	position: absolute;
 	margin-left: -1.3em; 
 }

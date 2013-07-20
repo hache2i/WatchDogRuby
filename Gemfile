@@ -3,7 +3,7 @@ gem "sinatra"
 gem "sinatra-contrib"
 gem "json"
 gem "rake"
-gem "evernote_oauth"
+gem "google-api-client"
 gem "crafty"
 gem "htmlentities"
 

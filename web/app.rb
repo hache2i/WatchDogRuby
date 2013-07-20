@@ -1,15 +1,18 @@
 require 'sinatra/base'
 
-require_relative 'notebook_2_reveal_domain'
-require_relative 'lib/notifier'
-require_relative '../evernote/lib/bad_argument_exception'
-require_relative '../evernote/lib/bad_public_notebook_url_exception'
+$LOAD_PATH.push(File.expand_path(File.join(File.dirname(__FILE__), '../')))
+
+require_relative './lib/notifier'
+require_relative '../files/lib/files_domain'
+
+require 'gappsprovisioning/provisioningapi'
+include GAppsProvisioning
 
 class Web < Sinatra::Base
   set :public_folder, './web/public'
   set :static, true
 
-  domain = Notebook2RevealDomain.new
+  _filesDomain = Files::FilesDomain.new
 
   not_found do
     erb :'404', :layout => :home_layout
@@ -24,32 +27,37 @@ class Web < Sinatra::Base
     erb :index , :layout => :home_layout
   end
 
-  post '/arrange' do
+  post '/users' do
     begin
-      @publicUrl = params['publicUrl']
-      @notes = domain.getNotes(@publicUrl)
-      erb :arrange , :layout => :home_layout
-    rescue BadArgumentException => e
-      showError e.exception_key
-    rescue BadPublicNotebookUrlException => e
-      showError 'no.evernote.url'
-    rescue NotebookNotFoundException => e
-      showError 'non.existing.notebook'
+      email = params['email']
+      domain = extractDomainFromEmail(email)
+      password = params['password']
+      myapps = ProvisioningApi.new(email, password)
+
+      list = myapps.retrieve_all_users
+      @userNames = list.map{|user| user.username + '@' + domain}
+      erb :users, :layout => :home_layout
+    rescue
+      showError 'not.admin'
     end
   end
 
-  post '/generate' do
-    begin
-      sortedIds = getSortedIds(params['sortedIdsStr'])
-      @slides = domain.createSlides(params['publicUrl'], sortedIds)
-      erb :presentation , :layout => :reveal_js
-    rescue BadArgumentException => e
-      showError e.exception_key
-    rescue BadPublicNotebookUrlException => e
-      showError 'no.evernote.url'
-    rescue NotebookNotFoundException => e
-      showError 'non.existing.notebook'
-    end
+  post '/files' do
+    users = strToArray(params['sortedIdsStr'])
+
+    @files = _filesDomain.getFiles(users)
+    erb :files, :layout => :home_layout
+  end
+
+  post '/changePermissions' do
+    filesIds = params['filesIdsStr']
+
+    @files = _filesDomain.changePermissions(strToArray(filesIds), params['newOwnerHidden'])
+    erb :files, :layout => :home_layout
+  end
+
+  def extractDomainFromEmail(email)
+    email.scan(/(.+)@(.+)/)[0][1]
   end
 
   def showError(messageKey)
@@ -57,9 +65,9 @@ class Web < Sinatra::Base
       erb :index , :layout => :home_layout
   end
 
-  def getSortedIds(sortedIdsStr)
-    return [] if sortedIdsStr.nil?
-    sortedIdsStr.split(',')
+  def strToArray(usersStr)
+    return [] if usersStr.nil?
+    usersStr.split(',')
   end
 
 end
