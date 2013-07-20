@@ -1,2 +1,0 @@
-class NotebookNotFoundException < Exception
-end
