@@ -4,6 +4,7 @@ $LOAD_PATH.push(File.expand_path(File.join(File.dirname(__FILE__), '../')))
 
 require_relative './lib/notifier'
 require_relative '../files/lib/files_domain'
+require_relative '../files/lib/files_to_change'
 
 require 'gappsprovisioning/provisioningapi'
 include GAppsProvisioning
@@ -52,7 +53,7 @@ class Web < Sinatra::Base
   post '/changePermissions' do
     filesIds = params['filesIdsStr']
 
-    @files = _filesDomain.changePermissions(strToArray(filesIds), params['newOwnerHidden'])
+    @files = _filesDomain.changePermissions(Files::FilesToChange.unmarshall(filesIds), params['newOwnerHidden'])
     erb :files, :layout => :home_layout
   end
 

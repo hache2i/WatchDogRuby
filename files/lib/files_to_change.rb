@@ -2,14 +2,12 @@ module Files
 	class FilesToChange
 		def self.unmarshall(str)
 			result = []
-			userMailAndIdsStr = str.split('-')
+			userMailAndIdsStr = str.split('&')
 			userMailAndIdsStr.each do |item|
 				userMailAndIds = item.split('#')
 				user = userMailAndIds[0]
 				ids = userMailAndIds[1].split(',')
-				ids.each do |id|
-					result << {:mail => user, :id => id}
-				end
+				result << {:mail => user, :ids => ids}
 			end
 			result
 		end

@@ -51,21 +51,20 @@ module Files
 		def changePermissions(filesToChange, owner)
 			filesToChange.each do |fileToChange|
 				@client.authorization = @serviceAccount.authorize(fileToChange[:mail])
-				new_permission = @drive.permissions.insert.request_schema.new({
-					'value' => owner,
-					'type' => 'user',
-					'role' => 'owner'
-				})
-				result = @client.execute(
-					:api_method => @drive.permissions.insert,
-					:body_object => new_permission,
-					:parameters => { 'fileId' => fileToChange[:id] })
-				puts result.status
-				# if result.status == 200
-				# 	return result.data
-				# else
-				# 	puts "An error occurred: #{result.data['error']['message']}"
-				# end
+				fileToChange[:ids].each do |id|
+					new_permission = @drive.permissions.insert.request_schema.new({
+						'value' => owner,
+						'type' => 'user',
+						'role' => 'owner'
+					})
+					result = @client.execute(
+						:api_method => @drive.permissions.insert,
+						:body_object => new_permission,
+						:parameters => { 'fileId' => id })
+					if result.status != 200
+						puts result.status 
+					end
+				end
   			end
   			getUserFiles(owner)
 		end

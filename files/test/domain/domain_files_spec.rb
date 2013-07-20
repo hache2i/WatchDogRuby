@@ -1,4 +1,5 @@
 require 'rspec'
+require_relative '../../lib/domain_files'
 
 describe 'Domain Files' do
 	describe 'to string' do
@@ -7,7 +8,7 @@ describe 'Domain Files' do
 			domainFiles.add createUserFiles('mail1')
 			domainFiles.add createUserFiles('mail2')
 
-			domainFiles.to_s.should == 'mail1@ideasbrillantes.org#id1,id2-mail2@ideasbrillantes.org#id1,id2'
+			domainFiles.to_s.should == 'mail1@ideasbrillantes.org#id1,id2&mail2@ideasbrillantes.org#id1,id2'
 		end	
 		it 'when empty usersFiles' do
 			domainFiles = Files::DomainFiles.new
@@ -15,7 +16,7 @@ describe 'Domain Files' do
 			domainFiles.add Files::UserFiles.new 'empty@ideasbrillantes.org'
 			domainFiles.add createUserFiles('mail2')
 
-			domainFiles.to_s.should == 'mail1@ideasbrillantes.org#id1,id2-mail2@ideasbrillantes.org#id1,id2'
+			domainFiles.to_s.should == 'mail1@ideasbrillantes.org#id1,id2&mail2@ideasbrillantes.org#id1,id2'
 		end	
 	end
 end

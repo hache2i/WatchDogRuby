@@ -18,7 +18,7 @@ module Files
 
 		def to_s
 			notEmptyUsersFiles = @usersFiles.find_all{|userFiles| !userFiles.empty?}
-			notEmptyUsersFiles.map{|userFiles| userFiles.to_s}.join('-')
+			notEmptyUsersFiles.map{|userFiles| userFiles.to_s}.join('&')
 		end
 
 	end
