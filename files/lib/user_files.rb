@@ -27,6 +27,10 @@ module Files
 			@files.empty?
 		end
 
+		def to_a
+			@files.to_a
+		end
+
 		def to_s
 			return '' if @files.empty?
 			str = @user

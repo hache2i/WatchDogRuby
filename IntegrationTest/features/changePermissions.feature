@@ -5,6 +5,7 @@ Feature: change files owner
 
 Background:
 	Given I am in the files screen
+	And I got several files from several users
 
 Scenario:
 	When I change the permissions to "docsadmin@ideasbrillantes.org"

@@ -51,7 +51,7 @@ Then(/^I get a list of them$/) do
 end
 
 Then(/^I can see a list$/) do
-  page.all("ul#files li").length.should == 184
+  page.all("ul#files li").length.should == 1
 end
 
 Given(/^I am in the files screen$/) do

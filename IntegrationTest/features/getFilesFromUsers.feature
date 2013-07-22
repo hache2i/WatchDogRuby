@@ -7,6 +7,6 @@ Feature: get files from users
 Background:
 	Given I got the users list
 
-Scenario:
+Scenario: Get public files
 	When I get the files
 	Then I can see a list

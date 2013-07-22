@@ -11,7 +11,7 @@ module Files
 		def to_a
 			files = []
 			@usersFiles.each do |userFiles|
-				files.concat userFiles.getFiles
+				files.concat userFiles.to_a
 			end
 			files
 		end

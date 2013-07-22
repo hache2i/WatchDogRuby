@@ -1,15 +1,15 @@
 require 'google/api_client'
 
 require_relative 'domain_files'
-require_relative 'user_files'
-require_relative 'drive_file'
 require_relative 'service_account'
+require_relative 'user_files_domain'
+require_relative 'more_than_one_private_folder_exception'
 
 module Files
 	class FilesDomain
 
-		def initialize(aServiceAccount = nil)
-			@serviceAccount = ServiceAccount.new(File.read(File.join(File.dirname(__FILE__), 'cf04d56820828c258d8d45c837e520bdb61f8213-privatekey.p12'))) if aServiceAccount.nil?
+		def initialize
+			@serviceAccount = ServiceAccount.new
 			@client = Google::APIClient.new
 			@drive = @client.discovered_api('drive', 'v2')
 		end
@@ -17,39 +17,19 @@ module Files
 		def getFiles(users)
 			domainFiles = DomainFiles.new
 			users.each do |user|
-			  domainFiles.add(getUserFiles(user))
+				begin
+					userFilesDomain = UserFilesDomain.new(@serviceAccount, @client, @drive, user)
+					domainFiles.add(userFilesDomain.getUserFiles)
+				rescue MoreThanOnePrivateFolderException => e
+				end
 			end
 			domainFiles
 		end
 
-		def getUserFiles(user)
-			@client.authorization = @serviceAccount.authorize(user)
-			userFiles = UserFiles.new user
-			begin
-				result = @client.execute(:api_method => @drive.files.list, :parameters => assembleParams(user, getPageToken(result)))
-				userFiles.addFiles(result.data.items.map{|item| DriveFile.new(item['id'], item['title'], item['ownerNames'])})
-			end while hasNextPage? result
-			userFiles
-		end
-
-		def assembleParams(user, pageToken)
-			params = {'q' => "'" + user + "' in owners "}
-			params.merge!('pageToken' => pageToken) if !pageToken.empty?
-			params
-		end
-
-		def getPageToken(result)
-			return '' if result.nil? || result.data.nil?
-			return result.data.next_page_token if hasNextPage? result
-			''
-		end
-
-		def hasNextPage?(result)
-			!result.data.next_page_token.nil? && !result.data.next_page_token.empty?
-		end
-
 		def changePermissions(filesToChange, owner)
+			mails = []
 			filesToChange.each do |fileToChange|
+				mails << fileToChange[:mail] if !mails.include?(fileToChange[:mail])
 				@client.authorization = @serviceAccount.authorize(fileToChange[:mail])
 				fileToChange[:ids].each do |id|
 					new_permission = @drive.permissions.insert.request_schema.new({
@@ -66,7 +46,9 @@ module Files
 					end
 				end
   			end
-  			getUserFiles(owner)
+  			puts mails
+  			getFiles(mails)
 		end
+
 	end
 end
