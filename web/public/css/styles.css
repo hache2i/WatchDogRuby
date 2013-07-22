@@ -4,6 +4,38 @@ body {
   font-family: 'Noto Serif', serif;
 }
 
+.content {
+	margin-left: 15px;
+}
+
+.header-title .row-fluid{
+	height: 95px;
+	margin-top: 15px;
+}
+
+.description {
+	width: 90%;
+	padding: 25px;
+	margin-bottom: 0px;
+	height: 100%;
+	font-size: 18px;
+	font-weight: 200;
+	color: white;
+	line-height: 30px;
+	background-color: green;
+	-webkit-border-radius: 6px;
+	 -moz-border-radius: 6px;
+	      border-radius: 6px;
+}
+
+.description h1 {
+  margin-bottom: 0;
+  font-size: 60px;
+  line-height: 1;
+  letter-spacing: -1px;
+  color: inherit;
+}
+
 .name{
 	font-size: 90px;
 	margin-top: 25px;
@@ -13,19 +45,14 @@ img.logo{
 	margin-left: 25px;
 }
 
-.notes{
-	color: #468F2A;
-	font-size: 70px;
+.watch{
+	color: red;
+	font-size: 110px;
 }
 
-.to{
-	color: #861501;
-	font-size: 90px;
-}
-
-.reveal{
+.dog{
 	color: #656959;
-	font-size: 70px;
+	font-size: 110px;
 }
 
 div.hero-unit{
@@ -171,6 +198,9 @@ input:focus{
           0 0 16px rgba(0,0,0,0.1); 
 }
 
+.domain {
+	color: blue;
+}
 
 #sortable {
  	list-style-type: none;
@@ -179,18 +209,17 @@ input:focus{
 }
 
 #sortable li {
- 	background-color: #F5F7E7;
-	height:55px;
+	background-color: #F5F7E7;
 	font-family: 'Noto Serif', serif;
-	font-size: 23px;
+	font-size: 10px;
 	color: #656959;
 	border-radius: 10px;
 	border: 5px solid  #656959; 
 	font-size: 23px;
-  height: 34px;
-  margin: 10px 20px;
-  padding: 15px;
-  overflow: hidden;
+	height: 15px;
+	margin: 10px 20px;
+	padding: 15px;
+	overflow: hidden;
 }
 
 #users li span {
@@ -205,18 +234,17 @@ input:focus{
 }
 
 #users li {
- 	background-color: #F5F7E7;
-	height:55px;
+	background-color: #F5F7E7;
 	font-family: 'Noto Serif', serif;
-	font-size: 23px;
+	font-size: 10px;
 	color: #656959;
 	border-radius: 10px;
 	border: 5px solid  #656959; 
 	font-size: 23px;
-  height: 34px;
-  margin: 10px 20px;
-  padding: 15px;
-  overflow: hidden;
+	height: 15px;
+	margin: 10px 20px;
+	padding: 15px;
+	overflow: hidden;
 }
 
 #users li span {

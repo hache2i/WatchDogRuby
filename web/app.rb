@@ -20,23 +20,23 @@ class Web < Sinatra::Base
   end
 
   get '/index.html' do
-    erb :index , :layout => :home_layout
+    erb :index
   end
 
   get '/' do
     @message = Notifier.message_for params['alert_signal']
-    erb :index , :layout => :home_layout
+    erb :index
   end
 
   post '/users' do
     begin
       email = params['email']
-      domain = extractDomainFromEmail(email)
+      @domain = extractDomainFromEmail(email)
       password = params['password']
       myapps = ProvisioningApi.new(email, password)
 
       list = myapps.retrieve_all_users
-      @userNames = list.map{|user| user.username + '@' + domain}
+      @userNames = list.map{|user| user.username + '@' + @domain}
       erb :users, :layout => :home_layout
     rescue
       showError 'not.admin'

@@ -1,37 +1,51 @@
-<div class='hero-unit'>
-  <p>Easily change permissions for all drive files in your Google Domain!</p>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+  <%= erb :header %>
+<body>
+  <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+  <div class="container-fluid">
+    <div class="row-fluid content">
+      <div class="span8 offset3">
+        <% if !@message.empty? %>
+        	<div class="alert">
+        		<button type="button" class="close" data-dismiss="alert">&times;</button>
+        		<strong><%= @message %></strong>
+        	</div>
+        <% end %>
 
-<% if !@message.empty? %>
-	<div class="alert">
-		<button type="button" class="close" data-dismiss="alert">&times;</button>
-		<strong><%= @message %></strong>
-	</div>
-<% end %>
+        <a href='/'>
+          <img src='img/logo.png' class='logo' alt='watch dog logo'/>
+        </a>
+            
+        <form method='POST' action='/users' name='url_form' id='url_form'>
+          <fieldset>
+            <label>Email</label>
+            <div class="input-append">
+              <input type="text" placeholder="Insert your email" name='email' id='email'/>
+            </div>
+            <label>Password</label>
+            <div class="input-append">
+              <input type="password" placeholder="Insert your password" name='password' id='password'/>
+              <button type='submit' id="submit" class="btn arrange">
+                <div id="imgBtnDiv" width="15px" height="15px"><img src='img/arrange.png' alt='Arrange' id="submitImg"/></div>
+              </button>
+            </div>
+            <div id="loading"></div>
+          </fieldset>
+        </form>
 
-<form method='POST' action='/users' name='url_form' id='url_form'>
-  <fieldset>
-    <label>Email</label>
-    <div class="input-append">
-      <input type="text" placeholder="Insert your email" name='email' id='email'/>
+        <script>
+          window.onload = function(){
+            $("#submit").bind('click', function(event){
+              $('#submitImg').css('visibility', 'hidden');
+              $('#imgBtnDiv').spin(APP.spinOpts);
+            });
+
+          };
+        </script>
+      </div>
     </div>
-    <label>Password</label>
-    <div class="input-append">
-      <input type="password" placeholder="Insert your password" name='password' id='password'/>
-      <button type='submit' id="submit" class="btn arrange">
-        <div id="imgBtnDiv" width="15px" height="15px"><img src='img/arrange.png' alt='Arrange' id="submitImg"/></div>
-      </button>
-    </div>
-    <div id="loading"></div>
-  </fieldset>
-</form>
-
-<script>
-  window.onload = function(){
-    $("#submit").bind('click', function(event){
-      $('#submitImg').css('visibility', 'hidden');
-      $('#imgBtnDiv').spin(APP.spinOpts);
-    });
-
-  };
-</script>
+    <%= erb :footer %>
+  </div>
+</body>
+</html>

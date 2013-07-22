@@ -3,22 +3,20 @@
   <%= erb :header %>
 <body>
   <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
-	<div class="container">
-		<div class="row">
-	  		<div class="span2">
+	<div class="container-fluid">
+		<div class="row-fluid">
+	  		<div class="span8 offset2">
 	  			<a href='/'>
-						<img src='img/notes2reveal.png' class='logo' alt='notes to reveal.js logo'/>
-					</a>
-	  		</div>
-	  		<div class="span10">
-		    	<h1 class="text-center name">
-		    		<span class='notes'>Watch</span>
-		    		<span class='reveal'>Dog</span>
-		    	</h1>
+					<img src='img/logo-plano.png' class='logo' alt='watch dog logo'/>
+				</a>
 	  		</div>
 		</div>
 		
-	  <%= yield %>
+		<div class="row-fluid content">
+			<div class="span8 offset2">
+				<%= yield %>
+			</div>
+		</div>
 	  <%= erb :footer %>
   </div>
 </body>
