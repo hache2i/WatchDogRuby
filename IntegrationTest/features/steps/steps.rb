@@ -71,3 +71,7 @@ Then(/^all files belong to "(.*?)"$/) do |user|
   page.all("ul#files li").length.should == 184
   page.all("ul#files li span#owner").text.should == 'docsadmin@ideasbrillantes.org'
 end
+
+Then(/^I can see a table with files and owners$/) do
+  page.all("table#files tr.file-record").length.should == 4
+end

@@ -60,28 +60,38 @@ module Files
 		end
 
 		def fileInChildrenFolders(file_id, folder_id)
-		  result = @client.execute(
-		    :api_method => @drive.files.list,
-		    :parameters => { 'q' => "mimeType = 'application/vnd.google-apps.folder'" })
-		  items = result.data.items
-		  under = false
-		  items.each do |item|
-		  	under ||= fileInFolder(file_id, item['id'])
-		  end
-		  under
+			privateFoldersIds = getChildrenFolders(folder_id)
+			under = false
+			privateFoldersIds.each do |privateFolderId|
+				under ||= fileInFolder(file_id, privateFolderId)
+			end
+			under
+		end
+
+		def getChildrenFolders(folder_id, folders = nil)
+			folders = folders || []
+			result = @client.execute(
+				:api_method => @drive.children.list,
+				:parameters => { 'folderId' => folder_id, 'q' => "mimeType = 'application/vnd.google-apps.folder' " })
+			levelFoldersIds = result.data.items.map{|folder| folder['id']}
+			folders.concat levelFoldersIds
+			levelFoldersIds.each do |folder_id|
+				getChildrenFolders(folder_id, folders)
+			end
+			folders
 		end
 
 		def fileInFolder(file_id, folder_id)
-		  result = @client.execute(
-		    :api_method => @drive.children.get,
-		    :parameters => { 'folderId' => folder_id, 'childId' => file_id })
-		  if result.status == 200
-		    return true
-		  elsif result.status == 404
-		    return false
-		  else
-		    puts "An error occurred: #{result.data['error']['message']}"
-		  end
+			result = @client.execute(
+				:api_method => @drive.children.get,
+				:parameters => { 'folderId' => folder_id, 'childId' => file_id })
+			if result.status == 200
+				return true
+			elsif result.status == 404
+				return false
+			else
+				puts "An error occurred: #{result.data['error']['message']}"
+			end
 		end
 	end
 end

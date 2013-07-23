@@ -46,7 +46,6 @@ module Files
 					end
 				end
   			end
-  			puts mails
   			getFiles(mails)
 		end
 

@@ -1,16 +1,23 @@
 <p class="lead">
-    Drag &amp; Drop notes to arrange order
+    Files
 </p>
 
 <fieldset>
 	<input name='newOwner' id='newOwner' />
 </fieldset>
 
-<ul id="files">
-	<% @files.to_a.each do |file| %>
-		<li class="ui-state-default"><span><%= file.title %></span> - <span id="owner"><%= file.owners %></span></li>
-	<% end %>
-</ul>
+<table class="table table-striped" id="files">
+	<thead>
+		<tr><th>Title</th><th>Owner</th></tr>
+	</thead>
+	<tbody>
+		<% @files.to_a.each do |file| %>
+			<tr class="file-record">
+				<td><%= file.title %></td><td><%= file.owners %></td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>
 
 <div id='hiddenForm'>
 	<form method='POST' action='/changePermissions' name='changePermissions-form' id='changePermissions-form'>

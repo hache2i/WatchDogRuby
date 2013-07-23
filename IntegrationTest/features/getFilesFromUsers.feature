@@ -9,4 +9,4 @@ Background:
 
 Scenario: Get public files
 	When I get the files
-	Then I can see a list
+	Then I can see a table with files and owners

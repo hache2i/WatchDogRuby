@@ -12,15 +12,23 @@ describe 'User Files Domain' do
 		it 'gets public files and folders' do
 			domain = Files::UserFilesDomain.new(serviceAccount, client, drive, 'moore@ideasbrillantes.org')
 			userFiles = domain.getUserFiles
-			userFiles.to_s.should match('0BxHIjVQxg2FeOVRCdmRqc3JvQlU')
+			userFiles.length.should == 4
+			titles = userFiles.to_a.map{|file| file.title}
+			titles.include?('Doc Pub A In Root').should be_true
+			titles.include?('Doc Pub B In Root').should be_true
+			titles.include?('Public Folder A').should be_true
+			titles.include?('Doc Pub A In Folder A').should be_true
 		end
 		it 'does not get private files and folders' do
 			domain = Files::UserFilesDomain.new(serviceAccount, client, drive, 'moore@ideasbrillantes.org')
 			userFiles = domain.getUserFiles
-			userFiles.to_s.should_not match('0BxHIjVQxg2FeNWZ3UE95d2lyR2M')
-			userFiles.to_s.should_not match('16hpKNvkkoBw3WVt_sfvNv3_6EqAlSTo2IogEkNGFXb0')
-			userFiles.to_s.should_not match('1GjDUqbxgaLJ5Xq2nC-QwqjyfI9TAtD6Y2cuo7iZNmBA')
-			userFiles.to_s.should_not match('0BxHIjVQxg2FeNHFhTVRGd256WFE')
+			titles = userFiles.to_a.map{|file| file.title}
+			titles.include?('Private').should be_false
+			titles.include?('NoVisibleFolderDeph1').should be_false
+			titles.include?('NoVisibleFolderDeph2').should be_false
+			titles.include?('docnovisible1').should be_false
+			titles.include?('docnovisibledeph2').should be_false
+			titles.include?('drawnovisible1').should be_false
 		end
 	end
 
