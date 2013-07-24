@@ -46,7 +46,8 @@ module Files
 					end
 				end
   			end
-  			getFiles(mails)
+			userFilesDomain = UserFilesDomain.new(@serviceAccount, @client, @drive, owner)
+  			userFilesDomain.getUserFiles
 		end
 
 	end

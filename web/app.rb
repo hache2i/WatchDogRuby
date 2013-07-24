@@ -44,9 +44,9 @@ class Web < Sinatra::Base
   end
 
   post '/files' do
-    users = strToArray(params['sortedIdsStr'])
+    @users = strToArray(params['sortedIdsStr'])
 
-    @files = _filesDomain.getFiles(users)
+    @files = _filesDomain.getFiles(@users)
     erb :files, :layout => :home_layout
   end
 

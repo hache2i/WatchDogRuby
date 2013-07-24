@@ -112,6 +112,10 @@ fieldset{
 	margin: 25px;
 }
 
+.input-append{
+	vertical-align: middle;
+}
+
 label{
 	font-size: 25px;
 	font-style: italic;
@@ -141,7 +145,7 @@ select{
 	color: #656959;
 }
 
-input[type="password"], input[type="text"]{
+select, input[type="password"], input[type="text"]{
 	background-color: #F5F7E7;
 	width: 600px;
 	height:55px;
@@ -163,6 +167,19 @@ input[type="password"], input[type="text"]{
           0 0 16px rgba(0,0,0,0.1); 
     padding: 15px;
     margin: 15px 0 15px 0;
+}
+
+select#newOwner{
+	height: 75px;
+	margin: 15px 0px;
+	padding: 15px;
+}
+
+select option{
+	background-color: #F5F7E7;
+	font-family: 'Noto Serif', serif;
+	font-size: 23px;
+	color: #656959;
 }
 
 input:focus{
@@ -291,4 +308,8 @@ p.lead{
 
 .table-bordered th, .table-bordered td{
 	border: 1px solid  #656959; 
+}
+
+.input-append input, .input-prepend input, .input-append select, .input-prepend select, .input-append .uneditable-input, .input-prepend .uneditable-input, .input-append .dropdown-menu, .input-prepend .dropdown-menu, .input-append .popover, .input-prepend .popover {
+    font-size: 23px;
 }

@@ -2,10 +2,6 @@
     Files
 </p>
 
-<fieldset>
-	<input name='newOwner' id='newOwner' />
-</fieldset>
-
 <table class="table table-striped" id="files">
 	<thead>
 		<tr><th>Title</th><th>Owner</th></tr>
@@ -28,10 +24,22 @@
 	</form>
 </div>
 
-<button id="changePermissions" class="btn arrange" >
-	<div id="imgBtnDiv" width="15px" height="15px">
-		<img src='img/slides.png' alt='Generate slideshow' id="submitImg"/></div>
-</button>
+<% if !@users.nil? && !@users.empty? %>
+	<fieldset>
+		<label>New Owner</label>
+		<div class="input-append">
+	  		<select name='newOwner' id='newOwner'>
+				<% @users.each do |user| %>
+					<option><%= user %></option>
+				<% end %>
+			</select>
+			<button id="changePermissions" class="btn arrange" >
+				<div id="imgBtnDiv" width="15px" height="15px">
+					<img src='img/transfer.png' alt='Transfer Ownership' id="submitImg"/></div>
+			</button>
+		</div>
+	</fieldset>
+<% end %>
 
   <script>
   	window.onload = function(){

@@ -75,3 +75,13 @@ end
 Then(/^I can see a table with files and owners$/) do
   page.all("table#files tr.file-record").length.should == 4
 end
+
+Then(/^I can select the future owner among domain users$/) do
+  page.all("select#newOwner option").length.should == 13
+  text = page.find('select#newOwner').text
+  text.should include(
+    'administrador@ideasbrillantes.org', 'blog@ideasbrillantes.org', 'darwin@ideasbrillantes.org', 'docsadmin@ideasbrillantes.org',
+    'ehawk@ideasbrillantes.org', 'fahrenheit@ideasbrillantes.org', 'fuller@ideasbrillantes.org', 'jelices@ideasbrillantes.org',
+    'moore@ideasbrillantes.org', 'pitagoras@ideasbrillantes.org', 'redmine@ideasbrillantes.org', 'tesla@ideasbrillantes.org',
+    'turing@ideasbrillantes.org') 
+end
