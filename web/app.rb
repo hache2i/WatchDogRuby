@@ -57,6 +57,14 @@ class Web < Sinatra::Base
     erb :files, :layout => :home_layout
   end
 
+  get '/support' do 
+    erb :'404', :layout => :home_layout
+  end
+
+  get '/manifest' do
+    erb :manifest
+  end
+
   def extractDomainFromEmail(email)
     email.scan(/(.+)@(.+)/)[0][1]
   end

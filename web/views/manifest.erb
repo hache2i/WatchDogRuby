@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<ApplicationManifest xmlns="http://schemas.google.com/ApplicationManifest/2009">
+  <Name>Watch Dog</Name>
+  <Description>Easily reassing Google Drive documents ownership in your Google Domain</Description>
+
+  <!-- Administrators and users will be sent to this URL for application support -->
+  <Support>
+    <Link rel="support" href="http://watchdog-hache2i.herokuapp.com/support" />
+  </Support>
+
+  <!-- Show this link in Google's universal navigation for all users -->
+  <Extension id="navLink" type="link">
+    <Name>Hello World</Name>
+    <Url>http://watchdog-hache2i.herokuapp.com/login?openid_identifier=${DOMAIN_NAME}</Url>
+    <Scope ref="driveAPI"/>
+  </Extension>
+
+  <!-- Declare our OpenID realm so our app is white listed -->
+  <Extension id="realm" type="openIdRealm">
+    <Url>http://watchdog-hache2i.herokuapp.com</Url>
+  </Extension>
+
+  <!-- Need access to the Drive API -->
+  <Scope id="driveAPI">
+    <Url>https://www.googleapis.com/auth/drive</Url>
+    <Reason>Show users files.</Reason>
+  </Scope>
+
+</ApplicationManifest>
