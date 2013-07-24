@@ -35,7 +35,7 @@ module Files
 		end
 
 		def assembleParams(pageToken)
-			params = {'q' => "'" + @user + "' in owners "}
+			params = {'q' => "'" + @user + "' in owners and trashed = false "}
 			params.merge!('pageToken' => pageToken) if !pageToken.empty?
 			params
 		end

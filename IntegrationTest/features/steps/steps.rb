@@ -62,14 +62,19 @@ Given(/^I am in the files screen$/) do
   find('#getFiles').click
 end
 
+Given(/^I got several files from several users$/) do
+  page.all("table#files tr.file-record").length.should > 0
+end
+
 When(/^I change the permissions to "(.*?)"$/) do |user|
-  fill_in('newOwner', :with => user)
+  page.select(user, :from => 'newOwner')
+  fill_in('newOwnerHidden', :with => user)
   find('#changePermissions').click
 end
 
 Then(/^all files belong to "(.*?)"$/) do |user|
   page.all("ul#files li").length.should == 184
-  page.all("ul#files li span#owner").text.should == 'docsadmin@ideasbrillantes.org'
+  page.all("ul#files li span#owner").text.should == user
 end
 
 Then(/^I can see a table with files and owners$/) do
@@ -84,4 +89,8 @@ Then(/^I can select the future owner among domain users$/) do
     'ehawk@ideasbrillantes.org', 'fahrenheit@ideasbrillantes.org', 'fuller@ideasbrillantes.org', 'jelices@ideasbrillantes.org',
     'moore@ideasbrillantes.org', 'pitagoras@ideasbrillantes.org', 'redmine@ideasbrillantes.org', 'tesla@ideasbrillantes.org',
     'turing@ideasbrillantes.org') 
+end
+
+Then(/^I can not see trash documents$/) do
+  page.find("table#files").text.should_not match('Doc in Trash')
 end

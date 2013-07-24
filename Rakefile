@@ -25,12 +25,6 @@ end
 
 namespace :test do
 
-	desc "Run routes tests"
-	RSpec::Core::RakeTask.new(:routes) do |t|
-	    t.pattern = "test/routes/*.rb"
-	    t.rspec_opts = " -c --format documentation"
-	end
-
   desc "Run lib tests"
   RSpec::Core::RakeTask.new(:lib) do |t|
       t.pattern = "test/lib/*.rb"
@@ -52,7 +46,6 @@ namespace :test do
 	desc "Run all tests"
 	task :all do
     Rake::Task['test:domain'].execute
-    Rake::Task['test:routes'].execute
 		Rake::Task['test:integration'].execute
 	end
 
@@ -61,11 +54,6 @@ namespace :test do
     Rake::Task['test:cucumberintegration'].execute
   end
 
-	desc "Run uxtest"
-	Cucumber::Rake::Task.new(:ux) do |t|
-        t.cucumber_opts = "UXTest"
-	end
-
   desc "Run jasmine specs"
   Cucumber::Rake::Task.new(:jasmine) do |t|
         t.cucumber_opts = "Specs"
@@ -73,7 +61,7 @@ namespace :test do
 
 	desc "Run integrationtest"
 	Cucumber::Rake::Task.new(:cucumberintegration) do |t|
-  	    t.cucumber_opts = "IntegrationTest"
+  	    t.cucumber_opts = "IntegrationTest --tags ~@ignored"
 	end
 
   desc "Run wip"
@@ -86,10 +74,6 @@ namespace :test do
         t.cucumber_opts = "IntegrationTest --tags @wip"
   end
 
-	desc "Run wip UX"
-	Cucumber::Rake::Task.new(:wipux) do |t|
-  	    t.cucumber_opts = "UXTest --tags @wip"
-	end
 end
 
 

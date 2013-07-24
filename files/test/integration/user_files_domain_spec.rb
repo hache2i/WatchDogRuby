@@ -30,6 +30,12 @@ describe 'User Files Domain' do
 			titles.include?('docnovisibledeph2').should be_false
 			titles.include?('drawnovisible1').should be_false
 		end
+		it 'does not get trash files and folders' do
+			domain = Files::UserFilesDomain.new(serviceAccount, client, drive, 'ehawk@ideasbrillantes.org')
+			userFiles = domain.getUserFiles
+			titles = userFiles.to_a.map{|file| file.title}
+			titles.include?('Doc in Trash').should be_false
+		end
 	end
 
 	describe 'find private folder' do
