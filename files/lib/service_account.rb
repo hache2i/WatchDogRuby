@@ -6,7 +6,7 @@ class ServiceAccount
 		key = Google::APIClient::PKCS12.load_key(keyFile, 'notasecret')
 		@service_account = Google::APIClient::JWTAsserter.new(
 		    '111623891942@developer.gserviceaccount.com',
-		    'https://www.googleapis.com/auth/drive',
+		    ['https://www.googleapis.com/auth/admin.directory.user', 'https://www.googleapis.com/auth/drive'],
 		    key)
 	end
 

@@ -1,26 +1,52 @@
 Given(/^I am in WatchDog$/) do
+  # visit 'http://localhost:3000/'
+  # fill_in('Email', :with => 'moore@ideasbrillantes.org')
+  # fill_in('Passwd', :with => 'olareoun')
+  # find('#signIn').click
+  # click_button 'Aceptar'
+end
+
+Given(/^I am in WatchDog as non admin$/) do
   visit 'http://localhost:3000/'
+  fill_in('Email', :with => 'ehawk@ideasbrillantes.org')
+  fill_in('Passwd', :with => 'lauradelbarrio')
+  find('#signIn').click
+  click_button 'Aceptar'
 end
 
 Given(/^I got the users list$/) do
-  visit 'http://localhost:3000/'
-  fill_in('email', :with => 'moore@ideasbrillantes.org')
-  fill_in('password', :with => 'olareoun')
-  find('#submit').click
+  visit 'http://localhost:3000/users'
+  # visit 'http://localhost:3000/'
+  # fill_in('Email', :with => 'moore@ideasbrillantes.org')
+  # fill_in('Passwd', :with => 'olareoun')
+  # find('#signIn').click
+  # click_button 'Aceptar'
 end
 
 Given(/^I am logged in as a domain admin user$/) do
-  fill_in('email', :with => 'moore@ideasbrillantes.org')
-  fill_in('password', :with => 'olareoun')
+  fill_in('Email', :with => 'moore@ideasbrillantes.org')
+  fill_in('Passwd', :with => 'olareoun')
+  find('#signIn').click
+  click_button 'Aceptar'
 end
 
 Given(/^I am logged in as a not domain admin user$/) do
-  fill_in('email', :with => 'ehawk@ideasbrillantes.org')
-  fill_in('password', :with => 'lauradelbarrio')
+  fill_in('Email', :with => 'ehawk@ideasbrillantes.org')
+  fill_in('Passwd', :with => 'lauradelbarrio')
+  find('#signIn').click
+  click_button 'Aceptar'
+end
+
+When(/^Log me in$/) do
+  visit 'http://localhost:3000/'
+  fill_in('Email', :with => 'moore@ideasbrillantes.org')
+  fill_in('Passwd', :with => 'olareoun')
+  find('#signIn').click
+  click_button 'Aceptar'
 end
 
 When(/^I search for the users$/) do
-  find('#submit').click
+  visit 'http://localhost:3000/users'
 end
 
 When(/^I get the files$/) do
@@ -28,11 +54,11 @@ When(/^I get the files$/) do
 end
 
 Then(/^I can see an input for my email$/) do
-  page.has_css?('#email').should be_true
+  page.has_css?('#Email').should be_true
 end
 
 Then(/^I can see an input for my password$/) do
-  page.has_css?('#password').should be_true
+  page.has_css?('#Passwd').should be_true
 end
 
 Then(/^I see an alert message "(.*?)"$/) do |alert_message|

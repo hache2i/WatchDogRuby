@@ -50,6 +50,7 @@ GEM
       rb-fsevent (>= 0.9.3)
       rb-inotify (>= 0.9)
       rb-kqueue (>= 0.2)
+    logger (1.2.8)
     mime-types (1.23)
     multi_json (1.7.5)
     multipart-post (1.2.0)
@@ -113,6 +114,7 @@ DEPENDENCIES
   htmlentities
   json
   listen
+  logger
   rack-test
   rake
   rspec

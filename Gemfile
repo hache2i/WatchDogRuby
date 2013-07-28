@@ -6,7 +6,7 @@ gem "rake"
 gem "google-api-client"
 gem "crafty"
 gem "htmlentities"
-
+gem "logger"
 
 #bundle install --without test development
 group :test do

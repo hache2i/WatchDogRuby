@@ -10,7 +10,6 @@ Scenario: Get public files
 	When I get the files
 	Then I can see a table with files and owners
 
-@wip
 Scenario: Get public files
 	When I get the files
 	Then I can not see trash documents

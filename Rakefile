@@ -8,14 +8,6 @@ require 'listen'
 desc "Run server"
 
 task :serverup do
-  
-  #listen and rebuild javascript file
-  system "./build_tools/create_one_js.sh"
-  listener = Listen.to('web/public/js').ignore(%r{app.js})
-  callback = lambda {|changed,created,deleted| system "./build_tools/create_one_js.sh"  }
-  listener.change(&callback) # convert the callback to a block and register it
-  listener.start(false)
-
   system "rackup -p 3000 &"
 end
 

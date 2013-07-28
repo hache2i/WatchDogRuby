@@ -1,5 +1,6 @@
 require_relative 'user_files'
 require_relative 'drive_file'
+require_relative 'more_than_one_private_folder_exception'
 
 module Files
 	class UserFilesDomain
