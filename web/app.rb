@@ -73,7 +73,7 @@ class Web < Sinatra::Base
     # Exchange token
     user_credentials.code = params[:code] if params[:code]
     user_credentials.fetch_access_token!
-    redirect to('/users')
+    redirect to('/')
   end
 
   not_found do

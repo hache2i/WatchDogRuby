@@ -16,23 +16,14 @@
         <a href='/'>
           <img src='img/logo.png' class='logo' alt='watch dog logo'/>
         </a>
-            
-        <form method='POST' action='/users' name='url_form' id='url_form'>
-          <fieldset>
-            <label>Email</label>
-            <div class="input-append">
-              <input type="text" placeholder="Insert your email" name='email' id='email'/>
-            </div>
-            <label>Password</label>
-            <div class="input-append">
-              <input type="password" placeholder="Insert your password" name='password' id='password'/>
-              <button type='submit' id="submit" class="btn arrange">
-                <div id="imgBtnDiv" width="15px" height="15px"><img src='img/users.png' alt='Arrange' id="submitImg"/></div>
-              </button>
-            </div>
-            <div id="loading"></div>
-          </fieldset>
-        </form>
+
+        <fieldset>
+          <a id="submit" class="btn arrange" href="/users">
+            <div id="imgBtnDiv" width="15px" height="15px"><img src='img/users.png' alt='Arrange' id="submitImg"/></div>
+            <label>Domain Users</label>
+          </a>
+          <div id="loading"></div>
+        </fieldset>
 
         <script>
           window.onload = function(){
