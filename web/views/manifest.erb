@@ -14,6 +14,7 @@
     <Name>Watch Dog</Name>
     <Url>http://watchdog-hache2i.herokuapp.com/login?openid_identifier=${DOMAIN_NAME}</Url>
     <Scope ref="driveAPI"/>
+    <Scope ref="adminAPI"/>
   </Extension>
 
   <!-- Declare our OpenID realm so our app is white listed -->
@@ -25,6 +26,11 @@
   <Scope id="driveAPI">
     <Url>https://www.googleapis.com/auth/drive</Url>
     <Reason>Show users files.</Reason>
+  </Scope>
+
+  <Scope id="adminAPI">
+    <Url>https://www.googleapis.com/auth/admin.directory.user</Url>
+    <Reason>Retrieve users in domain.</Reason>
   </Scope>
 
 </ApplicationManifest>
