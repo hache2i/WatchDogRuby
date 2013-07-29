@@ -9,7 +9,40 @@ require_relative '../files/lib/files_domain'
 require_relative '../files/lib/files_to_change'
 require_relative '../users/lib/users_domain'
 
-class Web < Sinatra::Base
+require 'gapps_openid'
+require 'rack/openid'
+require_relative './lib/google_util'
+
+use Rack::Session::Cookie
+use Rack::OpenID
+
+CONSUMER_KEY = '111623891942-an2kf1pr99oaoth8s8ncusb6so2i8nn2.apps.googleusercontent.com'
+CONSUMER_SECRET = 'WxIJmSkIFjq2LHzedY77bIDu'
+
+# class Web < Sinatra::Base
+  helpers do
+    def require_authentication    
+      redirect '/login' unless authenticated?
+    end 
+    
+    def authenticated?
+      !session[:openid].nil?
+    end
+    
+    def url_for(path)
+      url = request.scheme + "://"
+      url << request.host
+
+      scheme, port = request.scheme, request.port
+      if scheme == "https" && port != 443 ||
+          scheme == "http" && port != 80
+        url << ":#{port}"
+      end
+      url << path
+      url
+    end
+  end
+
   set :public_folder, './web/public'
   set :static, true
 
@@ -17,63 +50,51 @@ class Web < Sinatra::Base
 
   enable :sessions
 
-  def logger; settings.logger end
-
-  def api_client; settings.api_client; end
-
-  def calendar_api; settings.calendar; end
-
-  def user_credentials
-    # Build a per-request oauth credential based on token stored in session
-    # which allows us to use a shared API client.
-    @authorization ||= (
-      auth = api_client.authorization.dup
-      auth.redirect_uri = to('/oauth2callback')
-      auth.update_token!(session)
-      auth
-    )
-  end
-
-  configure do
-    log_file = File.open('watchdog.log', 'a+')
-    log_file.sync = true
-    logger = Logger.new(log_file)
-    logger.level = Logger::DEBUG
-    
-    client = Google::APIClient.new
-    client.authorization.client_id = '111623891942-an2kf1pr99oaoth8s8ncusb6so2i8nn2.apps.googleusercontent.com'
-    client.authorization.client_secret = 'WxIJmSkIFjq2LHzedY77bIDu'
-    client.authorization.scope = ['https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/drive', 'https://www.googleapis.com/auth/admin.directory.user']
-
-    set :logger, logger
-    set :api_client, client
-  end
-
   before do
-    # Ensure user has authorized the app
-    unless user_credentials.access_token || request.path_info =~ /^\/oauth2/
-      redirect to('/oauth2authorize')
+    @openid = session[:openid]
+    @user_attrs = session[:user_attributes]
+  end
+
+  # Clear the session
+  get '/logout' do
+    session.clear
+    redirect '/login'
+  end
+
+  # Handle login form & navigation links from Google Apps
+  get '/login' do
+    if params["openid_identifier"].nil?
+      # No identifier, just render login form
+      erb :login
+    else
+      # Have provider identifier, tell rack-openid to start OpenID process
+      headers 'WWW-Authenticate' => Rack::OpenID.build_header(
+        :identifier => params["openid_identifier"],
+        :required => ["http://axschema.org/contact/email", 
+                      "http://axschema.org/namePerson/first",
+                      "http://axschema.org/namePerson/last"],
+        :return_to => url_for('/openid/complete'),
+        :method => 'post'
+        )
+      halt 401, 'Authentication required.'
     end
   end
 
-  after do
-    # Serialize the access/refresh token to the session
-    session[:access_token] = user_credentials.access_token
-    session[:refresh_token] = user_credentials.refresh_token
-    session[:expires_in] = user_credentials.expires_in
-    session[:issued_at] = user_credentials.issued_at
-  end
-
-  get '/oauth2authorize' do
-    # Request authorization
-    redirect user_credentials.authorization_uri.to_s, 303
-  end
-
-  get '/oauth2callback' do
-    # Exchange token
-    user_credentials.code = params[:code] if params[:code]
-    user_credentials.fetch_access_token!
-    redirect to('/')
+  # Handle the response from the OpenID provider
+  post '/openid/complete' do
+    resp = request.env["rack.openid.response"]
+    if resp.status == :success
+      session[:openid] = resp.display_identifier
+      ax = OpenID::AX::FetchResponse.from_success_response(resp)
+      session[:user_attributes] = {
+        :email => ax.get_single("http://axschema.org/contact/email"),
+        :first_name => ax.get_single("http://axschema.org/namePerson/first"),
+        :last_name => ax.get_single("http://axschema.org/namePerson/last")     
+      }
+      redirect '/users'
+    else
+      "Error: #{resp.status}"
+    end
   end
 
   not_found do
@@ -81,17 +102,22 @@ class Web < Sinatra::Base
   end
 
   get '/index.html' do
+    require_authentication
     erb :index
   end
 
   get '/' do
+    require_authentication
+
     @message = Notifier.message_for params['alert_signal']
     erb :index
   end
 
   get '/users' do
+    require_authentication
+
     begin
-      email = loggedUserMail
+      email = @user_attrs[:email]
       usersDomain = Users::UsersDomain.new
       @userNames = usersDomain.getUsers(email)
       erb :users, :layout => :home_layout
@@ -101,6 +127,8 @@ class Web < Sinatra::Base
   end
 
   post '/files' do
+    require_authentication
+
     @users = strToArray(params['sortedIdsStr'])
 
     @files = _filesDomain.getFiles(@users)
@@ -108,6 +136,8 @@ class Web < Sinatra::Base
   end
 
   post '/changePermissions' do
+    require_authentication
+
     filesIds = params['filesIdsStr']
 
     @files = _filesDomain.changePermissions(Files::FilesToChange.unmarshall(filesIds), params['newOwnerHidden'])
@@ -118,8 +148,9 @@ class Web < Sinatra::Base
     erb :'404', :layout => :home_layout
   end
 
-  get '/manifest' do
-    erb :manifest
+  get '/manifest.xml' do
+    content_type 'text/xml'
+    erb :manifest, :layout => false
   end
 
   def loggedUserMail
@@ -145,4 +176,4 @@ class Web < Sinatra::Base
     usersStr.split(',')
   end
 
-end
+# end

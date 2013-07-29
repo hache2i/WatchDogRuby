@@ -12,14 +12,14 @@
   <!-- Show this link in Google's universal navigation for all users -->
   <Extension id="navLink" type="link">
     <Name>Watch Dog</Name>
-    <Url>http://watchdog-hache2i.herokuapp.com</Url>
+    <Url><%= url_for('/login?openid_identifier=${DOMAIN_NAME}') %></Url> 
     <Scope ref="driveAPI"/>
     <Scope ref="adminAPI"/>
   </Extension>
 
   <!-- Declare our OpenID realm so our app is white listed -->
   <Extension id="realm" type="openIdRealm">
-    <Url>http://watchdog-hache2i.herokuapp.com</Url>
+    <Url><%= url_for('') %></Url>
   </Extension>
 
   <!-- Need access to the Drive API -->

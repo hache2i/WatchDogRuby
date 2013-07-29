@@ -7,6 +7,10 @@ gem "google-api-client"
 gem "crafty"
 gem "htmlentities"
 gem "logger"
+gem "ruby-openid"
+gem "ruby-openid-apps-discovery"
+gem "rack-openid"
+gem "oauth"
 
 #bundle install --without test development
 group :test do

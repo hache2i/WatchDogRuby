@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%= erb :header %>
+<body>
+  <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+  <div class="container-fluid">
+    <div class="row-fluid content">
+      <div class="span8 offset3">
+        <a href='/'>
+          <img src='img/logo.png' class='logo' alt='watch dog logo'/>
+        </a>
+      </div>
+    </div>
+    <div class="row-fluid content">
+      <div class="span8 offset3">
+        <%= yield %>
+      </div>
+    </div>
+    <%= erb :footer %>
+  </div>
+</body>
+</html>
