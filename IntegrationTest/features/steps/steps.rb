@@ -1,9 +1,20 @@
+When(/^Log me in$/) do
+  visit 'http://localhost:3000/'
+  fill_in('openid_identifier', :with => 'ideasbrillantes.org')
+  find('#submit').click
+  fill_in('Email', :with => 'moore')
+  fill_in('Passwd', :with => 'olareoun')
+  find('#signIn').click
+end
+
+When(/^Log me out$/) do
+  visit 'http://localhost:3000/logout'
+end
+
 Given(/^I am in WatchDog$/) do
-  # visit 'http://localhost:3000/'
-  # fill_in('Email', :with => 'moore@ideasbrillantes.org')
-  # fill_in('Passwd', :with => 'olareoun')
-  # find('#signIn').click
-  # click_button 'Aceptar'
+  visit 'http://localhost:3000/'
+  fill_in('openid_identifier', :with => 'ideasbrillantes.org')
+  find('#submit').click
 end
 
 Given(/^I am in WatchDog as non admin$/) do
@@ -15,12 +26,10 @@ Given(/^I am in WatchDog as non admin$/) do
 end
 
 Given(/^I got the users list$/) do
-  visit 'http://localhost:3000/users'
-  # visit 'http://localhost:3000/'
-  # fill_in('Email', :with => 'moore@ideasbrillantes.org')
-  # fill_in('Passwd', :with => 'olareoun')
-  # find('#signIn').click
-  # click_button 'Aceptar'
+  visit 'http://localhost:3000/'
+  fill_in('openid_identifier', :with => 'ideasbrillantes.org')
+  find('#submit').click
+  step "I search for the users"
 end
 
 Given(/^I am logged in as a domain admin user$/) do
@@ -37,16 +46,8 @@ Given(/^I am logged in as a not domain admin user$/) do
   click_button 'Aceptar'
 end
 
-When(/^Log me in$/) do
-  visit 'http://localhost:3000/'
-  fill_in('Email', :with => 'moore@ideasbrillantes.org')
-  fill_in('Passwd', :with => 'olareoun')
-  find('#signIn').click
-  click_button 'Aceptar'
-end
-
 When(/^I search for the users$/) do
-  visit 'http://localhost:3000/users'
+  find('#submit').click
 end
 
 When(/^I get the files$/) do

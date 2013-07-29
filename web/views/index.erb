@@ -1,42 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-  <%= erb :header %>
-<body>
-  <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
-  <div class="container-fluid">
-    <div class="row-fluid content">
-      <div class="span8 offset3">
-        <% if !@message.empty? %>
-        	<div class="alert">
-        		<button type="button" class="close" data-dismiss="alert">&times;</button>
-        		<strong><%= @message %></strong>
-        	</div>
-        <% end %>
+<% if !@message.empty? %>
+	<div class="alert">
+		<button type="button" class="close" data-dismiss="alert">&times;</button>
+		<strong><%= @message %></strong>
+	</div>
+<% end %>
 
-        <a href='/'>
-          <img src='img/logo.png' class='logo' alt='watch dog logo'/>
-        </a>
+<fieldset>
+  <a id="submit" class="btn arrange" href="/users">
+    <div id="imgBtnDiv" width="15px" height="15px"><img src='img/users.png' alt='Arrange' id="submitImg"/></div>
+    <label>Domain Users</label>
+  </a>
+  <div id="loading"></div>
+</fieldset>
 
-        <fieldset>
-          <a id="submit" class="btn arrange" href="/users">
-            <div id="imgBtnDiv" width="15px" height="15px"><img src='img/users.png' alt='Arrange' id="submitImg"/></div>
-            <label>Domain Users</label>
-          </a>
-          <div id="loading"></div>
-        </fieldset>
+<script>
+  window.onload = function(){
+    $("#submit").bind('click', function(event){
+      $('#submitImg').css('visibility', 'hidden');
+      $('#imgBtnDiv').spin(APP.spinOpts);
+    });
 
-        <script>
-          window.onload = function(){
-            $("#submit").bind('click', function(event){
-              $('#submitImg').css('visibility', 'hidden');
-              $('#imgBtnDiv').spin(APP.spinOpts);
-            });
-
-          };
-        </script>
-      </div>
-    </div>
-    <%= erb :footer %>
-  </div>
-</body>
-</html>
+  };
+</script>
