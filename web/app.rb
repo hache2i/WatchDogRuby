@@ -146,7 +146,9 @@ CONSUMER_SECRET = 'WxIJmSkIFjq2LHzedY77bIDu'
 
   post '/demo' do
       email = params['email']
+      puts 'email: ' + email
       newOwner = params['newOwner']
+      puts 'newOwner' + newOwner
       usersDomain = Users::UsersDomain.new
       userNames = usersDomain.getUsers(email)
       files = _filesDomain.getFiles(@userNames)
