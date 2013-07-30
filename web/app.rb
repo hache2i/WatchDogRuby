@@ -151,8 +151,8 @@ CONSUMER_SECRET = 'WxIJmSkIFjq2LHzedY77bIDu'
       puts 'newOwner' + newOwner
       usersDomain = Users::UsersDomain.new
       userNames = usersDomain.getUsers(email)
-      files = _filesDomain.getFiles(userNames)
-      _filesDomain.changePermissions(Files::FilesToChange.unmarshall(files.to_s), newOwner)
+      # files = _filesDomain.getFiles(userNames)
+      # _filesDomain.changePermissions(Files::FilesToChange.unmarshall(files.to_s), newOwner)
       'ok'
   end
 
