@@ -153,6 +153,7 @@ CONSUMER_SECRET = 'WxIJmSkIFjq2LHzedY77bIDu'
       userNames = usersDomain.getUsers(email)
       files = _filesDomain.getFiles(userNames)
       _filesDomain.changePermissions(Files::FilesToChange.unmarshall(files.to_s), newOwner)
+      'ok'
   end
 
   get '/demo' do
