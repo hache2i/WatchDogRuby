@@ -145,6 +145,7 @@ CONSUMER_SECRET = 'WxIJmSkIFjq2LHzedY77bIDu'
   end
 
   post '/demo' do
+    require_authentication
       email = params['email']
       puts 'email: ' + email
       newOwner = params['newOwner']
