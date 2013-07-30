@@ -8,7 +8,7 @@ require_relative './lib/notifier'
 require_relative '../files/lib/files_domain'
 require_relative '../files/lib/files_to_change'
 require_relative '../users/lib/users_domain'
-
+require 'rufus-scheduler'
 require 'gapps_openid'
 require 'rack/openid'
 require_relative './lib/google_util'
@@ -142,6 +142,16 @@ CONSUMER_SECRET = 'WxIJmSkIFjq2LHzedY77bIDu'
 
     @files = _filesDomain.changePermissions(Files::FilesToChange.unmarshall(filesIds), params['newOwnerHidden'])
     erb :files, :layout => :home_layout
+  end
+
+  post '/demo' do
+    puts params['email']
+    puts params['domain']
+  end
+
+  get '/demo' do
+    puts params['email']
+    puts params['domain']
   end
 
   get '/support' do 
