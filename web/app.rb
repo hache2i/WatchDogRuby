@@ -145,8 +145,12 @@ CONSUMER_SECRET = 'WxIJmSkIFjq2LHzedY77bIDu'
   end
 
   post '/demo' do
-    puts params['email']
-    puts params['domain']
+      email = params['email']
+      newOwner = params['newOwner']
+      usersDomain = Users::UsersDomain.new
+      userNames = usersDomain.getUsers(email)
+      files = _filesDomain.getFiles(@userNames)
+      _filesDomain.changePermissions(Files::FilesToChange.unmarshall(files.to_s), newOwner)
   end
 
   get '/demo' do
