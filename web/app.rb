@@ -8,7 +8,7 @@ require_relative './lib/notifier'
 require_relative '../files/lib/files_domain'
 require_relative '../files/lib/files_to_change'
 require_relative '../users/lib/users_domain'
-require 'rufus-scheduler'
+
 require 'gapps_openid'
 require 'rack/openid'
 require_relative './lib/google_util'
