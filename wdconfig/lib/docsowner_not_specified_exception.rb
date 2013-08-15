@@ -1,0 +1,2 @@
+class DocsownerNotSpecifiedException < Exception
+end

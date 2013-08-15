@@ -21,5 +21,9 @@ module Files
 			notEmptyUsersFiles.map{|userFiles| userFiles.to_s}.join('&')
 		end
 
+		def length
+			to_a.length
+		end
+
 	end
 end

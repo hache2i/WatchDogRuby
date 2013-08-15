@@ -149,8 +149,6 @@ select, input[type="password"], input[type="text"]{
 	background-color: #F5F7E7;
 	width: 600px;
 	height:55px;
-	padding: 5px;
-	padding-bottom: 0px;
 	font-family: 'Noto Serif', serif;
 	font-size: 23px;
 	color: #656959;
@@ -165,6 +163,15 @@ select, input[type="password"], input[type="text"]{
   	box-shadow: 
     inset 0 0 8px  rgba(0,0,0,0.1),
           0 0 16px rgba(0,0,0,0.1); 
+    padding: 15px;
+    margin: 15px 0 15px 0;
+}
+
+input#timing{
+	width: 100px;
+}
+
+button{
     padding: 15px;
     margin: 15px 0 15px 0;
 }
@@ -196,7 +203,7 @@ input:focus{
 	background-image: none;
 	border: none;
 	box-shadow: none;
-	margin-top: 32px; 
+	margin-top: 15px; 
   font-family: 'Noto Serif', serif;
   font-size: 20px;
   font-weight: bold;
@@ -279,6 +286,14 @@ p.lead{
 	font-style: italic;
 	font-weight: bold;
 	color: #656959;
+}
+
+p.title{
+	margin: 25px;
+	font-size: 35px;
+	font-style: italic;
+	font-weight: bold;
+	color: green;
 }
 
 .overflow{

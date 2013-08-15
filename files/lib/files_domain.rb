@@ -28,6 +28,7 @@ module Files
 
 		def changePermissions(filesToChange, owner)
 			mails = []
+			changed = 0
 			filesToChange.each do |fileToChange|
 				mails << fileToChange[:mail] if !mails.include?(fileToChange[:mail])
 				@client.authorization = @serviceAccount.authorize(fileToChange[:mail])
@@ -41,13 +42,15 @@ module Files
 						:api_method => @drive.permissions.insert,
 						:body_object => new_permission,
 						:parameters => { 'fileId' => id })
+					if result.status == 200
+						changed += 1
+					end
 					if result.status != 200
 						puts result.status 
 					end
 				end
   			end
-			userFilesDomain = UserFilesDomain.new(@serviceAccount, @client, @drive, owner)
-  			userFilesDomain.getUserFiles
+  			changed
 		end
 
 	end

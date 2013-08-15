@@ -1,0 +1,24 @@
+<p class="title">
+    Scheduled Execution Configuration
+</p>
+
+<form method="POST" action="config">
+	<fieldset>
+		<label>Doc's owner</label>
+		<div class="input-append">
+			<input type="text" id="newOwner" name="newOwner" placeholder="Insert new doc's owner email" value="<%= @newOwner %>"/>
+		</div>
+		<label>Minutes among executions</label>
+		<div class="input-append">
+			<input type="text" id="timing" name="timing" placeholder="Insert the number of seconds you want the executions to be separated" value="<%= @timing %>"/>
+			<button type='submit' id="save" class="btn arrange">
+				<div id="imgBtnDiv" width="15px" height="15px"><img src='img/clock-play.png' alt='Arrange' id="submitImg"/></div>
+			</button>
+			<% if @scheduled %>
+				<a type='submit' id="unschedule" class="btn arrange" href="/unschedule">
+					<div id="imgBtnDiv" width="15px" height="15px"><img src='img/clock-cross.png' alt='Unshedule' id="submitImg"/></div>
+				</a>
+			<% end%>
+		</div>
+	</fieldset>
+</form>

@@ -1,12 +1,22 @@
-<form action="/login" method="get">
+<form action="/login" method="get" id="login-form">
 	<fieldset>
 		<label>Google Apps Domain</label>
 	    <div class="input-append">
 	      <input type="text" placeholder="Insert the name of your Google Apps Domain" id="openid_identifier" name="openid_identifier"/>
-	      <button type='submit' id="submit" class="btn arrange">
-	        <div id="imgBtnDiv" width="15px" height="15px"><img src='img/arrange.png' alt='Arrange' id="submitImg"/></div>
+	      <button id="submit" class="btn arrange">
+	        <div id="imgBtnDiv" width="15px" height="15px">
+	        	<img src='img/go.png' alt='Arrange' id="submitImg"/>
+	        </div>
 	      </button>
 	    </div>
-	    <div id="loading"></div>
 	</fieldset>
 </form>
+  <script>
+  	window.onload = function(){
+  		$("#submit").click(function(){
+			$('#submitImg').css('visibility', 'hidden');
+			$('#imgBtnDiv').spin(APP.spinOpts);
+  		});
+  	};
+  </script>
+

@@ -25,7 +25,12 @@ module Files
 
 		def findPrivateFolder
 			userFiles = UserFiles.new @user
-			result = @client.execute(:api_method => @drive.files.list, :parameters => {'q' => "'" + @user + "' in owners and title = 'Private' and mimeType = 'application/vnd.google-apps.folder'"})
+			result = @client.execute(
+				:api_method => @drive.files.list, 
+				:parameters => 
+				{'q' => "'" + @user + "' in owners and title = 'Private' and mimeType = 'application/vnd.google-apps.folder'",
+					'fields' => 'items(id,ownerNames,title)'
+					})
 
 			raise MoreThanOnePrivateFolderException if result.data.items.length > 1
 			return nil if result.data.items.length == 0

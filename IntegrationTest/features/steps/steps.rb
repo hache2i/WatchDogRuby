@@ -121,3 +121,81 @@ end
 Then(/^I can not see trash documents$/) do
   page.find("table#files").text.should_not match('Doc in Trash')
 end
+
+When(/^I click config$/) do
+  find('#config').click
+end
+
+Then(/^I can see an input for the time$/) do
+  page.has_css?('input#timing').should be_true
+end
+
+Then(/^I can see an input for the doc's owner$/) do
+  page.has_css?('input#newOwner').should be_true
+end
+
+Given(/^I am at config$/) do
+  step "I click config"
+end
+
+When(/^I fill in the timing$/) do
+  fill_in('timing', :with => '60')
+end
+
+When(/^I fill in the docs owner$/) do
+  fill_in('newOwner', :with => 'docsadmin@ideasbrillantes.org')
+end
+
+When(/^I save it$/) do
+  find('#save').click
+end
+
+Then(/^I can check the values$/) do
+  visit "http://localhost:3000/config"
+  find('input#timing').value.should == "60"
+  find('input#newOwner').value.should == "docsadmin@ideasbrillantes.org"
+end
+
+Given(/^I just saved a config with timing '(\d+)'$/) do |arg1|
+  step "I click config"
+  fill_in('timing', :with => arg1)
+  fill_in('newOwner', :with => 'docsadmin@ideasbrillantes.org')
+  step "I save it"
+end
+
+Then(/^docs will be changed after '(\d+)'$/) do |arg1|
+  sleep(arg1.to_i * 60 * 2)
+  step "I search for the users"
+  step "I get the files"
+  page.all("table#files tr.file-record td.owner").length.should == 4
+  page.all("table#files tr.file-record td.owner span").each do |td|
+    td.text.should == "Docs Owner"
+  end
+end
+
+When(/^I dont fill in the timing$/) do
+  fill_in('newOwner', :with => 'docsadmin@ideasbrillantes.org')
+end
+
+When(/^I dont fill in the docsowner$/) do
+end
+
+Given(/^I have configured an scheduled execution$/) do
+  step 'I just saved a config with timing "60"'
+end
+
+Then(/^I can see if there is an scheduled execution$/) do
+  page.has_css?('a#unschedule').should be_true
+end
+
+Then(/^I can unschedule the execution$/) do
+  page.has_css?('a#unschedule').should be_true
+end
+
+When(/^I unschedule the execution$/) do
+  page.find('#unschedule').click
+end
+
+Then(/^I can see that there is not scheduled execution$/) do
+  page.has_css?('a#unschedule').should be_false
+end

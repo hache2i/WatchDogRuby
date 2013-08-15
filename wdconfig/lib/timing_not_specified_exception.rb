@@ -1,0 +1,2 @@
+class TimingNotSpecifiedException < Exception
+end

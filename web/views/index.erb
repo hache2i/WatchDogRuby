@@ -4,14 +4,30 @@
 		<strong><%= @message %></strong>
 	</div>
 <% end %>
-
-<fieldset>
-  <a id="submit" class="btn arrange" href="/users">
-    <div id="imgBtnDiv" width="15px" height="15px"><img src='img/users.png' alt='Arrange' id="submitImg"/></div>
-    <label>Domain Users</label>
-  </a>
-  <div id="loading"></div>
-</fieldset>
+<div class="row-fluid">
+  <div class="span4">
+    <fieldset>
+      <a id="submit" class="btn arrange" href="/users">
+        <div id="imgBtnDiv" width="15px" height="15px">
+          <img src='img/users.png' alt='Arrange' id="submitImg"/>
+        </div>
+        <label>Domain Users</label>
+      </a>
+      <div id="loading"></div>
+    </fieldset>
+  </div>
+  <div class="span6">
+    <fieldset>
+      <a id="config" class="btn arrange" href="/config">
+        <div id="imgBtnDiv2" width="15px" height="15px">
+          <img src='img/clock-small.png' alt='Arrange' id="configImg"/>
+        </div>
+        <label>Scheduled Execution</label>
+      </a>
+      <div id="loading"></div>
+    </fieldset>
+  </div>
+</div>
 
 <script>
   window.onload = function(){
@@ -19,6 +35,9 @@
       $('#submitImg').css('visibility', 'hidden');
       $('#imgBtnDiv').spin(APP.spinOpts);
     });
-
+    $("#config").bind('click', function(event){
+      $('#configImg').css('visibility', 'hidden');
+      $('#imgBtnDiv2').spin(APP.spinOpts);
+    });
   };
 </script>

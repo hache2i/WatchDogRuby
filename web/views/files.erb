@@ -1,5 +1,5 @@
-<p class="lead">
-    Files
+<p class="title">
+	Files
 </p>
 
 <table class="table table-striped" id="files">
@@ -9,7 +9,7 @@
 	<tbody>
 		<% @files.to_a.each do |file| %>
 			<tr class="file-record">
-				<td><%= file.title %></td><td><%= file.owners %></td>
+				<td><%= file.title %></td><td class="owner"><span><%= file.owners %></span></td>
 			</tr>
 		<% end %>
 	</tbody>

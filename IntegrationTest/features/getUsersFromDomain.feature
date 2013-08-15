@@ -1,4 +1,3 @@
-@wip
 Feature: get users from domain
 	As a domain administrator
 	I Want to get a list of the users
