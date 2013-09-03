@@ -12,15 +12,26 @@ module Users
 
 		def getUsers(email)
 			@client.authorization = @serviceAccount.authorize(email)
+			customerId = getCustomerId email
 			result = @client.execute(
 				:api_method => @api.users.list, 
 				:parameters => {
-					'domain' => extractDomain(email)
+					'customer' => customerId
 				})
 			result.data.users.map{|user| user['primaryEmail']}
 		end
 
 		private 
+
+		def getCustomerId(email)
+			@client.authorization = @serviceAccount.authorize(email)
+			user = @client.execute(
+				:api_method => @api.users.get, 
+				:parameters => {
+					'userKey' => email
+				})
+			customerId = user.data['customerId']
+		end
 
 		def extractDomain(email)
 			email.scan(/(.+)@(.+)/)[0][1]

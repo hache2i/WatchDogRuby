@@ -1,9 +1,15 @@
+require 'google/api_client'
+require_relative '../../../files/lib/service_account'
+require_relative '../support/drive_helper'
+require_relative '../support/files_helper'
+require_relative '../support/domain_config'
+
 When(/^Log me in$/) do
   visit 'http://localhost:3000/'
-  fill_in('openid_identifier', :with => 'ideasbrillantes.org')
+  fill_in('openid_identifier', :with => DomainConfig.name)
   find('#submit').click
-  fill_in('Email', :with => 'moore')
-  fill_in('Passwd', :with => 'olareoun')
+  fill_in('Email', :with => 'hache2i')
+  fill_in('Passwd', :with => 'w4tchd0g')
   find('#signIn').click
 end
 
@@ -13,7 +19,7 @@ end
 
 Given(/^I am in WatchDog$/) do
   visit 'http://localhost:3000/'
-  fill_in('openid_identifier', :with => 'ideasbrillantes.org')
+  fill_in('openid_identifier', :with => DomainConfig.name)
   find('#submit').click
 end
 
@@ -27,7 +33,7 @@ end
 
 Given(/^I got the users list$/) do
   visit 'http://localhost:3000/'
-  fill_in('openid_identifier', :with => 'ideasbrillantes.org')
+  fill_in('openid_identifier', :with => DomainConfig.name)
   find('#submit').click
   step "I search for the users"
 end
@@ -68,13 +74,10 @@ Then(/^I see an alert message "(.*?)"$/) do |alert_message|
 end
 
 Then(/^I get a list of them$/) do
-  page.all("ul#users li").length.should == 13
+  sleep 5
+  page.all("ul#users li").length.should == DomainConfig.users.length
   text = page.find('ul#users').text
-  text.should include(
-    'administrador@ideasbrillantes.org', 'blog@ideasbrillantes.org', 'darwin@ideasbrillantes.org', 'docsadmin@ideasbrillantes.org',
-    'ehawk@ideasbrillantes.org', 'fahrenheit@ideasbrillantes.org', 'fuller@ideasbrillantes.org', 'jelices@ideasbrillantes.org',
-    'moore@ideasbrillantes.org', 'pitagoras@ideasbrillantes.org', 'redmine@ideasbrillantes.org', 'tesla@ideasbrillantes.org',
-    'turing@ideasbrillantes.org') 
+  DomainConfig.users.each{|user| text.should include(user)}
 end
 
 Then(/^I can see a list$/) do
@@ -82,44 +85,40 @@ Then(/^I can see a list$/) do
 end
 
 Given(/^I am in the files screen$/) do
-  visit 'http://localhost:3000/'
-  fill_in('email', :with => 'moore@ideasbrillantes.org')
-  fill_in('password', :with => 'olareoun')
-  find('#submit').click
-  find('#getFiles').click
+  step "I got the users list"
+  step "I get the files"
 end
 
 Given(/^I got several files from several users$/) do
   page.all("table#files tr.file-record").length.should > 0
 end
 
-When(/^I change the permissions to "(.*?)"$/) do |user|
-  page.select(user, :from => 'newOwner')
-  fill_in('newOwnerHidden', :with => user)
+When(/^I change the permissions to admin$/) do 
+  page.select(DomainConfig.admin, :from => 'newOwner')
+  # fill_in('newOwnerHidden', :with => DomainConfig.admin)
   find('#changePermissions').click
 end
 
-Then(/^all files belong to "(.*?)"$/) do |user|
-  page.all("ul#files li").length.should == 184
-  page.all("ul#files li span#owner").text.should == user
+Then(/^all files belong to admin$/) do
+  page.find('p.lead').text.should include('Changed 12 Files!!')
+  # page.all("ul#files li").length.should == 12
+  # page.all("ul#files li span#owner").text.should == DomainConfig.admin
 end
 
 Then(/^I can see a table with files and owners$/) do
-  page.all("table#files tr.file-record").length.should == 4
+  page.all("table#files tr.file-record").length.should == 12
 end
 
 Then(/^I can select the future owner among domain users$/) do
-  page.all("select#newOwner option").length.should == 13
+  page.all("select#newOwner option").length.should == DomainConfig.users.length
   text = page.find('select#newOwner').text
-  text.should include(
-    'administrador@ideasbrillantes.org', 'blog@ideasbrillantes.org', 'darwin@ideasbrillantes.org', 'docsadmin@ideasbrillantes.org',
-    'ehawk@ideasbrillantes.org', 'fahrenheit@ideasbrillantes.org', 'fuller@ideasbrillantes.org', 'jelices@ideasbrillantes.org',
-    'moore@ideasbrillantes.org', 'pitagoras@ideasbrillantes.org', 'redmine@ideasbrillantes.org', 'tesla@ideasbrillantes.org',
-    'turing@ideasbrillantes.org') 
+  DomainConfig.users.each do |email|
+    text.should include(email) 
+  end
 end
 
 Then(/^I can not see trash documents$/) do
-  page.find("table#files").text.should_not match('Doc in Trash')
+  page.find("table#files").text.should_not match('doc in trash')
 end
 
 When(/^I click config$/) do

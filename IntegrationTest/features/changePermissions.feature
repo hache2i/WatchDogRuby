@@ -1,4 +1,5 @@
-@ignored
+@createFiles
+@deleteFilesAdmin
 Feature: change files owner
 	As a domain administrator
 	I want to change the owner of all domain drive files to a specific user
@@ -9,5 +10,5 @@ Background:
 	And I got several files from several users
 
 Scenario:
-	When I change the permissions to "moore@ideasbrillantes.org"
-	Then all files belong to "moore@ideasbrillantes.org"
+	When I change the permissions to admin
+	Then all files belong to admin

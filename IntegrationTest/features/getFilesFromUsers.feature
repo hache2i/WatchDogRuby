@@ -1,3 +1,4 @@
+@wip
 Feature: get files from users
 	As a domain administrator
 	I Want to get the files for all users
@@ -6,6 +7,8 @@ Feature: get files from users
 Background:
 	Given I got the users list
 
+@createFiles
+@deleteFiles
 Scenario: Get public files
 	When I get the files
 	Then I can see a table with files and owners
