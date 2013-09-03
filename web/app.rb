@@ -151,6 +151,7 @@ CONSUMER_SECRET = 'WxIJmSkIFjq2LHzedY77bIDu'
     @domain = session[:domain]
     @openid = session[:openid]
     @user_attrs = session[:user_attributes]
+    puts "after @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ before"
   end
 
   # Clear the session
