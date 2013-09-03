@@ -107,7 +107,7 @@ CONSUMER_SECRET = 'WxIJmSkIFjq2LHzedY77bIDu'
 
   get '/users' do
     puts "useeeeeers"
-    require_authentication
+    # require_authentication
 
     begin
       email = @user_attrs[:email]
