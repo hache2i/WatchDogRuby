@@ -56,7 +56,7 @@ CONSUMER_SECRET = 'WxIJmSkIFjq2LHzedY77bIDu'
   _watchdog = WDDomain::Watchdog.new
   _watchdog.load
 
-  enable :sessions
+  # enable :sessions
 
   get '/index.html' do
     require_authentication
