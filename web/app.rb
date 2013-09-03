@@ -64,6 +64,7 @@ CONSUMER_SECRET = 'WxIJmSkIFjq2LHzedY77bIDu'
   end
 
   get '/' do
+    puts "holaaaaaaaaaaaaaaaa"
     require_authentication
 
     @message = Notifier.message_for params['alert_signal']
@@ -105,6 +106,7 @@ CONSUMER_SECRET = 'WxIJmSkIFjq2LHzedY77bIDu'
   end
 
   get '/users' do
+    puts "useeeeeers"
     require_authentication
 
     begin
