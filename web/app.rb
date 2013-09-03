@@ -147,6 +147,7 @@ CONSUMER_SECRET = 'WxIJmSkIFjq2LHzedY77bIDu'
   end
 
   before do
+    puts "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ before"
     @domain = session[:domain]
     @openid = session[:openid]
     @user_attrs = session[:user_attributes]
