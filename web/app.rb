@@ -32,7 +32,6 @@ CONSUMER_SECRET = 'WxIJmSkIFjq2LHzedY77bIDu'
     end 
     
     def authenticated?
-      puts 'openid ################# ' + session[:openid] if !session[:openid].nil?
       !session[:openid].nil?
     end
     
@@ -56,15 +55,12 @@ CONSUMER_SECRET = 'WxIJmSkIFjq2LHzedY77bIDu'
   _watchdog = WDDomain::Watchdog.new
   _watchdog.load
 
-  # enable :sessions
-
   get '/index.html' do
     require_authentication
     erb :index
   end
 
   get '/' do
-    puts "holaaaaaaaaaaaaaaaa"
     require_authentication
 
     @message = Notifier.message_for params['alert_signal']
@@ -72,9 +68,7 @@ CONSUMER_SECRET = 'WxIJmSkIFjq2LHzedY77bIDu'
   end
 
   get '/config' do
-    puts "confiiiiiiiig"
     require_authentication
-    puts "confiiiiiiiig authenticated"
 
     executionConfig = _watchdog.getScheduledExecutionConfig(@domain)
     @timing = executionConfig.getTiming
@@ -108,8 +102,7 @@ CONSUMER_SECRET = 'WxIJmSkIFjq2LHzedY77bIDu'
   end
 
   get '/users' do
-    puts "useeeeeers"
-    # require_authentication
+    require_authentication
 
     begin
       email = @user_attrs[:email]
@@ -149,11 +142,9 @@ CONSUMER_SECRET = 'WxIJmSkIFjq2LHzedY77bIDu'
   end
 
   before do
-    puts "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ before"
     @domain = session[:domain]
     @openid = session[:openid]
     @user_attrs = session[:user_attributes]
-    puts "after @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ before"
   end
 
   # Clear the session
@@ -164,7 +155,6 @@ CONSUMER_SECRET = 'WxIJmSkIFjq2LHzedY77bIDu'
 
   # Handle login form & navigation links from Google Apps
   get '/login' do
-    puts "logiiiiiiiiiiiiiiiin"
     if params["openid_identifier"].nil? || params["openid_identifier"].empty?
       # No identifier, just render login form
       erb :login
