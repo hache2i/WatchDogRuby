@@ -32,7 +32,7 @@ CONSUMER_SECRET = 'WxIJmSkIFjq2LHzedY77bIDu'
     end 
     
     def authenticated?
-      puts 'openid ################# ' + session[:openid]
+      puts 'openid ################# ' + session[:openid] if !session[:openid].nil?
       !session[:openid].nil?
     end
     
