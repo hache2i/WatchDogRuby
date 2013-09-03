@@ -72,7 +72,9 @@ CONSUMER_SECRET = 'WxIJmSkIFjq2LHzedY77bIDu'
   end
 
   get '/config' do
+    puts "confiiiiiiiig"
     require_authentication
+    puts "confiiiiiiiig authenticated"
 
     executionConfig = _watchdog.getScheduledExecutionConfig(@domain)
     @timing = executionConfig.getTiming
