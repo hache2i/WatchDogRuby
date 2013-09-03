@@ -161,6 +161,7 @@ CONSUMER_SECRET = 'WxIJmSkIFjq2LHzedY77bIDu'
 
   # Handle login form & navigation links from Google Apps
   get '/login' do
+    puts "logiiiiiiiiiiiiiiiin"
     if params["openid_identifier"].nil? || params["openid_identifier"].empty?
       # No identifier, just render login form
       erb :login
