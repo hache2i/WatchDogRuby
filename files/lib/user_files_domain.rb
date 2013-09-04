@@ -20,8 +20,6 @@ module Files
 				nonPrivateItems = items.find_all{|item| !isPrivate(item['id'])}
 				userFiles.addFiles(nonPrivateItems.map{|item| DriveFile.new(item['id'], item['title'], item['ownerNames'])})
 			end while hasNextPage? result
-			puts @user
-			puts userFiles.length
 			userFiles
 		end
 

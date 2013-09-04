@@ -27,30 +27,44 @@ module Files
 		end
 
 		def changePermissions(filesToChange, owner)
-			mails = []
 			changed = 0
 			filesToChange.each do |fileToChange|
-				mails << fileToChange[:mail] if !mails.include?(fileToChange[:mail])
+				batch = Google::APIClient::BatchRequest.new do |result|
+				end
 				@client.authorization = @serviceAccount.authorize(fileToChange[:mail])
-				fileToChange[:ids].each do |id|
-					new_permission = @drive.permissions.insert.request_schema.new({
+				fileToChange[:ids].each do |fileId|
+					new_permission = getNewPermissionSchema owner
+					request = buildRequest(new_permission, fileId)
+					batch.add(request) do |result|
+						if result.status == 200
+							changed += 1
+						end
+						if result.status != 200
+							puts result.status 
+						end
+					end
+				end
+				@client.execute batch
+  			end
+  			changed
+		end
+
+		private 
+
+		def buildRequest(newPermission, fileId)
+			{
+				:api_method => @drive.permissions.insert,
+				:body_object => newPermission,
+				:parameters => { 'fileId' => fileId }
+			}
+		end
+
+		def getNewPermissionSchema(owner)
+			@drive.permissions.insert.request_schema.new({
 						'value' => owner,
 						'type' => 'user',
 						'role' => 'owner'
 					})
-					result = @client.execute(
-						:api_method => @drive.permissions.insert,
-						:body_object => new_permission,
-						:parameters => { 'fileId' => id })
-					if result.status == 200
-						changed += 1
-					end
-					if result.status != 200
-						puts result.status 
-					end
-				end
-  			end
-  			changed
 		end
 
 	end
