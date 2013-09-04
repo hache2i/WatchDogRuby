@@ -17,11 +17,7 @@ module Files
 		def getFiles(users)
 			domainFiles = DomainFiles.new
 			users.each do |user|
-				begin
-					userFilesDomain = UserFilesDomain.new(@serviceAccount, @client, @drive, user)
-					domainFiles.add(userFilesDomain.getUserFiles)
-				rescue MoreThanOnePrivateFolderException => e
-				end
+				domainFiles.add getUserFiles(user)
 			end
 			domainFiles
 		end
@@ -29,27 +25,46 @@ module Files
 		def changePermissions(filesToChange, owner)
 			changed = 0
 			filesToChange.each do |fileToChange|
-				batch = Google::APIClient::BatchRequest.new do |result|
-				end
-				@client.authorization = @serviceAccount.authorize(fileToChange[:mail])
-				fileToChange[:ids].each do |fileId|
-					new_permission = getNewPermissionSchema owner
-					request = buildRequest(new_permission, fileId)
-					batch.add(request) do |result|
-						if result.status == 200
-							changed += 1
-						end
-						if result.status != 200
-							puts result.status 
-						end
-					end
-				end
-				@client.execute batch
+				changed += changeUserFilesPermissions(fileToChange, owner)
   			end
   			changed
 		end
 
 		private 
+
+		def changeUserFilesPermissions(fileToChange, owner)
+			changed = 0
+			batch = Google::APIClient::BatchRequest.new
+			@client.authorization = @serviceAccount.authorize(fileToChange[:mail])
+			fileToChange[:ids].each do |fileId|
+				new_permission = getNewPermissionSchema owner
+				request = buildRequest(new_permission, fileId)
+				batch.add(request) do |result|
+					changed = manageResult result changed
+				end
+			end
+			@client.execute batch
+			changed
+		end
+
+		def getUserFiles(user)
+			begin
+				userFilesDomain = UserFilesDomain.new(@serviceAccount, @client, @drive, user)
+				userFilesDomain.getUserFiles
+			rescue MoreThanOnePrivateFolderException => e
+				[]
+			end
+		end
+
+		def manageResult(result, changed)
+			if result.status == 200
+				changed += 1
+			end
+			if result.status != 200
+				puts result.status 
+			end
+			changed
+		end
 
 		def buildRequest(newPermission, fileId)
 			{
