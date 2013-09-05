@@ -1,4 +1,5 @@
-require 'sinatra'
+require 'sinatra/base'
+require 'sinatra/contrib'
 require 'google/api_client'
 require 'mongoid'
 require 'logger'
@@ -15,13 +16,13 @@ require 'gapps_openid'
 require 'rack/openid'
 require_relative './lib/google_util'
 
-use Rack::Session::Cookie
-use Rack::OpenID
-
 CONSUMER_KEY = '111623891942-an2kf1pr99oaoth8s8ncusb6so2i8nn2.apps.googleusercontent.com'
 CONSUMER_SECRET = 'WxIJmSkIFjq2LHzedY77bIDu'
 
-# class Web < Sinatra::Base
+class Web < Sinatra::Base
+  use Rack::Session::Cookie
+  use Rack::OpenID
+
   configure do
     Mongoid.load!("config/mongoid.yml")
   end
@@ -218,4 +219,4 @@ CONSUMER_SECRET = 'WxIJmSkIFjq2LHzedY77bIDu'
     usersStr.split(',')
   end
 
-# end
+end
