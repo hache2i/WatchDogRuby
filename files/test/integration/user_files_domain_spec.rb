@@ -8,21 +8,21 @@ require_relative '../../../IntegrationTest/features/support/domain_config'
 describe 'User Files Domain' do
 
 
-	before(:all) do
-		@client = Google::APIClient.new
-		@drive = @client.discovered_api('drive', 'v2')
-		@serviceAccount = ServiceAccount.new
-		@filesHelper = FilesHelper.new DriveHelper.new(@serviceAccount, @drive, @client)
-		@user = DomainConfig.userWithTrashDoc
-		@filesHelper.create @user
-		@filesHelper.createExtraPrivate @user
-	end
-
-	after(:all) do
-		@filesHelper.clear
-	end
-
 	describe "get user files" do
+		before(:all) do
+			@client = Google::APIClient.new
+			@drive = @client.discovered_api('drive', 'v2')
+			@serviceAccount = ServiceAccount.new
+			@filesHelper = FilesHelper.new DriveHelper.new(@serviceAccount, @drive, @client)
+			@user = DomainConfig.userWithTrashDoc
+			@filesHelper.create @user
+			@filesHelper.createExtraPrivate @user
+		end
+
+		after(:all) do
+			@filesHelper.clear
+		end
+
 		it 'gets public files and folders' do
 			domain = Files::UserFilesDomain.new(@serviceAccount, @client, @drive, @user)
 			userFiles = domain.getUserFiles
@@ -50,13 +50,32 @@ describe 'User Files Domain' do
 	end
 
 	describe 'find private folder' do
-		it 'raises exception if the user has more than one Private folder' do
-			expect{Files::UserFilesDomain.new(@serviceAccount, @client, @drive, 'turing@ideasbrillantes.org')}.to raise_error(MoreThanOnePrivateFolderException)
+		before(:all) do
+			@client = Google::APIClient.new
+			@drive = @client.discovered_api('drive', 'v2')
+			@serviceAccount = ServiceAccount.new
+			@filesHelper = FilesHelper.new DriveHelper.new(@serviceAccount, @drive, @client)
+			@user = DomainConfig.userWithTwoPrivates
+			@privates = []
+			@privates << @filesHelper.createPrivateFolder(@user)
+			@privates << @filesHelper.createPrivateFolder(@user)
 		end
+
+		after(:all) do
+			@filesHelper.removeItems(@user, @privates)
+		end
+
+		it 'raises exception if the user has more than one Private folder' do
+			expect{Files::UserFilesDomain.new(@serviceAccount, @client, @drive, @user)}.to raise_error(MoreThanOnePrivateFolderException)
+		end
+
 		it 'finds it if the user has one at the root level' do
-			domain = Files::UserFilesDomain.new(@serviceAccount, @client, @drive, 'moore@ideasbrillantes.org')
+			user = 'watchdog@watchdog.h2itec.com'
+			id = @filesHelper.createPrivateFolder user
+			domain = Files::UserFilesDomain.new(@serviceAccount, @client, @drive, user)
 			privateFolder = domain.findPrivateFolder
 			privateFolder.title.should == 'Private'
+			@filesHelper.removeItem(user, id)
 		end
 	end
 end

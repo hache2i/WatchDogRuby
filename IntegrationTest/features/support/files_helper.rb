@@ -37,6 +37,20 @@ class FilesHelper
 		@driveHelper.delete_files(email, getAllItems)
 	end
 
+	def createPrivateFolder(email)
+		@driveHelper.insert_folder(email, 'Private', 'Carpeta Privada')['id']
+	end
+
+	def removeItems(email, items)
+		items.each do |item|
+			@driveHelper.delete_file(email, item)
+		end
+	end
+
+	def removeItem(email, item)
+		@driveHelper.delete_file(email, item)
+	end
+
 	private
 
 	def getAllItems
@@ -58,12 +72,6 @@ class FilesHelper
 	def removePrivate(email)
 		@driveHelper.delete_file(email, @cache[email][:privateFile])
 		@driveHelper.delete_file(email, @cache[email][:privateFolder])
-	end
-
-	def removeItems(email, items)
-		items.each do |item|
-			@driveHelper.delete_file(email, item)
-		end
 	end
 
 end

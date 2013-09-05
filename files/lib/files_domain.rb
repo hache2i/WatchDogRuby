@@ -40,7 +40,7 @@ module Files
 				new_permission = getNewPermissionSchema owner
 				request = buildRequest(new_permission, fileId)
 				batch.add(request) do |result|
-					changed = manageResult result changed
+					changed = manageResult(result, changed)
 				end
 			end
 			@client.execute batch

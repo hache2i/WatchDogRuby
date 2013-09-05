@@ -100,13 +100,13 @@ When(/^I change the permissions to admin$/) do
 end
 
 Then(/^all files belong to admin$/) do
-  page.find('p.lead').text.should include('Changed 12 Files!!')
+  page.find('p.lead').text.should include('Changed ' + DomainConfig.totalPublicFiles.to_s + ' Files!!')
   # page.all("ul#files li").length.should == 12
   # page.all("ul#files li span#owner").text.should == DomainConfig.admin
 end
 
 Then(/^I can see a table with files and owners$/) do
-  page.all("table#files tr.file-record").length.should == 12
+  page.all("table#files tr.file-record").length.should == DomainConfig.totalPublicFiles
 end
 
 Then(/^I can select the future owner among domain users$/) do

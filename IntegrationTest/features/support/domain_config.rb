@@ -5,7 +5,8 @@ class DomainConfig
 		   'hache2i@watchdog.h2itec.com',
 		    'juanperez@sub1.watchdog.h2itec.com',
 		    'pepeperez@watchdog.h2itec.com',
-		    'watchdog@watchdog.h2itec.com'
+		    'watchdog@watchdog.h2itec.com',
+		    'joseperez@wdasoc.h2itec.com'
 		]
 	end
 
@@ -19,6 +20,14 @@ class DomainConfig
 
 	def self.userWithTrashDoc
 		'watchdog@watchdog.h2itec.com'
+	end
+
+	def self.userWithTwoPrivates
+	    'pepeperez@watchdog.h2itec.com'
+	end
+
+	def self.totalPublicFiles
+		users.length * 3
 	end
 
 end
