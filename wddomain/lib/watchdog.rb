@@ -34,6 +34,10 @@ module WDDomain
 			@configDomain.getScheduledExecution(domain)
 		end
 
+		def isAdmin(email)
+			@usersDomain.isAdmin email
+		end
+
 		def getUsers(email)
 			@usersDomain.getUsers(email)
 		end

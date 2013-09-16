@@ -4,14 +4,14 @@ require 'rack/openid'
 
 require_relative 'base_app'
 require_relative 'lib/google_authentication'
+require_relative 'lib/notifier'
 
 class Login < BaseApp
 
-  use Rack::Session::Cookie
   use Rack::OpenID
 
   helpers Sinatra::GoogleAuthentication
-
+  
   before do
     @domain = session[:domain]
     @openid = session[:openid]
@@ -64,6 +64,11 @@ class Login < BaseApp
 
   get '/home' do
       erb :home, :layout => :home_layout 
+  end
+
+  get '/notDomainAdmin' do
+    @message = Notifier.message_for 'not.admin'
+    erb :'401'
   end
 
   get '/support' do 

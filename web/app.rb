@@ -34,6 +34,7 @@ class Web < BaseApp
     @domain = session[:domain]
     @userEmail = session[:user_attributes][:email]
     require_activation
+    redirect '/notDomainAdmin' if !_watchdog.isAdmin @userEmail
   end
 
   get '/index.html' do
@@ -95,19 +96,6 @@ class Web < BaseApp
 
     @changed = _watchdog.changePermissions(Files::FilesToChange.unmarshall(filesIds), params['newOwnerHidden'])
     erb :changed, :layout => :home_layout
-  end
-
-  def loggedUserMail
-    api_client.authorization = user_credentials
-    oauth2 = api_client.discovered_api('oauth2', 'v2')
-    result = api_client.execute!(:api_method => oauth2.userinfo.get)
-    user_info = nil
-    if result.status == 200
-      user_info = result.data
-      user_info.email
-    else
-      nil
-    end
   end
 
   def showError(messageKey)

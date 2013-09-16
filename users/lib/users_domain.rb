@@ -21,6 +21,16 @@ module Users
 			result.data.users.map{|user| user['primaryEmail']}
 		end
 
+		def isAdmin(email)
+			@client.authorization = @serviceAccount.authorize(email)
+			user = @client.execute(
+				:api_method => @api.users.get, 
+				:parameters => {
+					'userKey' => email
+				})
+			!user.data['isAdmin'].nil? && user.data['isAdmin']
+		end
+
 		private 
 
 		def getCustomerId(email)

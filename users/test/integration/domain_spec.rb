@@ -13,4 +13,14 @@ describe 'Users Domain' do
 			users.include?(email).should be_true
 		end
 	end
+
+	it 'returns true if user is admin' do
+		usersDomain = Users::UsersDomain.new
+		usersDomain.isAdmin(DomainConfig.admin).should be_true
+	end
+
+	it 'returns false if user is not admin' do
+		usersDomain = Users::UsersDomain.new
+		usersDomain.isAdmin('pepeperez@watchdog.h2itec.com').should be_false
+	end
 end
