@@ -167,7 +167,7 @@ select, input[type="password"], input[type="text"]{
     margin: 15px 0 15px 0;
 }
 
-input#timing{
+input.small-number{
 	width: 100px;
 }
 
@@ -280,22 +280,6 @@ input:focus{
 	display:none;
 }
 
-p.lead{
-	margin: 25px;
-	font-size: 25px;
-	font-style: italic;
-	font-weight: bold;
-	color: #656959;
-}
-
-p.title{
-	margin: 25px;
-	font-size: 35px;
-	font-style: italic;
-	font-weight: bold;
-	color: green;
-}
-
 .overflow{
     overflow: hidden;
     width: 100%; /* Takes up the whole width of the slide */
@@ -342,3 +326,29 @@ table#inactive-domains th{
 .thumbnail{
 	text-align: center;
 }
+
+.page-header{
+	text-align: left;
+	vertical-align: middle;
+	font-size: 50px;
+	margin: 25px;
+	/*color: #656959;*/
+	color: green;
+/*	border-bottom: 4px solid #eeeeee;
+	border-right: 4px solid #eeeeee;
+*/	background-color: #eeeeee;
+	padding-bottom: 9px;
+}
+
+.page-header .domain-name{
+	font-weight: bold;
+}
+
+p.title{
+	margin: 25px;
+	font-size: 35px;
+	font-style: italic;
+	font-weight: bold;
+	color: green;
+}
+

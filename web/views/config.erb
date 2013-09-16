@@ -1,6 +1,6 @@
-<p class="title">
+<div class="page-header">
     Scheduled Execution Configuration
-</p>
+</div>
 
 <form method="POST" action="config">
 	<fieldset>
@@ -10,7 +10,7 @@
 		</div>
 		<label>Minutes among executions</label>
 		<div class="input-append">
-			<input type="text" id="timing" name="timing" placeholder="Insert the number of seconds you want the executions to be separated" value="<%= @timing %>"/>
+			<input type="text" id="timing" name="timing" class="small-number" placeholder="Insert the number of seconds you want the executions to be separated" value="<%= @timing %>"/>
 			<button type='submit' id="save" class="btn arrange">
 				<div id="imgBtnDiv" width="15px" height="15px"><img src='img/clock-play.png' alt='Arrange' id="submitImg"/></div>
 			</button>
