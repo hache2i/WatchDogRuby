@@ -7,7 +7,6 @@ require_relative '../../../IntegrationTest/features/support/domain_config'
 
 describe 'User Files Domain' do
 
-
 	describe "get user files" do
 		before(:all) do
 			@client = Google::APIClient.new

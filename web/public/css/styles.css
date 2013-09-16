@@ -313,7 +313,6 @@ p.title{
 }
 
 .table td{
-	font-size: 18px;
 	color: #656959;
 }
 
@@ -327,4 +326,15 @@ p.title{
 
 .input-append input, .input-prepend input, .input-append select, .input-prepend select, .input-append .uneditable-input, .input-prepend .uneditable-input, .input-append .dropdown-menu, .input-prepend .dropdown-menu, .input-append .popover, .input-prepend .popover {
     font-size: 23px;
+}
+
+.table.domains td{
+	width: 50%;
+	font-size: 25px;
+	vertical-align: middle;
+	text-align: left
+}
+
+table#inactive-domains th{
+	color: red;
 }

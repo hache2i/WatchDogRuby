@@ -1,0 +1,26 @@
+<form action="/admin/doActivateDomain" method="post" id="add-domain-form">
+	<fieldset>
+		<label>Google Apps Domain</label>
+	    <div class="input-append">
+	      <input type="text" placeholder="Insert the name of the Google Apps Domain" id="domain" name="domain"/>
+	    </div>
+		<label>Number of users</label>
+	    <div class="input-append">
+	      <input type="text" placeholder="Insert the name of the Google Apps Domain" id="users-number" name="users-number"/>
+	      <button id="add-domain" class="btn arrange" alt="Add">
+	        <div id="imgBtnDiv" width="15px" height="15px">
+	        	<img src='img/go.png' alt='Arrange' id="submitImg"/>
+	        </div>
+	      </button>
+	    </div>
+	</fieldset>
+</form>
+  <script>
+  	window.onload = function(){
+  		$("#add-domain").click(function(){
+			$('#submitImg').css('visibility', 'hidden');
+			$('#imgBtnDiv').spin(APP.spinOpts);
+  		});
+  	};
+  </script>
+

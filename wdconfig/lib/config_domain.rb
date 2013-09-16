@@ -31,5 +31,9 @@ module WDConfig
 			config.unschedule
 		end
 
+		def hasScheduled?(domain)
+			config = @configs.get(domain)
+			!config.nil? && config.scheduled?
+		end
 	end
 end

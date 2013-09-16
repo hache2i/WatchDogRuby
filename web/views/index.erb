@@ -4,12 +4,17 @@
 		<strong><%= @message %></strong>
 	</div>
 <% end %>
+
+<p class="lead">
+    <span class="domain"><%= @domain %></span> Dashboard
+</p>
+
 <div class="row-fluid">
   <div class="span4">
     <fieldset>
-      <a id="submit" class="btn arrange" href="/users">
+      <a id="users" class="btn arrange" href="/users">
         <div id="imgBtnDiv" width="15px" height="15px">
-          <img src='img/users.png' alt='Arrange' id="submitImg"/>
+          <img src='img/users.png' alt='Arrange' id="usersImg"/>
         </div>
         <label>Domain Users</label>
       </a>
@@ -31,8 +36,8 @@
 
 <script>
   window.onload = function(){
-    $("#submit").bind('click', function(event){
-      $('#submitImg').css('visibility', 'hidden');
+    $("#users").bind('click', function(event){
+      $('#usersImg').css('visibility', 'hidden');
       $('#imgBtnDiv').spin(APP.spinOpts);
     });
     $("#config").bind('click', function(event){

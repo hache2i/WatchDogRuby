@@ -1,4 +1,4 @@
-@wip
+@logged
 Feature: get files from users
 	As a domain administrator
 	I Want to get the files for all users

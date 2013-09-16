@@ -3,7 +3,7 @@ require 'rspec'
 require_relative '../../lib/execution_configurations'
 require_relative '../../lib/execution_configuration'
 
-require_relative '../../../test/support/spec_helper'
+require_relative '../../../web/test/support/spec_helper'
 
 describe 'Execution Configurations' do
 	it 'is empty when created' do

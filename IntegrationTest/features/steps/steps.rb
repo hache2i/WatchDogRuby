@@ -53,7 +53,7 @@ Given(/^I am logged in as a not domain admin user$/) do
 end
 
 When(/^I search for the users$/) do
-  find('#submit').click
+  find('#users').click
 end
 
 When(/^I get the files$/) do
@@ -197,4 +197,81 @@ end
 
 Then(/^I can see that there is not scheduled execution$/) do
   page.has_css?('a#unschedule').should be_false
+end
+
+#################### ADMIN MODULE
+
+Given(/^I enter the dashboard$/) do
+  visit "http://localhost:3000/admin"
+end
+
+Then(/^I can see a button to add domains$/) do
+  page.has_css?('a#add-domain').should be_true
+end
+
+Given(/^The domain is active$/) do
+  step "I am in the admin module"
+  step "I activate a domain"
+end
+
+Given(/^I am in the admin module$/) do
+  visit "http://localhost:3000/admin"
+  find("#add-domain").click
+end
+
+When(/^I activate a domain$/) do
+  fill_in('domain', :with => DomainConfig.name)
+  find('button#add-domain').click
+end
+
+Then(/^the admin can access to his dashboard$/) do
+  step "I am in WatchDog"
+  find('p.lead').text.should include(DomainConfig.name + ' Dashboard')
+end
+
+Given(/^the domain is not active$/) do
+  visit "http://localhost:3000"
+end
+
+When(/^I enter in watchdog$/) do
+  visit 'http://localhost:3000/'
+  fill_in('openid_identifier', :with => 'ideasbrillantes.org')
+  find('#submit').click
+  fill_in('Email', :with => 'moore')
+  fill_in('Passwd', :with => 'olareoun')
+  find('#signIn').click
+end
+
+Then(/^I get a page where I can ask for activation$/) do
+  page.has_css?('a#request-activation').should be_true
+end
+
+Given(/^the domain is active$/) do
+  step "I am in the admin module"
+  step "I activate a domain"
+end
+
+When(/^the admin access the app$/) do
+  step "I am in WatchDog"
+end
+
+Then(/^the dashboard is presented$/) do
+  find('p.lead').text.should include(DomainConfig.name + ' Dashboard')
+end
+
+Given(/^I do a basic auth$/) do
+  username = 'foo'
+  password = 'bar'
+  page.visit("http://#{username}:#{password}@localhost:3000/admin/")
+  # basic_auth username, password
+  # encoded_login = ["#{username}:#{password}"].pack("m*")
+  # page.driver.header 'Authorization', "Basic #{encoded_login}"
+end
+
+When(/^I go to admin$/) do
+  visit 'http://localhost:3000/admin'
+end
+
+Then(/^I see the buttons$/) do
+  page.has_css?('#add-domain').should be_true
 end

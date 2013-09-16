@@ -1,3 +1,4 @@
+@logged
 @createFiles
 @deleteFilesAdmin
 Feature: change files owner

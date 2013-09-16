@@ -7,15 +7,17 @@ require_relative 'drive_helper'
 require_relative 'files_helper'
 require_relative 'domain_config'
 
-# ENV['MONGOID_ENV'] = 'test'
-# Mongoid.load! 'config/mongoid.yml', :test
-
-# require File.join(File.dirname(__FILE__), '../../../web/app.rb')
-
+ENV['RACK_ENV'] = 'test'
+ 
 Capybara.default_wait_time = 5
 Capybara.default_driver = :selenium
+Capybara.javascript_driver = :webkit
 
-Before do 
+# Before do 
+#   step "The domain is active"
+# end 
+
+Before('@logged') do 
   if !$dunit 
     step "Log me in" 
     step "Log me out"

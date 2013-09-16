@@ -12,16 +12,15 @@ gem "ruby-openid-apps-discovery"
 gem "rack-openid"
 gem "oauth"
 gem "rufus-scheduler"
-# gem 'sinatra-mongoid', :require => 'sinatra/mongoid'
 gem 'mongoid', "~> 3.1.4"
 
-#bundle install --without test development
 group :test do
 	gem "selenium-webdriver"
   gem "rack-test"
   gem "rspec"
   gem "cucumber"
   gem "capybara"
+  gem "capybara-webkit"
   gem "builder"
   gem "listen"
 end

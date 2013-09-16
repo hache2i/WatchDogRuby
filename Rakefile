@@ -63,7 +63,25 @@ namespace :test do
 
   desc "Run wip integration"
   Cucumber::Rake::Task.new(:wipintegration) do |t|
-        t.cucumber_opts = "IntegrationTest --tags @wip"
+        t.cucumber_opts = "IntegrationTest --tags @wip --tags ~@ignored"
+  end
+
+  desc "Run routes tests"
+  RSpec::Core::RakeTask.new(:routes) do |t|
+      t.pattern = "web/test/routes/*.rb"
+      t.rspec_opts = " -c --format documentation"
+  end
+
+  desc "Run rspec acceptance tests"
+  RSpec::Core::RakeTask.new(:accep) do |t|
+      t.pattern = "web/test/acceptance/*.rb"
+      t.rspec_opts = " -c --format documentation"
+  end
+
+  desc "Run rspec acceptance wip tests"
+  RSpec::Core::RakeTask.new(:wip_accep) do |t|
+      t.pattern = "web/test/acceptance/*.rb"
+      t.rspec_opts = " -c --format documentation --tag wip"
   end
 
 end

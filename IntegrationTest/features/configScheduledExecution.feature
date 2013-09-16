@@ -1,3 +1,4 @@
+@logged
 @ignored
 Feature: config scheduled execution
 	As a domain administrator
