@@ -352,3 +352,12 @@ p.title{
 	color: green;
 }
 
+.footer{
+	width: 100%;
+	text-align: center;
+	background-color: #5a5555;
+	color: white;
+	height: 100px;
+	margin: 20px;
+	padding-bottom: 20px;
+}
