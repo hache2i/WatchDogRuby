@@ -38,12 +38,12 @@ class Web < BaseApp
   end
 
   get '/index.html' do
-    erb :index
+    erb :index, :layout => :home_layout
   end
 
   get '/' do
     @message = Notifier.message_for params['alert_signal']
-    erb :index
+    erb :index, :layout => :home_layout
   end
 
   get '/config' do
@@ -63,7 +63,7 @@ class Web < BaseApp
     rescue DocsownerNotSpecifiedException => e
       showError 'scheduled.execution.config.docsowner.required'
     end
-    erb :index
+    erb :index, :layout => :home_layout
   end
 
   get '/unschedule' do
@@ -100,7 +100,7 @@ class Web < BaseApp
 
   def showError(messageKey)
       @message = Notifier.message_for messageKey
-      erb :index
+      erb :index, :layout => :home_layout
   end
 
   def strToArray(usersStr)

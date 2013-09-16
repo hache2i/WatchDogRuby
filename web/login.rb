@@ -68,7 +68,7 @@ class Login < BaseApp
 
   get '/notDomainAdmin' do
     @message = Notifier.message_for 'not.admin'
-    erb :'401'
+    erb :'401', :layout => :home_layout
   end
 
   get '/support' do 
