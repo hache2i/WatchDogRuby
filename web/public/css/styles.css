@@ -13,29 +13,6 @@ body {
 	margin-top: 15px;
 }
 
-.description {
-	width: 90%;
-	padding: 25px;
-	margin-bottom: 0px;
-	height: 100%;
-	font-size: 18px;
-	font-weight: 200;
-	color: white;
-	line-height: 30px;
-	background-color: green;
-	-webkit-border-radius: 6px;
-	 -moz-border-radius: 6px;
-	      border-radius: 6px;
-}
-
-.description h1 {
-  margin-bottom: 0;
-  font-size: 60px;
-  line-height: 1;
-  letter-spacing: -1px;
-  color: inherit;
-}
-
 .name{
 	font-size: 90px;
 	margin-top: 25px;
@@ -360,4 +337,23 @@ p.title{
 	height: 100px;
 	margin: 20px;
 	padding-bottom: 20px;
+}
+
+.landing-section .description{
+	font-size: 30px;
+	width: 90%;
+	padding: 25px;
+	margin-bottom: 0px;
+	height: 100%;
+	font-weight: 200;
+	color: #656959;
+	line-height: 30px;
+	-webkit-border-radius: 6px;
+	 -moz-border-radius: 6px;
+	      border-radius: 6px;
+}
+
+.landing-section{
+	text-align: center;
+	vertical-align: middle;
 }

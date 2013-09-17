@@ -63,7 +63,11 @@ class Login < BaseApp
   end
 
   get '/home' do
-      erb :home, :layout => :home_layout 
+      erb :home
+  end
+
+  get '/requestActivation' do
+    erb :request_activation, :layout => :home_layout
   end
 
   get '/notDomainAdmin' do
