@@ -34,10 +34,6 @@ class Admin < BaseApp
 		redirect '/admin/listDomains'
 	end
 
-	# use Rack::Auth::Basic, "Protected Area" do |username, password|
-	# 	username == 'foo' && password == 'bar'
-	# end
-
   	def self.new(*)
 		app = Rack::Auth::Digest::MD5.new(super) do |username|
 		  {'foo' => 'bar'}[username]

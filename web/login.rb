@@ -62,10 +62,6 @@ class Login < BaseApp
     end
   end
 
-  get '/home' do
-      erb :home
-  end
-
   get '/requestActivation' do
     erb :request_activation, :layout => :home_layout
   end

@@ -18,8 +18,6 @@ require_relative 'lib/google_authentication'
 
 class Web < BaseApp
 
-  use Login
-
   helpers Sinatra::Activation
   helpers Sinatra::GoogleAuthentication
 
