@@ -5,7 +5,7 @@ require_relative '../support/files_helper'
 require_relative '../support/domain_config'
 
 When(/^Log me in$/) do
-  visit 'http://localhost:3000/'
+  visit 'http://localhost:3000/login'
   fill_in('openid_identifier', :with => DomainConfig.name)
   find('#submit').click
   fill_in('Email', :with => 'hache2i')
@@ -19,8 +19,6 @@ end
 
 Given(/^I am in WatchDog$/) do
   visit 'http://localhost:3000/'
-  fill_in('openid_identifier', :with => DomainConfig.name)
-  find('#submit').click
 end
 
 Given(/^I am in WatchDog as non admin$/) do
