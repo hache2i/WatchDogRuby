@@ -52,7 +52,8 @@ module WDDomain
 
 		def reassingOwnership(admin, docsOwner)
 			userNames = @usersDomain.getUsers(admin)
-			files = @filesDomain.getFiles(userNames)
+			nonOwnerUsers = userNames.reject{|userName| userName.eql? docsOwner}
+			files = @filesDomain.getFiles(nonOwnerUsers)
 			changed = @filesDomain.changePermissions(Files::FilesToChange.unmarshall(files.to_s), docsOwner)
 			changed
 		end
