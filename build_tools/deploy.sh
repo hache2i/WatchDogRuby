@@ -10,6 +10,4 @@ git checkout -b deploy
 git push -f heroku deploy:master
 git reset --hard
 git checkout master
-git merge local_temp
-git branch -D local_temp
 git branch -D deploy
