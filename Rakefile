@@ -92,18 +92,3 @@ end
    system "./build_tools/deploy.sh"
  end
 
-desc "Check the JavaScript source with JSLint - exit with status 1 if any of the files fail."
-task :jslint do
-  failed_files = []
-  Dir['web/public/js/ZZ/**/*.js'].each do |fname|
-    results = `java -jar ./build_tools/rhino.jar ./build_tools/jshint-rhino.js #{fname}`
-    if results != ""
-      puts "#{fname}:"
-      puts results
-      failed_files << fname
-    end
-  end
-  if failed_files.size > 0
-    exit 1
-  end
-end
