@@ -16,6 +16,7 @@ module Files
 			userFiles = UserFiles.new @user
 			begin
 				result = @client.execute(:api_method => @drive.files.list, :parameters => assembleParams(getPageToken(result)))
+				raise UserFilesException if !result.status.eql? 200
 				items = result.data.items
 				nonPrivateItems = items.find_all{|item| !isPrivate(item['id'])}
 				userFiles.addFiles(nonPrivateItems.map{|item| DriveFile.new(item['id'], item['title'], item['ownerNames'])})

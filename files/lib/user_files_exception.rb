@@ -1,0 +1,2 @@
+class UserFilesException < Exception
+end

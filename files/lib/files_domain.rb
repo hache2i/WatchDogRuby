@@ -4,6 +4,7 @@ require_relative 'domain_files'
 require_relative 'service_account'
 require_relative 'user_files_domain'
 require_relative 'more_than_one_private_folder_exception'
+require_relative 'user_files_exception'
 
 module Files
 	class FilesDomain
@@ -51,6 +52,9 @@ module Files
 			begin
 				userFilesDomain = UserFilesDomain.new(@serviceAccount, @client, @drive, user)
 				userFilesDomain.getUserFiles
+			rescue UserFilesException => e
+				puts "Error while getting files from user " + user + "!!!"
+				[]
 			rescue MoreThanOnePrivateFolderException => e
 				[]
 			end
