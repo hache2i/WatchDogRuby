@@ -18,29 +18,32 @@ module Users
 				:parameters => {
 					'customer' => customerId
 				})
+			raise UsersDomainException if !result.status.eql? 200
 			result.data.users.map{|user| user['primaryEmail']}
 		end
 
 		def isAdmin(email)
 			@client.authorization = @serviceAccount.authorize(email)
-			user = @client.execute(
+			result = @client.execute(
 				:api_method => @api.users.get, 
 				:parameters => {
 					'userKey' => email
 				})
-			!user.data['isAdmin'].nil? && user.data['isAdmin']
+			raise UsersDomainException if ![200, 403].include?(result.status)
+			!result.data['isAdmin'].nil? && result.data['isAdmin']
 		end
 
 		private 
 
 		def getCustomerId(email)
 			@client.authorization = @serviceAccount.authorize(email)
-			user = @client.execute(
+			result = @client.execute(
 				:api_method => @api.users.get, 
 				:parameters => {
 					'userKey' => email
 				})
-			customerId = user.data['customerId']
+			raise UsersDomainException if !result.status.eql? 200
+			customerId = result.data['customerId']
 		end
 
 		def extractDomain(email)

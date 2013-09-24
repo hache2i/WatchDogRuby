@@ -1,0 +1,2 @@
+class UsersDomainException < Exception
+end

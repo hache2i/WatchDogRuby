@@ -9,6 +9,7 @@ require_relative './lib/notifier'
 require_relative '../wddomain/lib/watchdog'
 require_relative '../wdconfig/lib/timing_not_specified_exception'
 require_relative '../wdconfig/lib/docsowner_not_specified_exception'
+require_relative '../users/lib/users_domain_exception'
 
 require_relative 'base_app'
 require_relative 'login'
@@ -77,8 +78,8 @@ class Web < BaseApp
       email = @userEmail
       @userNames = _watchdog.getUsers(email)
       erb :users, :layout => :home_layout
-    rescue
-      showError 'not.admin'
+    rescue UsersDomainException => e
+      showError 'users.domain.exception'
     end
   end
 

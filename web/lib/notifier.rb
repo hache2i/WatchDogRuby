@@ -1,6 +1,7 @@
 class Notifier
 
 	Messages = {
+		'users.domain.exception' => 'There was a problem with the Users functionality.',
 		'not.admin' => 'You are not a domain administrator.',
 		'config.saved' => 'Your scheduled execution config has been saved.',
 		'scheduled.execution.config.timing.required' => 'You have to specify the timing.',
