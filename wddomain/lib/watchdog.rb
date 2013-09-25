@@ -7,11 +7,12 @@ require_relative 'scheduler'
 module WDDomain
 	class Watchdog
 
-		def initialize
+		def initialize(aDomains)
 			@usersDomain = Users::UsersDomain.new
 			@filesDomain = Files::FilesDomain.new
 			@configDomain = WDConfig::ConfigDomain.new
 			@scheduler = Scheduler.new(self)
+			@domains = aDomains
 		end
 
 		def load
@@ -53,9 +54,20 @@ module WDDomain
 		def reassingOwnership(admin, docsOwner)
 			userNames = @usersDomain.getUsers(admin)
 			nonOwnerUsers = userNames.reject{|userName| userName.eql? docsOwner}
-			files = @filesDomain.getFiles(nonOwnerUsers)
-			changed = @filesDomain.changePermissions(Files::FilesToChange.unmarshall(files.to_s), docsOwner)
+			domain = extractDomain(admin)
+			changed = 0
+			if @domains.allowExecution(domain, nonOwnerUsers.length)
+				files = @filesDomain.getFiles(nonOwnerUsers)
+				changed = @filesDomain.changePermissions(Files::FilesToChange.unmarshall(files.to_s), docsOwner)
+			end
 			changed
 		end
+
+		private
+
+		def extractDomain(email)
+			email.scan(/(.+)@(.+)/)[0][1]
+		end
+
 	end
 end

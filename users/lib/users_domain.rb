@@ -46,9 +46,5 @@ module Users
 			customerId = result.data['customerId']
 		end
 
-		def extractDomain(email)
-			email.scan(/(.+)@(.+)/)[0][1]
-		end
-
 	end
 end

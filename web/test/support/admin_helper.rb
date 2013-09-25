@@ -1,8 +1,9 @@
 module AdminHelper
-    def activateDomain(domain)
+    def activateDomain(domain, licenses = nil)
 		# basic_auth 'foo', 'bar'
 		visit "/admin/activateDomain"
 		fill_in 'domain', :with => domain
+		fill_in 'licenses', :with => licenses if !licenses.nil?
 		selector('button#add-domain').click
     end
 	def basic_auth(name, password)

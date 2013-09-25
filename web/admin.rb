@@ -17,7 +17,8 @@ class Admin < BaseApp
 
 	post '/activateDomain' do
 		domain = params['domain']
-		Watchdog::Global::Domains.activate domain
+		licenses = params['licenses']
+		Watchdog::Global::Domains.activate domain, licenses
 		redirect '/admin/listDomains'
 	end
 

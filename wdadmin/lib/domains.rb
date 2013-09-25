@@ -13,8 +13,8 @@ module Watchdog
 				domains.active?(domain)
 			end
 
-			def self.activate(domain)
-				domains.activate(domain)
+			def self.activate(domain, licenses = nil)
+				domains.activate(domain, licenses)
 			end
 
 			def self.clear
@@ -27,6 +27,14 @@ module Watchdog
 
 			def self.inactive
 				domains.inactive
+			end
+
+			def self.licenses(domain)
+				domains.licenses domain
+			end
+
+			def self.allowExecution(domain, usersNumber)
+				domains.allowExecution domain, usersNumber
 			end
 
 			private

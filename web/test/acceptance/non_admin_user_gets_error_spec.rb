@@ -1,6 +1,6 @@
 require_relative '../support/spec_helper'
 
-describe 'non admin user gets error', :wip do
+describe 'non admin user gets error' do
 	it 'bla' do
 		visit 'http://localhost:3000'
 		fill_in 'openid_identifier', :with => 'ideasbrillantes.org'

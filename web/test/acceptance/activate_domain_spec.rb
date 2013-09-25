@@ -26,7 +26,10 @@ describe "Activate Domain by WatchDog Admin" do
       selector('table#domains').should_not be_nil
       selector('table#domains').text.should include('ideasbrillantes.org')
     end
-
+    it "when the domain is added with licenses", :wip do
+      activateDomain 'ideasbrillantes.org', 2
+      Watchdog::Global::Domains.licenses('ideasbrillantes.org').should eql 2
+    end
   end
 
 end

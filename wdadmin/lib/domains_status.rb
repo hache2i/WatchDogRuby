@@ -17,8 +17,8 @@ module WDAdmin
 			@active.include?(domain)
 		end
 
-		def activate(domain)
-			updateToActive domain
+		def activate(domain, licenses)
+			updateToActive domain, licenses
 			@active << domain if !@active.include?(domain)
 			@inactive.delete domain if @inactive.include?(domain)
 		end
@@ -42,6 +42,18 @@ module WDAdmin
 			@inactive
 		end
 
+		def licenses(domain)
+			DomainStatus.find_by(domain: domain).licenses
+		end
+
+		def allowExecution(domain, usersNumber)
+			isActive = active?(domain)
+			hasLicenses = licenses(domain) >= usersNumber
+			puts "The domain " + domain + " is not active!!" if !isActive
+			puts "The domain " + domain + " has not enought licenses!!" if !hasLicenses
+			isActive && hasLicenses
+		end
+
 		private 
 
 		def updateToInactive(domain)
@@ -50,9 +62,9 @@ module WDAdmin
 			domainStatus
 		end
 
-		def updateToActive(domain)
+		def updateToActive(domain, licenses)
 			domainStatus = DomainStatus.find_or_create_by(domain: domain)
-			domainStatus.update_attributes({ :active => true })
+			domainStatus.update_attributes({ :active => true, :licenses => licenses })
 			domainStatus
 		end
 

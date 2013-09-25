@@ -22,7 +22,7 @@ class Web < BaseApp
   helpers Sinatra::Activation
   helpers Sinatra::GoogleAuthentication
 
-    _watchdog = WDDomain::Watchdog.new
+    _watchdog = WDDomain::Watchdog.new(Watchdog::Global::Domains)
     _watchdog.load
 
   set :public_folder, './web/public'
