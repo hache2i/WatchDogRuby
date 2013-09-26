@@ -5,7 +5,7 @@ describe "Activate Domain by WatchDog Admin" do
 
   include AdminHelper
 
-  describe "Admin", :wip do
+  describe "Admin" do
     it "has a way in dashboard to go to activate a domain" do
       visit '/admin'
       selector('a#add-domain').should_not be_nil

@@ -2,16 +2,18 @@
     Registered Domains
 </div>
 
+<% if !@domains.empty? %>
 <table id="domains" class="table table-striped domains" >
 	<thead>
-		<tr><th>Active Domains</th></tr>
+		<tr><th>Active Domains</th><th>Licenses</th></tr>
 	</thead>
 	<tbody>
 		<% @domains.each do |domain| %>
 			<tr class="domain-record">
-				<td><span><%= domain %></span></td>
+				<td><span><%= domain.domain %></span></td>
+				<td id="licenses"><span><%= domain.licenses %></span></td>
 				<td>
-					<a onclick="desactivateDomain('<%= domain %>')" id="desactivate">
+					<a onclick="desactivateDomain('<%= domain.domain %>')" id="desactivate">
 						<img src="img/desactivate-domain.png" alt="Desactivate" />
 					</a>
 				</td>
@@ -19,23 +21,27 @@
 		<% end %>
 	</tbody>
 </table>
-<table id="inactive-domains" class="table table-striped domains" >
-	<thead>
-		<tr><th>Inactive Domains</th></tr>
-	</thead>
-	<tbody>
-		<% @inactive.each do |domain| %>
-			<tr class="domain-record">
-				<td><span><%= domain %></span></td>
-				<td>
-					<a onclick="activateDomain('<%= domain %>')" id="activate">
-						<img src="img/activate-domain.png" alt="Activate" />
-					</a>
-				</td>
-			</tr>
-		<% end %>
-	</tbody>
-</table>
+<% end %>
+<% if !@inactive.empty? %>
+	<table id="inactive-domains" class="table table-striped domains" >
+		<thead>
+			<tr><th>Inactive Domains</th><th>Licenses</th></tr>
+		</thead>
+		<tbody>
+			<% @inactive.each do |domain| %>
+				<tr class="domain-record">
+					<td><span><%= domain.domain %></span></td>
+					<td id="licenses"><span><%= domain.licenses %></span></td>
+					<td>
+						<a onclick="activateDomain('<%= domain.domain %>')" id="activate">
+							<img src="img/activate-domain.png" alt="Activate" />
+						</a>
+					</td>
+				</tr>
+			<% end %>
+		</tbody>
+	</table>
+<% end %>
 <div style="display:none;">
 <form method="post" action="/admin/desactivateDomain" id="desactivate-form">
 	<input type="hidden" name="domain" id="domain-to-desactivate"/>

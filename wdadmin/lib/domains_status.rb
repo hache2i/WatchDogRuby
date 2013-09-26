@@ -1,4 +1,5 @@
 require_relative 'domain_status'
+require_relative 'domain_licenses'
 require_relative 'domain_not_specified_exception'
 require_relative 'licenses_not_specified_exception'
 
@@ -33,7 +34,11 @@ module WDAdmin
 		end
 
 		def list
-			@active
+			@active.map{|domain| DomainLicenses.new domain, licenses(domain)}
+		end
+
+		def inactive
+			@inactive.map{|domain| DomainLicenses.new domain, licenses(domain)}
 		end
 
 		def desactivate(domain)
@@ -45,10 +50,6 @@ module WDAdmin
 		def clear
 			@active.clear
 			@inactive.clear
-		end
-
-		def inactive
-			@inactive
 		end
 
 		def licenses(domain)
