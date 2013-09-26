@@ -14,16 +14,16 @@
 
 		<br/>
 
-				<% if !@message.nil? && !@message.empty? %>
-		<div class="row-fluid">
-			<div class="span8 offset2">
-					<div class="alert">
-						<button type="button" class="close" data-dismiss="alert">&times;</button>
-						<strong><%= @message %></strong>
-					</div>
+		<% if !@message.nil? && !@message.empty? %>
+			<div class="row-fluid">
+				<div class="span8 offset2">
+						<div class="alert">
+							<button type="button" class="close" data-dismiss="alert">&times;</button>
+							<strong><%= @message %></strong>
+						</div>
+				</div>
 			</div>
-		</div>
-				<% end %>
+		<% end %>
 		
 		<div class="row-fluid content">
 			<div class="span8 offset2">

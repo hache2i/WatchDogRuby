@@ -6,7 +6,7 @@ describe 'Reactivate Domain by WatchDog Admin', :js do
 	include AdminHelper
 
 	before :each do
-		activateDomain 'ideasbrillantes.org'
+		activateDomain 'ideasbrillantes.org', 3
 		visit '/admin/listDomains'
 		selector('table#domains tr.domain-record td a#desactivate').click
 	end

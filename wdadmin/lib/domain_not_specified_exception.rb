@@ -1,0 +1,2 @@
+class DomainNotSpecifiedException < Exception
+end

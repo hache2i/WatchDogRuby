@@ -1,0 +1,2 @@
+class LicensesNotSpecifiedException < Exception
+end

@@ -1,6 +1,7 @@
 require 'sinatra/base'
 require 'sinatra/contrib'
 require_relative 'base_app'
+require_relative 'lib/notifier'
 require_relative '../wdconfig/lib/config_domain'
 
 $LOAD_PATH.push(File.expand_path(File.join(File.dirname(__FILE__), '../')))
@@ -16,9 +17,26 @@ class Admin < BaseApp
 	end
 
 	post '/activateDomain' do
+		begin
+			domain = params['domain']
+			licenses = params['licenses']
+			Watchdog::Global::Domains.activate domain, licenses
+			redirect '/admin/listDomains'
+		rescue DomainNotSpecifiedException => e 
+			errorOnActivation 'activate.domain.domain.required'
+		rescue LicensesNotSpecifiedException => e 
+			errorOnActivation 'activate.domain.licenses.required'
+		end
+	end
+
+	def errorOnActivation(messageKey)
+		@message = Notifier.message_for messageKey
+		erb :add_domain, :layout => :home_layout
+	end
+
+	post '/reactivateDomain' do
 		domain = params['domain']
-		licenses = params['licenses']
-		Watchdog::Global::Domains.activate domain, licenses
+		Watchdog::Global::Domains.reactivate domain
 		redirect '/admin/listDomains'
 	end
 

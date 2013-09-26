@@ -17,6 +17,10 @@ module Watchdog
 				domains.activate(domain, licenses)
 			end
 
+			def self.reactivate(domain)
+				domains.reactivate(domain)
+			end
+
 			def self.clear
 				domains.clear
 			end

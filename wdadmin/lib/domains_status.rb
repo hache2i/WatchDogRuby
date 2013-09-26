@@ -1,4 +1,6 @@
 require_relative 'domain_status'
+require_relative 'domain_not_specified_exception'
+require_relative 'licenses_not_specified_exception'
 
 module WDAdmin
 	class DomainsStatus
@@ -18,7 +20,14 @@ module WDAdmin
 		end
 
 		def activate(domain, licenses)
-			updateToActive domain, licenses
+			checkParams domain, licenses
+			createActive domain, licenses
+			@active << domain if !@active.include?(domain)
+			@inactive.delete domain if @inactive.include?(domain)
+		end
+
+		def reactivate(domain)
+			updateToActive domain
 			@active << domain if !@active.include?(domain)
 			@inactive.delete domain if @inactive.include?(domain)
 		end
@@ -56,15 +65,30 @@ module WDAdmin
 
 		private 
 
+		def checkParams (domain, licenses)
+			raise DomainNotSpecifiedException if notValid domain
+			raise LicensesNotSpecifiedException if notValid licenses
+		end
+
+		def notValid(field)
+			field.nil? || field.empty?
+		end
+
 		def updateToInactive(domain)
 			domainStatus = DomainStatus.find_or_create_by(domain: domain)
 			domainStatus.update_attributes({ :active => false })
 			domainStatus
 		end
 
-		def updateToActive(domain, licenses)
+		def createActive(domain, licenses)
 			domainStatus = DomainStatus.find_or_create_by(domain: domain)
 			domainStatus.update_attributes({ :active => true, :licenses => licenses })
+			domainStatus
+		end
+
+		def updateToActive(domain)
+			domainStatus = DomainStatus.find_or_create_by(domain: domain)
+			domainStatus.update_attributes({ :active => true })
 			domainStatus
 		end
 

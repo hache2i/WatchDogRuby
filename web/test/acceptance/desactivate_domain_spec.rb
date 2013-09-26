@@ -6,26 +6,9 @@ require_relative '../../../wdconfig/lib/config_domain'
 describe 'Desactivate Domain by WatchDog Admin', :js do
 	include AdminHelper
 
-	# describe 'authorize' do
-	# 	it 'can authorize the test' do
-	# 		basic_auth 'foo', 'bar'
-	# 		# visit '/admin/listDomains'
-	# 		# selector('#domains').should_not be_nil
-	# 	visit "/admin/activateDomain"
-	# 		selector('#domain').should_not be_nil
-	# 	# fill_in 'domain', :with => 'ideasbrillantes.org'
-	# 	# selector('button#add-domain').click
-	# 		# selector('#add-domain').should_not be_nil
-	# 		# selector('#add-domain').click
-	# 		# get '/admin'
-	# 		# last_response.status.should == 200
-	# 	end
-	# end
-
 	describe 'Admin' do
 		before :each do
-			activateDomain 'ideasbrillantes.org'
-			# basic_auth 'foo', 'bar'
+			activateDomain 'ideasbrillantes.org', 3
 		end
 		it 'can desactivate a domain from domains list' do
 			visit '/admin/listDomains'
