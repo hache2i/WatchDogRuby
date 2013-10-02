@@ -291,10 +291,21 @@ input:focus{
 }
 
 .table.domains td{
-	width: 50%;
 	font-size: 25px;
 	vertical-align: middle;
 	text-align: left
+}
+
+.table.domains td#name{
+	width: 50%;
+}
+
+.table.domains td#licenses{
+	width: 25%;
+}
+
+.table.domains td#actions{
+	width: 25%;
 }
 
 table#inactive-domains th{

@@ -10,9 +10,9 @@
 	<tbody>
 		<% @domains.each do |domain| %>
 			<tr class="domain-record">
-				<td><span><%= domain.domain %></span></td>
+				<td id="name"><span><%= domain.domain %></span></td>
 				<td id="licenses"><span><%= domain.licenses %></span></td>
-				<td>
+				<td id="actions">
 					<a onclick="desactivateDomain('<%= domain.domain %>')" id="desactivate">
 						<img src="img/desactivate-domain.png" alt="Desactivate" />
 					</a>
@@ -30,9 +30,9 @@
 		<tbody>
 			<% @inactive.each do |domain| %>
 				<tr class="domain-record">
-					<td><span><%= domain.domain %></span></td>
+					<td id="name"><span><%= domain.domain %></span></td>
 					<td id="licenses"><span><%= domain.licenses %></span></td>
-					<td>
+					<td id="actions">
 						<a onclick="activateDomain('<%= domain.domain %>')" id="activate">
 							<img src="img/activate-domain.png" alt="Activate" />
 						</a>
