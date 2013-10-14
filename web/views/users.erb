@@ -8,7 +8,7 @@
 
 <table class="table table-striped users no_caducity" id="users">
 	<tbody>
-		<% @userNames.each do |user| %>
+		<% @users.each do |user| %>
 			<tr class="user">
 				<td id="userName"><%= user.email %></td>
 				<td><input type="checkbox" class="select_files" id="<%= user.name %>" value="<%= user.email %>"/></td>

@@ -30,7 +30,7 @@
 		<div class="input-append">
 	  		<select name='newOwner' id='newOwner'>
 				<% @users.each do |user| %>
-					<option><%= user %></option>
+					<option><%= user.email %></option>
 				<% end %>
 			</select>
 			<button id="changePermissions" class="btn arrange" >

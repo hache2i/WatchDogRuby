@@ -76,7 +76,7 @@ class Web < BaseApp
   get '/users' do
     begin
       email = @userEmail
-      @userNames = _watchdog.getUsers(email)
+      @users = _watchdog.getUsers(email)
       erb :users, :layout => :home_layout
     rescue UsersDomainException => e
       showError 'users.domain.exception'
@@ -84,8 +84,9 @@ class Web < BaseApp
   end
 
   post '/files' do
-    @users = strToArray(params['sortedIdsStr'])
-    @files = _watchdog.getFiles(@users)
+    usersToProcces = strToArray(params['sortedIdsStr'])
+    @files = _watchdog.getFiles(usersToProcces)
+    @users = _watchdog.getUsers @userEmail
     erb :files, :layout => :home_layout
   end
 
