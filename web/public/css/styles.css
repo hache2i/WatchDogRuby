@@ -1,5 +1,5 @@
 body {
-  background-color: #F5F7E7;
+  background-color: #F8F8F8;
   margin-top: 20px;
   font-family: 'Noto Serif', serif;
   padding-top: 50px;
@@ -35,7 +35,7 @@ img.logo{
 
 div.hero-unit{
 	background-color: #861501;
-	color:#F5F7E7 ;
+	color:#F8F8F8 ;
 	margin-top: 10px;
 	margin-bottom: 10px;
 }
@@ -49,7 +49,7 @@ div.hero-unit p{
 div.hero-unit a:hover,
 div.hero-unit a:visited,
 div.hero-unit a {
-	color:#F5F7E7 ;	
+	color:#F8F8F8 ;	
 }
 
 footer{
@@ -76,14 +76,14 @@ footer li{
 .alert{
 	font-size: 20px;
 	background-color: #EE7A51;
-	color:#F5F7E7 ;
+	color:#F8F8F8 ;
 	text-shadow: none;
 }
 
 .close{
 	opacity: 1;
 	text-shadow: none;
-	color:#F5F7E7 ;	
+	color:#F8F8F8 ;	
 }
 
 fieldset{
@@ -124,7 +124,7 @@ select{
 }
 
 select, input[type="password"], input[type="text"]{
-	background-color: #F5F7E7;
+	background-color: #F8F8F8;
 	width: 600px;
 	height:55px;
 	font-family: 'Noto Serif', serif;
@@ -161,7 +161,7 @@ select#newOwner{
 }
 
 select option{
-	background-color: #F5F7E7;
+	background-color: #F8F8F8;
 	font-family: 'Noto Serif', serif;
 	font-size: 23px;
 	color: #656959;
@@ -177,7 +177,7 @@ input:focus{
 }
 
 .arrange, .arrange:focus ,.arrange:hover{
-	background-color: #F5F7E7;
+	background-color: #F8F8F8;
 	background-image: none;
 	border: none;
 	box-shadow: none;
@@ -211,7 +211,7 @@ input:focus{
 }
 
 #sortable li {
-	background-color: #F5F7E7;
+	background-color: #F8F8F8;
 	font-family: 'Noto Serif', serif;
 	font-size: 10px;
 	color: #656959;
@@ -236,7 +236,7 @@ input:focus{
 }
 
 #users li {
-	background-color: #F5F7E7;
+	background-color: #F8F8F8;
 	font-family: 'Noto Serif', serif;
 	font-size: 10px;
 	color: #656959;
