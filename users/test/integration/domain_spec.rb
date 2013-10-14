@@ -8,7 +8,7 @@ describe 'Users Domain' do
 
 	it 'gets the users' do
 		usersDomain = Users::UsersDomain.new
-		users = usersDomain.getUsers(DomainConfig.admin)
+		users = usersDomain.getUsers(DomainConfig.admin).map(&:email)
 		DomainConfig.users.each do |email|
 			users.include?(email).should be_true
 		end

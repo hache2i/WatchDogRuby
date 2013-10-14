@@ -6,11 +6,16 @@
     Domain Users for: <span class="domain"><%= @domain %></span>
 </p>
 
-<ul id="users">
-	<% @userNames.each do |userName| %>
-		<li class="ui-state-default" id="<%= userName %>"><%= userName %></li>
-	<% end %>
-</ul>
+<table class="table table-striped users no_caducity" id="users">
+	<tbody>
+		<% @userNames.each do |user| %>
+			<tr class="user">
+				<td id="userName"><%= user.email %></td>
+				<td><input type="checkbox" class="select_files" id="<%= user.name %>" value="<%= user.email %>"/></td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>
 
 <div id='hiddenForm'>
 	<form method='POST' action='/domain/files' name='files-form' id='files-form'>
@@ -28,9 +33,13 @@
 
   <script>
   	window.onload = function(){
-  		$("#users").sortable();
   		$("#getFiles").click(function(){
-  					$('#sortedIdsStr').val($('#users').sortable('toArray').toString());
+  					var users = $( "input:checked" );
+  					var for_files = [];
+  					for (var i = users.length - 1; i >= 0; i--) {
+  						for_files.push(users[i].value);
+  					};
+  					$('#sortedIdsStr').val(for_files.join());
   					$('#files-form').submit();
 				      $('#submitImg').css('visibility', 'hidden');
 				      $('#imgBtnDiv').spin(APP.spinOpts);

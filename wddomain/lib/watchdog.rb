@@ -52,7 +52,8 @@ module WDDomain
 		end
 
 		def reassingOwnership(admin, docsOwner)
-			userNames = @usersDomain.getUsers(admin)
+			userNames = @usersDomain.getUsers(admin).map(&:email)
+			puts userNames
 			nonOwnerUsers = userNames.reject{|userName| userName.eql? docsOwner}
 			domain = extractDomain(admin)
 			changed = 0

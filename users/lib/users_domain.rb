@@ -1,6 +1,7 @@
 require 'google/api_client'
 
 require_relative '../../files/lib/service_account'
+require_relative 'user'
 
 module Users
 	class UsersDomain
@@ -19,7 +20,7 @@ module Users
 					'customer' => customerId
 				})
 			raise UsersDomainException if !result.status.eql? 200
-			result.data.users.map{|user| user['primaryEmail']}
+			result.data.users.map{|user| User.new(user['primaryEmail'])}
 		end
 
 		def isAdmin(email)

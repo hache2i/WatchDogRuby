@@ -10,6 +10,30 @@ class DomainConfig
 		]
 	end
 
+	def self.names
+		[
+		   'hache2i',
+		    'juanperez',
+		    'pepeperez',
+		    'watchdog',
+		    'joseperez'
+		]
+	end
+
+	def self.names_subset
+		[
+		   'hache2i',
+		    'juanperez'
+		]
+	end
+
+	def self.users_subset
+		[
+		   'hache2i@watchdog.h2itec.com',
+		    'juanperez@sub1.watchdog.h2itec.com'
+		]
+	end
+
 	def self.name
 		'watchdog.h2itec.com'
 	end

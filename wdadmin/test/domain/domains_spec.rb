@@ -10,30 +10,30 @@ describe 'global domains' do
 		@domains.active?('ideasbrillantes.org').should be_false
 	end
 	it 'domain active if it was added' do
-		@domains.activate('ideasbrillantes.org')
+		@domains.activate('ideasbrillantes.org', "5")
 		@domains.active?('ideasbrillantes.org').should be_true
 	end
 	it 'clears the domains' do
-		@domains.activate('ideasbrillantes.org')
+		@domains.activate('ideasbrillantes.org', "5")
 		@domains.active?('ideasbrillantes.org').should be_true
 		@domains.clear
 		@domains.active?('ideasbrillantes.org').should be_false
 	end
 	it 'desactivates a domain' do
-		@domains.activate('ideasbrillantes.org')
+		@domains.activate('ideasbrillantes.org', "5")
 		@domains.active?('ideasbrillantes.org').should be_true
 		@domains.desactivate('ideasbrillantes.org')
 		@domains.active?('ideasbrillantes.org').should be_false
 	end
 	it 'after desactivation it is in the inactive list' do
-		@domains.activate('ideasbrillantes.org')
+		@domains.activate('ideasbrillantes.org', "5")
 		@domains.desactivate('ideasbrillantes.org')
-		@domains.inactive.include?('ideasbrillantes.org').should be_true
+		@domains.inactive.map(&:domain).include?('ideasbrillantes.org').should be_true
 	end
 	it 'when activation-desactivation-reactivation it is not in the inactive list' do
-		@domains.activate('ideasbrillantes.org')
+		@domains.activate('ideasbrillantes.org', "5")
 		@domains.desactivate('ideasbrillantes.org')
-		@domains.activate('ideasbrillantes.org')
+		@domains.activate('ideasbrillantes.org', "5")
 		@domains.inactive.include?('ideasbrillantes.org').should be_false
 	end
 end

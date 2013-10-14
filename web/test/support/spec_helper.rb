@@ -31,3 +31,9 @@ RSpec.configure do |config|
 
 end
 
+def dummy_login
+  Web.any_instance.stub(:authenticated?).and_return(true)
+  Web.any_instance.stub(:get_domain).and_return('watchdog.h2itec.com')
+  Web.any_instance.stub(:get_user_email).and_return('hache2i@watchdog.h2itec.com')
+end
+

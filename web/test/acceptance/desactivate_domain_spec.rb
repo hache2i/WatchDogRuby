@@ -35,7 +35,7 @@ describe 'Desactivate Domain by WatchDog Admin', :js do
 			configDomain.configScheduledExecution('ideasbrillantes.org', 'moore@ideasbrillantes.org', 'docsowner@ideasbrillantes.org', '1000')
 			visit '/admin/listDomains'
 			selector('table#domains tr.domain-record td a#desactivate').click
-			find('#domains')
+			sleep 5
 			configDomain.getScheduledExecution('ideasbrillantes.org').scheduled?.should be_false
 		end
 	end

@@ -8,6 +8,18 @@ module Sinatra
 	      !session[:openid].nil?
 	    end
 	    
+	    def get_domain
+	    	session[:domain]
+	    end
+
+	    def get_user_email
+	    	session[:user_attributes][:email]
+	    end
+
+	    def get_openid
+	    	session[:openid]
+	    end
+	    
 	    def url_for(path)
 	      url = request.scheme + "://"
 	      url << request.host

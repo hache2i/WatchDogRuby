@@ -30,8 +30,8 @@ class Web < BaseApp
 
   before do
     require_authentication
-    @domain = session[:domain]
-    @userEmail = session[:user_attributes][:email]
+    @domain = get_domain
+    @userEmail = get_user_email
     require_activation
     redirect '/notDomainAdmin' if !_watchdog.isAdmin @userEmail
   end
@@ -85,7 +85,6 @@ class Web < BaseApp
 
   post '/files' do
     @users = strToArray(params['sortedIdsStr'])
-
     @files = _watchdog.getFiles(@users)
     erb :files, :layout => :home_layout
   end

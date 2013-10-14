@@ -2,7 +2,7 @@ require_relative '../../admin'
 require_relative '../support/spec_helper'
 require_relative '../support/admin_helper'
 
-describe "List domains in the system", :wip do
+describe "List domains in the system" do
 
   include AdminHelper
 
