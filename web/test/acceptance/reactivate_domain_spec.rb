@@ -2,7 +2,7 @@ require_relative '../../admin'
 require_relative '../support/spec_helper'
 require_relative '../support/admin_helper'
 
-describe 'Reactivate Domain by WatchDog Admin', :wip, :js do
+describe 'Reactivate Domain by WatchDog Admin' do
 	include AdminHelper
 
 	before do
