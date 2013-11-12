@@ -29,7 +29,7 @@ module Files
 			result = @client.execute(
 				:api_method => @drive.files.list, 
 				:parameters => 
-				{'q' => "'" + @user + "' in owners and title = 'Private' and mimeType = 'application/vnd.google-apps.folder'",
+				{'q' => "'" + @user + "' in owners and (title = 'Private' or title = 'private' or title = 'PRIVATE') and mimeType = 'application/vnd.google-apps.folder'",
 					'fields' => 'items(id,ownerNames,title)'
 					})
 
