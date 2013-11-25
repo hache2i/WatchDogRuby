@@ -36,6 +36,7 @@ module Files
 		def changeUserFilesPermissions(fileToChange, owner)
 			changed = 0
 			batch = Google::APIClient::BatchRequest.new
+			puts 'changing ' + fileToChange[:ids].length + " files for " + fileToChange[:mail]
 			@client.authorization = @serviceAccount.authorize(fileToChange[:mail])
 			fileToChange[:ids].each do |fileId|
 				new_permission = getNewPermissionSchema owner
