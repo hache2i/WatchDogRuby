@@ -65,6 +65,11 @@ class Web < BaseApp
     erb :index, :layout => :home_layout
   end
 
+  post '/scheduleOnce' do
+    _watchdog.scheduleOnce(@domain, @userEmail, params['newOwner'])
+    erb :index, :layout => :home_layout
+  end
+
   get '/unschedule' do
     executionConfig = _watchdog.unschedule(@domain)
     @timing = executionConfig.getTiming

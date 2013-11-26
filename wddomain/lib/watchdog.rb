@@ -29,6 +29,10 @@ module WDDomain
 			@scheduler.schedule(config)
 		end
 
+		def scheduleOnce(domain, admin, docsOwner)
+			@scheduler.scheduleOnce(domain, admin, docsOwner)
+		end
+
 		def unschedule(domain)
 			@configDomain.unschedule(domain)
 			@scheduler.unschedule(domain)
@@ -55,12 +59,12 @@ module WDDomain
 			userNames = @usersDomain.getUsers(admin).map(&:email)
 			nonOwnerUsers = userNames.reject{|userName| userName.eql? docsOwner}
 			domain = extractDomain(admin)
-			changed = 0
 			if @domains.allowExecution(domain, nonOwnerUsers.length)
-				files = @filesDomain.getFiles(nonOwnerUsers)
-				changed = @filesDomain.changePermissions(Files::FilesToChange.unmarshall(files.to_s), docsOwner)
+				nonOwnerUsers.each do |user|
+					files = @filesDomain.getFiles([user])
+					@filesDomain.changePermissions(Files::FilesToChange.unmarshall(files.to_s), docsOwner)
+				end
 			end
-			changed
 		end
 
 		private

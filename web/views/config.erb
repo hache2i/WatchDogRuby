@@ -22,3 +22,21 @@
 		</div>
 	</fieldset>
 </form>
+
+<div class="page-header">
+    Run Once
+</div>
+
+<form method="POST" action="/domain/scheduleOnce">
+	<fieldset>
+		<label>Doc's owner</label>
+		<div class="input-append">
+			<input type="text" id="newOwner" name="newOwner" placeholder="Insert new doc's owner email" value="<%= @newOwner %>"/>
+		</div>
+		<div class="input-append">
+			<button type='submit' id="save" class="btn arrange">
+				<div id="imgBtnDiv" width="15px" height="15px"><img src='img/clock-play.png' alt='Arrange' id="submitImg"/></div>
+			</button>
+		</div>
+	</fieldset>
+</form>

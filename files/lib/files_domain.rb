@@ -24,29 +24,29 @@ module Files
 		end
 
 		def changePermissions(filesToChange, owner)
-			changed = 0
 			filesToChange.each do |fileToChange|
-				changed += changeUserFilesPermissions(fileToChange, owner)
+				changeUserFilesPermissions(fileToChange, owner)
   			end
-  			changed
 		end
 
 		private 
 
 		def changeUserFilesPermissions(fileToChange, owner)
-			changed = 0
+			backoff = {:mail => fileToChange[:mail],
+				:ids => []}
+
 			batch = Google::APIClient::BatchRequest.new
-			puts 'changing ' + fileToChange[:ids].length + " files for " + fileToChange[:mail]
+			puts 'changing ' + fileToChange[:ids].length.to_s + " files for " + fileToChange[:mail]
 			@client.authorization = @serviceAccount.authorize(fileToChange[:mail])
 			fileToChange[:ids].each do |fileId|
 				new_permission = getNewPermissionSchema owner
 				request = buildRequest(new_permission, fileId)
 				batch.add(request) do |result|
-					changed = manageResult(result, changed)
+					backoff[:ids] << fileId if result.status != 200
 				end
 			end
 			@client.execute batch
-			changed
+			changeUserFilesPermissions(backoff, owner) if !backoff[:ids].empty?
 		end
 
 		def getUserFiles(user)
@@ -57,6 +57,7 @@ module Files
 				puts "Error while getting files from user " + user + "!!!"
 				[]
 			rescue MoreThanOnePrivateFolderException => e
+				puts "Found more than one private folder for user " + user + "!!!"
 				[]
 			end
 		end

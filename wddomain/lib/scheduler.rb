@@ -27,6 +27,14 @@ module WDDomain
 			config.schedule
 		end
 
+		def scheduleOnce(domain, admin, docsOwner)
+			job = @scheduler.schedule_in '1s' do
+				puts 'starting job execution for ' + domain
+				@watchdog.reassingOwnership(admin, docsOwner)
+				puts 'job execution for ' + domain + ' finished!!'
+			end
+		end
+
 		def unschedule(domain)
 			return if @jobs.nil? || @jobs.empty?
 			job = @jobs[domain]
