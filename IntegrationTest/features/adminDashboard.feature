@@ -1,3 +1,4 @@
+@ignored
 Feature: admin dashboard
 	As a watchdog admin
 	I want to access the admin dashboard

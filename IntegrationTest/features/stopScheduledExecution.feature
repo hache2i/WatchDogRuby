@@ -1,4 +1,5 @@
 @logged
+@ignored
 Feature: stop scheduled execution
 	As a domain administrator
 	I want to be able to stop scheduled execution

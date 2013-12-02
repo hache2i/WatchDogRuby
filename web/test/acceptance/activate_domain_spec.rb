@@ -42,6 +42,3 @@ describe "Activate Domain by WatchDog Admin" do
 
 end
 
-def selector string
-  find :css, string
-end

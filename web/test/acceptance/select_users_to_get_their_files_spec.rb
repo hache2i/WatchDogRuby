@@ -1,7 +1,7 @@
 require_relative '../support/spec_helper'
 require_relative '../../../IntegrationTest/features/support/domain_config'
 
-describe "select users to get their files", :wip, :js do
+describe "select users to get their files", :js do
 
   before do
     dummy_login

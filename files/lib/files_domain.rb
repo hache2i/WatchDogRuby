@@ -25,7 +25,7 @@ module Files
 
 		def changePermissions(filesToChange, owner)
 			filesToChange.each do |fileToChange|
-				changeUserFilesPermissions(fileToChange, owner)
+				changeUserFilesPermissions(fileToChange, owner) if fileToChange[:mail] != owner
   			end
 		end
 
@@ -60,16 +60,6 @@ module Files
 				puts "Found more than one private folder for user " + user + "!!!"
 				[]
 			end
-		end
-
-		def manageResult(result, changed)
-			if result.status == 200
-				changed += 1
-			end
-			if result.status != 200
-				puts result.status 
-			end
-			changed
 		end
 
 		def buildRequest(newPermission, fileId)

@@ -5,7 +5,9 @@ class FilesHelper
 		@cache = {}
 	end
 
-	def create(email)
+	def create(email, publicFilesNumber = nil)
+		puts "creating drive files test suite for " + email
+		publicFilesNumber ||= 1
 		folders = []
 		files = []
 
@@ -14,7 +16,8 @@ class FilesHelper
 
 		publicFolderId = @driveHelper.insert_folder(email, 'Publica', 'Carpeta Publica')['id']
 		folders << publicFolderId
-		files << @driveHelper.insert_file(email, 'doc in public', '', publicFolderId)['id']
+
+		files.concat(@driveHelper.insert_files(email, 'doc in public', '', publicFilesNumber, publicFolderId))
 
 		files << @driveHelper.insert_file(email, 'doc in root', '')['id']
 
@@ -43,12 +46,17 @@ class FilesHelper
 
 	def removeItems(email, items)
 		items.each do |item|
+			puts 'filesHelper removeItems'
 			@driveHelper.delete_file(email, item)
 		end
 	end
 
 	def removeItem(email, item)
 		@driveHelper.delete_file(email, item)
+	end
+
+	def getCache
+		@cache
 	end
 
 	private

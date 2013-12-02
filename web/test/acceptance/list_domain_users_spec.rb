@@ -5,7 +5,7 @@ describe "list domain users" do
 
   before do
     dummy_login
-    stub_const("Watchdog::Global::Domains", stub(active?: true))
+    stub_const("Watchdog::Global::Domains", double(active?: true))
   end
 
   it 'returns domain users' do

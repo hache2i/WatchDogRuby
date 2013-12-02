@@ -2,13 +2,15 @@ require_relative '../../admin'
 require_relative '../support/spec_helper'
 require_relative '../support/admin_helper'
 
-describe 'Reactivate Domain by WatchDog Admin' do
+describe 'Reactivate Domain by WatchDog Admin', :js do
 	include AdminHelper
 
 	before do
 		activateDomain 'ideasbrillantes.org', 3
 		visit '/admin/listDomains'
 		find('table#domains tr.domain-record td#actions a#desactivate').click
+		sleep 1
+		Watchdog::Global::Domains.active?('ideasbrillantes.org').should be_false
 	end
 
 	it 'can be reactivated' do

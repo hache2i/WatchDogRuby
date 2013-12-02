@@ -1,6 +1,8 @@
 require 'rspec'
+require 'google/api_client'
 
 require_relative '../../lib/user_files_domain'
+require_relative '../../lib/service_account'
 require_relative '../../../IntegrationTest/features/support/drive_helper'
 require_relative '../../../IntegrationTest/features/support/files_helper'
 require_relative '../../../IntegrationTest/features/support/domain_config'
@@ -29,7 +31,7 @@ describe 'User Files Domain' do
 			titles = userFiles.to_a.map{|file| file.title}
 			titles.include?('Publica').should be_true
 			titles.include?('doc in root').should be_true
-			titles.include?('doc in public').should be_true
+			titles.include?('doc in public 1').should be_true
 		end
 		it 'does not get private files and folders' do
 			domain = Files::UserFilesDomain.new(@serviceAccount, @client, @drive, @user)
