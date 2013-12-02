@@ -50,34 +50,5 @@ describe 'User Files Domain' do
 		end
 	end
 
-	describe 'find private folder' do
-		before(:all) do
-			@client = Google::APIClient.new
-			@drive = @client.discovered_api('drive', 'v2')
-			@serviceAccount = ServiceAccount.new
-			@filesHelper = FilesHelper.new DriveHelper.new(@serviceAccount, @drive, @client)
-			@user = DomainConfig.userWithTwoPrivates
-			@privates = []
-			@privates << @filesHelper.createPrivateFolder(@user)
-			@privates << @filesHelper.createPrivateFolder(@user)
-		end
-
-		after(:all) do
-			@filesHelper.removeItems(@user, @privates)
-		end
-
-		it 'raises exception if the user has more than one Private folder' do
-			expect{Files::UserFilesDomain.new(@serviceAccount, @client, @drive, @user)}.to raise_error(MoreThanOnePrivateFolderException)
-		end
-
-		it 'finds it if the user has one at the root level' do
-			user = 'watchdog@watchdog.h2itec.com'
-			id = @filesHelper.createPrivateFolder user
-			domain = Files::UserFilesDomain.new(@serviceAccount, @client, @drive, user)
-			privateFolder = domain.findPrivateFolder
-			privateFolder.title.should == 'Private'
-			@filesHelper.removeItem(user, id)
-		end
-	end
 end
 

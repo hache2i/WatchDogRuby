@@ -1,5 +1,6 @@
 require_relative 'user_files'
 require_relative 'drive_file'
+require_relative 'private_folders'
 require_relative 'more_than_one_private_folder_exception'
 
 module Files
@@ -9,7 +10,8 @@ module Files
 			@drive = aDrive
 			@user = aUser
 			@client.authorization = aServiceAccount.authorize(@user)
-			@privateFolder = findPrivateFolder
+			@privateFolders = PrivateFolders.new(aServiceAccount, @drive, @client, @user)
+			@privateFolder = @privateFolders.findPrivateFolder
 		end
 
 		def getUserFiles
@@ -22,23 +24,6 @@ module Files
 				userFiles.addFiles(nonPrivateItems.map{|item| DriveFile.new(item['id'], item['title'], item['ownerNames'])})
 			end while hasNextPage? result
 			userFiles
-		end
-
-		def findPrivateFolder
-			userFiles = UserFiles.new @user
-			result = @client.execute(
-				:api_method => @drive.files.list, 
-				:parameters => 
-				{'q' => "'" + @user + "' in owners and (title = 'Private' or title = 'private' or title = 'PRIVATE') and mimeType = 'application/vnd.google-apps.folder'",
-					'fields' => 'items(id,ownerNames,title)'
-					})
-
-			raise MoreThanOnePrivateFolderException if result.data.items.length > 1
-			return nil if result.data.items.length == 0
-			
-			item = result.data.items[0]
-			privateFolder = DriveFile.new(item['id'], item['title'], item['ownerNames'])
-			privateFolder
 		end
 
 		def assembleParams(pageToken)
