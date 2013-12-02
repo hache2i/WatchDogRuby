@@ -5,6 +5,7 @@ require_relative 'service_account'
 require_relative 'user_files_domain'
 require_relative 'more_than_one_private_folder_exception'
 require_relative 'user_files_exception'
+require_relative 'user_files_to_change'
 
 module Files
 	class FilesDomain
@@ -25,28 +26,27 @@ module Files
 
 		def changePermissions(filesToChange, owner)
 			filesToChange.each do |fileToChange|
-				changeUserFilesPermissions(fileToChange, owner) if fileToChange[:mail] != owner
+				changeUserFilesPermissions(fileToChange, owner) if fileToChange.getEmail != owner
   			end
 		end
 
 		private 
 
 		def changeUserFilesPermissions(fileToChange, owner)
-			backoff = {:mail => fileToChange[:mail],
-				:ids => []}
+			backoff = UserFilesToChange.new fileToChange.getEmail
 
 			batch = Google::APIClient::BatchRequest.new
-			puts 'changing ' + fileToChange[:ids].length.to_s + " files for " + fileToChange[:mail]
-			@client.authorization = @serviceAccount.authorize(fileToChange[:mail])
-			fileToChange[:ids].each do |fileId|
+			puts 'changing ' + fileToChange.getFiles.length.to_s + " files for " + fileToChange.getEmail
+			@client.authorization = @serviceAccount.authorize(fileToChange.getEmail)
+			fileToChange.getFiles.each do |fileId|
 				new_permission = getNewPermissionSchema owner
 				request = buildRequest(new_permission, fileId)
 				batch.add(request) do |result|
-					backoff[:ids] << fileId if result.status != 200
+					backoff.addFile fileId if result.status != 200
 				end
 			end
 			@client.execute batch
-			changeUserFilesPermissions(backoff, owner) if !backoff[:ids].empty?
+			changeUserFilesPermissions(backoff, owner) if !backoff.getFiles.empty?
 		end
 
 		def getUserFiles(user)

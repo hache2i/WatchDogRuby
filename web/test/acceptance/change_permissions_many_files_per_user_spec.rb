@@ -4,7 +4,7 @@ require_relative '../support/rspec_files_helper'
 describe 'changing files permissions ensuring backoff', :js do
 	before(:all) do
 		@rspec_files_helper = RspecFilesHelper.new
-		@rspec_files_helper.create_files 3
+		@rspec_files_helper.create_files 25
 		puts "test drive files suite created!!!"
 	end
 

@@ -1,3 +1,5 @@
+require_relative 'user_files_to_change'
+
 module Files
 	class FilesToChange
 		def self.unmarshall(str)
@@ -7,7 +9,9 @@ module Files
 				userMailAndIds = item.split('#')
 				user = userMailAndIds[0]
 				ids = userMailAndIds[1].split(',')
-				result << {:mail => user, :ids => ids}
+				userFilesToChange = UserFilesToChange.new user
+				userFilesToChange.addFiles ids
+				result << userFilesToChange
 			end
 			result
 		end

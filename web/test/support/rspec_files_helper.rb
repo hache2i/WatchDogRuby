@@ -11,9 +11,9 @@ class RspecFilesHelper
 	  @filesHelper = FilesHelper.new DriveHelper.new(ServiceAccount.new, drive, client)
 	end
 
-	def create_files
+	def create_files howMany
 	  DomainConfig.users_subset.each do |email|
-	    @filesHelper.create email, 25
+	    @filesHelper.create email, howMany
 	  end
 	end
 
