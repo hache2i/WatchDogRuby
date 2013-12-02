@@ -14,7 +14,8 @@ class FilesHelper
 		privateFolderId = @driveHelper.insert_folder(email, 'Private', 'Carpeta Privada')['id']
 		privateFileId = @driveHelper.insert_file(email, 'doc in private', '', privateFolderId)['id']
 
-		publicFolderId = @driveHelper.insert_folder(email, 'Publica', 'Carpeta Publica')['id']
+		@publicFolder = @driveHelper.insert_folder(email, 'Publica', 'Carpeta Publica')
+		publicFolderId = @publicFolder['id']
 		folders << publicFolderId
 
 		files.concat(@driveHelper.insert_files(email, 'doc in public', '', publicFilesNumber, publicFolderId))
@@ -24,10 +25,14 @@ class FilesHelper
 		@cache[email] = {:folders => folders, :files => files, :privateFolder => privateFolderId, :privateFile => privateFileId}
 	end
 
+	def getPublicFolder
+		@publicFolder
+	end
+
 	def createExtraPrivate(email)
 		privateFolderId = @cache[email][:privateFolder]
 		anotherPrivateFolderId = @driveHelper.insert_folder(email, 'Folder inside Private', 'Carpeta Privada Segundo Nivel', privateFolderId)['id']
-		@driveHelper.insert_file(email, 'doc in folder inside private', '', anotherPrivateFolderId)['id']
+		@driveHelper.insert_file(email, 'doc in folder inside private', '', anotherPrivateFolderId)
 	end
 
 	def clear

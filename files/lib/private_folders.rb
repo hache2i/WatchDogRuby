@@ -11,12 +11,30 @@ module Files
 			@user = aUser
 		end
 
-		def find
+		def isPrivate(file)
+			return false if @privateFoldersIds.empty?
+			isPrivate = false
+			@privateFoldersIds.each do |privateFolderId|
+				isPrivate = isPrivate || privateFolderId == file['id'] || fileInFolder(file, privateFolderId)
+			end
+			isPrivate
+		end
+
+		def load
 			@privateFolder = findPrivateFolder
-			privateFoldersIds = []
-			privateFoldersIds << @privateFolder.id
-			privateFoldersIds.concat findPrivateFoldersIds
-			privateFoldersIds
+			@privateFoldersIds = []
+			@privateFoldersIds << @privateFolder.id if !@privateFolder.nil?
+			@privateFoldersIds.concat findPrivateFoldersIds if !@privateFolder.nil?
+		end
+
+		private
+
+		def fileInFolder(file, folder_id)
+			isIn = false
+			file['parents'].each do |parent|
+				isIn ||= (parent['id'] == folder_id)
+			end
+			isIn
 		end
 
 		def findPrivateFoldersIds
