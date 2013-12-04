@@ -6,6 +6,7 @@ require_relative 'user_files_domain'
 require_relative 'more_than_one_private_folder_exception'
 require_relative 'user_files_exception'
 require_relative 'user_files_to_change'
+require_relative 'change_permissions_batcher'
 
 module Files
 	class FilesDomain
@@ -24,29 +25,35 @@ module Files
 			domainFiles
 		end
 
-		def changePermissions(filesToChange, owner)
-			filesToChange.each do |fileToChange|
-				changeUserFilesPermissions(fileToChange, owner) if fileToChange.getEmail != owner
+		def changePermissions(domainFilesToChange, owner)
+			domainFilesToChange.each do |userFilesToChange|
+				changeUserFilesPermissions(userFilesToChange, owner) if userFilesToChange.getEmail != owner
   			end
 		end
 
 		private 
 
-		def changeUserFilesPermissions(fileToChange, owner)
-			backoff = UserFilesToChange.new fileToChange.getEmail
-
-			batch = Google::APIClient::BatchRequest.new
-			puts 'changing ' + fileToChange.getFiles.length.to_s + " files for " + fileToChange.getEmail
-			@client.authorization = @serviceAccount.authorize(fileToChange.getEmail)
-			fileToChange.getFiles.each do |fileId|
-				new_permission = getNewPermissionSchema owner
-				request = buildRequest(new_permission, fileId)
-				batch.add(request) do |result|
-					backoff.addFile fileId if result.status != 200
+		def changeUserFilesPermissions(userFilesToChange, owner)
+			start = Time.now.to_f
+			batchSize = 30
+			log = 'changing ' + userFilesToChange.getFiles.length.to_s + " files for " + userFilesToChange.getEmail
+			puts log
+			@client.authorization = @serviceAccount.authorize(userFilesToChange.getEmail)
+			batcher = ChangePermissionsBatcher.new userFilesToChange.getFiles
+			while batcher.hasElements? do
+				batch = Google::APIClient::BatchRequest.new
+				filesIds = batcher.next batchSize
+				filesIds.each do |fileId|
+					new_permission = getNewPermissionSchema owner
+					request = buildRequest(new_permission, fileId)
+					batch.add(request) do |result|
+						batcher.addFile fileId if result.status != 200
+					end
 				end
+				@client.execute batch
+				puts log + ' - ' + batcher.to_s
 			end
-			@client.execute batch
-			changeUserFilesPermissions(backoff, owner) if !backoff.getFiles.empty?
+			puts (Time.now.to_f - start).to_s + ' ms'
 		end
 
 		def getUserFiles(user)
