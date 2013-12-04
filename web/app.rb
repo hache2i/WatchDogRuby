@@ -66,6 +66,7 @@ class Web < BaseApp
   end
 
   post '/scheduleOnce' do
+    puts "running once for " + @domain
     _watchdog.scheduleOnce(@domain, @userEmail, params['newOwner'])
     erb :index, :layout => :home_layout
   end
