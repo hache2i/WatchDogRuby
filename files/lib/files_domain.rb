@@ -35,7 +35,7 @@ module Files
 
 		def changeUserFilesPermissions(userFilesToChange, owner)
 			start = Time.now.to_f
-			batchSize = 30
+			batchSize = 50
 			log = 'changing ' + userFilesToChange.getFiles.length.to_s + " files for " + userFilesToChange.getEmail
 			puts log
 			@client.authorization = @serviceAccount.authorize(userFilesToChange.getEmail)
