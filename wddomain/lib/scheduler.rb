@@ -18,7 +18,7 @@ module WDDomain
 		def schedule(config)
 			unschedule(config.domain)
 			schedTime = convertToSecs(config.getTiming).to_s + 's'
-			job = @scheduler.schedule_every schedTime do
+			job = @scheduler.schedule_every schedTime, :mutex => config.domain do
 				puts 'starting job execution for ' + config.domain
 				@watchdog.reassingOwnership(config.getAdmin, config.getDocsOwner)
 				puts 'job execution for ' + config.domain + ' finished!!'

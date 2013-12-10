@@ -11,7 +11,13 @@ class ServiceAccount
 	end
 
 	def authorize(userEmail = nil)
-		return @service_account.authorize(userEmail) if !userEmail.nil?
-		return @service_account.authorize if userEmail.nil?
+		begin
+			return @service_account.authorize(userEmail) if !userEmail.nil?
+			return @service_account.authorize if userEmail.nil?
+		rescue
+			puts 'exception authorizing ' + userEmail + '... retrying' if !userEmail.nil?
+			return @service_account.authorize(userEmail) if !userEmail.nil?
+			return @service_account.authorize if userEmail.nil?
+		end
 	end
 end
