@@ -58,29 +58,6 @@ module Files
 			puts (Time.now.to_f - start).to_s + ' ms'
 		end
 
-		# def changeUserFilesPermissions(userFilesToChange, owner)
-		# 	start = Time.now.to_f
-		# 	batchSize = 10
-		# 	log = 'changing ' + userFilesToChange.getFiles.length.to_s + " files for " + userFilesToChange.getEmail
-		# 	puts log
-		# 	@client.authorization = @serviceAccount.authorize(userFilesToChange.getEmail)
-		# 	batcher = ChangePermissionsBatcher.new userFilesToChange.getFiles
-		# 	while batcher.shouldNotExit do
-		# 		batch = Google::APIClient::BatchRequest.new
-		# 		filesIds = batcher.next batchSize
-		# 		filesIds.each do |fileId|
-		# 			new_permission = getNewPermissionSchema owner
-		# 			request = buildRequest(new_permission, fileId)
-		# 			batch.add(request) do |result|
-		# 				batcher.addFile fileId, result.status if result.status != 200
-		# 			end
-		# 		end
-		# 		@client.execute batch
-		# 		puts log + ' - ' + batcher.to_s
-		# 	end
-		# 	puts (Time.now.to_f - start).to_s + ' ms'
-		# end
-
 		def getUserFiles(user)
 			begin
 				userFilesDomain = UserFilesDomain.new(@serviceAccount, @client, @drive, user)

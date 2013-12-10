@@ -16,13 +16,13 @@ module Files
 
 		def getUserFiles
 			userFiles = UserFiles.new @user
-			begin
+			# begin
 				result = @client.execute(:api_method => @drive.files.list, :parameters => assembleParams(getPageToken(result)))
 				raise UserFilesException if !result.status.eql? 200
 				items = result.data.items
 				nonPrivateItems = items.find_all{|item| !@privateFolders.isPrivate(item)}
 				userFiles.addFiles(nonPrivateItems.map{|item| DriveFile.new(item['id'], item['title'], item['ownerNames'])})
-			end while hasNextPage? result
+			# end while hasNextPage? result
 			userFiles
 		end
 
