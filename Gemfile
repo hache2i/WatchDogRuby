@@ -12,6 +12,11 @@ gem "oauth"
 gem "rufus-scheduler"
 gem 'mongoid', "~> 3.1.4"
 
+group :production do
+	gem 'newrelic_rpm'
+end
+
+
 group :test do
 	gem "selenium-webdriver"
   gem "rack-test"
