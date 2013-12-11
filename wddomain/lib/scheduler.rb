@@ -1,4 +1,5 @@
 require 'rufus-scheduler'
+require_relative 'job_view'
 
 module WDDomain
 	class Scheduler
@@ -7,6 +8,10 @@ module WDDomain
 			@scheduler = Rufus::Scheduler.new
 			@jobs = {}
 			@watchdog = aWatchdog
+		end
+
+		def getJobs
+			@jobs.keys.map{|jobDomain| JobView.new(jobDomain, @jobs[jobDomain])}
 		end
 
 		def scheduleAll(configs)

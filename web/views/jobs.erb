@@ -1,0 +1,19 @@
+<div class="page-header">
+    Jobs
+</div>
+
+<table class="table table-striped" id="files">
+	<thead>
+		<tr><th>Domain</th><th>Frequency</th><th>Next Run</th></tr>
+	</thead>
+	<tbody>
+		<% @jobs.each do |job| %>
+			<tr class="file-record">
+				<td><%= job.domain %></td>
+				<td class="owner"><span><%= job.frequency %></span></td>
+				<td class="owner"><span><%= job.next_run %></span></td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>
+

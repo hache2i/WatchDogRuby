@@ -20,6 +20,10 @@ module WDDomain
 			@scheduler.scheduleAll configs
 		end
 
+		def getJobs
+			@scheduler.getJobs
+		end
+
 		def getScheduledExecutionConfig(domain)
 			@configDomain.getScheduledExecution(domain)
 		end

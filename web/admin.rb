@@ -34,6 +34,11 @@ class Admin < BaseApp
 		erb :add_domain, :layout => :home_layout
 	end
 
+	get '/jobs' do
+		@jobs = Watchdog::Global::Watchdog.getJobs
+		erb :jobs, :layout => :home_layout
+	end
+
 	post '/reactivateDomain' do
 		domain = params['domain']
 		Watchdog::Global::Domains.reactivate domain
