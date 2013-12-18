@@ -1,6 +1,7 @@
 require_relative 'user_files'
 require_relative 'drive_file'
 require_relative 'more_than_one_private_folder_exception'
+require_relative 'private_folder_hierarchy_exception'
 
 module Files
 	class PrivateFolders
@@ -24,7 +25,7 @@ module Files
 			@privateFolder = findPrivateFolder
 			@privateFoldersIds = []
 			@privateFoldersIds << @privateFolder.id if !@privateFolder.nil?
-			@privateFoldersIds.concat findPrivateFoldersIds if !@privateFolder.nil?
+			findPrivateFoldersIds(@privateFolder.id) if !@privateFolder.nil?
 		end
 
 		private
@@ -37,15 +38,20 @@ module Files
 			isIn
 		end
 
-		def findPrivateFoldersIds
+		def findPrivateFoldersIds parentId
 			result = @client.execute(
 				:api_method => @drive.files.list, 
 				:parameters => 
-				{'q' => "'" + @privateFolder.id + "' in parents and mimeType = 'application/vnd.google-apps.folder'",
+				{'q' => "'" + parentId + "' in parents and mimeType = 'application/vnd.google-apps.folder'",
 					'fields' => 'items(id,ownerNames,title)'
 					})
-			return [] if !result.status.eql? 200
-			result.data.items.map{|item| item['id']}
+			raise PrivateFolderHierarchyException if !result.status.eql? 200
+			ids = result.data.items.map{|item| item['id']}
+			ids.each do |id|
+				findPrivateFoldersIds id
+			end
+			@privateFoldersIds.concat ids
+			return
 		end
 
 		def findPrivateFolder

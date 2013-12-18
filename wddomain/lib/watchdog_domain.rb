@@ -6,6 +6,14 @@ module Watchdog
 		module Watchdog
 			extend self
 
+			def init
+				watchdog
+			end
+
+			def getLog
+				watchdog.getLog
+			end
+
 			def getJobs
 				watchdog.getJobs
 			end

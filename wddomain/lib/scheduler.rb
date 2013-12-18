@@ -4,10 +4,11 @@ require_relative 'job_view'
 module WDDomain
 	class Scheduler
 
-		def initialize(aWatchdog)
+		def initialize(aWatchdog, aExecutionLog)
 			@scheduler = Rufus::Scheduler.new
 			@jobs = {}
 			@watchdog = aWatchdog
+			@executionLog = aExecutionLog
 		end
 
 		def getJobs
@@ -24,9 +25,9 @@ module WDDomain
 			unschedule(config.domain)
 			schedTime = convertToSecs(config.getTiming).to_s + 's'
 			job = @scheduler.schedule_every schedTime, :mutex => config.domain do
-				puts 'starting job execution for ' + config.domain
+				@executionLog.add('starting job execution', config.domain)
 				@watchdog.reassingOwnership(config.getAdmin, config.getDocsOwner)
-				puts 'job execution for ' + config.domain + ' finished!!'
+				@executionLog.add('job execution finished!!', config.domain)
 			end
 			@jobs.merge!({config.domain => job})
 			config.schedule
@@ -34,16 +35,20 @@ module WDDomain
 
 		def scheduleOnce(domain, admin, docsOwner)
 			job = @scheduler.schedule_in '1s' do
-				puts 'starting job execution for ' + domain
+				@executionLog.add('starting job execution', domain)
 				@watchdog.reassingOwnership(admin, docsOwner)
-				puts 'job execution for ' + domain + ' finished!!'
+				@executionLog.add('job execution finished!!', domain)
 			end
 		end
 
 		def unschedule(domain)
 			return if @jobs.nil? || @jobs.empty?
 			job = @jobs[domain]
-			job.unschedule if !job.nil?
+			if !job.nil?
+				job.unschedule
+				@jobs.delete domain
+				@executionLog.add('unscheduled job execution', domain)
+			end
 		end
 
 		private

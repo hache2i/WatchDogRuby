@@ -3,21 +3,27 @@ require_relative '../../files/lib/files_to_change'
 require_relative '../../users/lib/users_domain'
 require_relative '../../wdconfig/lib/config_domain'
 require_relative 'scheduler'
+require_relative 'execution_log'
 
 module WDDomain
 	class Watchdog
 
 		def initialize(aDomains)
+			@executionLog = ExecutionLog.new
 			@usersDomain = Users::UsersDomain.new
-			@filesDomain = Files::FilesDomain.new
+			@filesDomain = Files::FilesDomain.new @executionLog
 			@configDomain = WDConfig::ConfigDomain.new
-			@scheduler = Scheduler.new(self)
+			@scheduler = Scheduler.new(self, @executionLog)
 			@domains = aDomains
 		end
 
 		def load
 			configs = @configDomain.all
 			@scheduler.scheduleAll configs
+		end
+
+		def getLog
+			@executionLog
 		end
 
 		def getJobs
