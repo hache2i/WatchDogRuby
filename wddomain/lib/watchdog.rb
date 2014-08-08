@@ -61,8 +61,24 @@ module WDDomain
 			@filesDomain.getFiles(users)
 		end
 
+		def findFilesToRetrieveOwnership(users, currentOwner)
+			@filesDomain.findFilesToRetrieveOwnership(users, currentOwner)
+		end
+
+		def fixRoot(users)
+			@filesDomain.fixRoot(users)
+		end
+
+		def unshare(users, withWho)
+			@filesDomain.unshare(users, withWho)
+		end
+
 		def changePermissions(files, newOwner)
-		    @filesDomain.changePermissions(files, newOwner)
+	    @filesDomain.changePermissions(files, newOwner)
+		end
+
+		def giveOwnershipBack(files, currentOwner)
+	    @filesDomain.giveOwnershipBack(files, currentOwner)
 		end
 
 		def reassingOwnership(admin, docsOwner)

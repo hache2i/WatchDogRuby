@@ -81,6 +81,8 @@ class Web < BaseApp
 
   get '/users' do
     begin
+      currentOwner = 'admincloud@cfarco.com' if @domain == 'cfarco.com'
+      currentOwner = 'documentation@watchdog.h2itec.com' if @domain == 'watchdog.h2itec.com'
       email = @userEmail
       @users = Watchdog::Global::Watchdog.getUsers(email)
       erb :users, :layout => :home_layout
@@ -96,16 +98,54 @@ class Web < BaseApp
     erb :files, :layout => :home_layout
   end
 
+  post '/old-own' do
+    currentOwner = 'admincloud@cfarco.com' if @domain == 'cfarco.com'
+    currentOwner = 'documentation@watchdog.h2itec.com' if @domain == 'watchdog.h2itec.com'
+    usersToProcces = strToArray(params['sortedIdsStr'])
+    @files = Watchdog::Global::Watchdog.findFilesToRetrieveOwnership(usersToProcces, currentOwner)
+    @users = Watchdog::Global::Watchdog.getUsers @userEmail
+    erb :myOldOwn, :layout => :home_layout
+  end
+
   post '/changePermissions' do
+    p 'Give Ownership to central account'
     filesIds = params['filesIdsStr']
 
     @changed = Watchdog::Global::Watchdog.changePermissions(Files::FilesToChange.unmarshall(filesIds), params['newOwnerHidden'])
     erb :changed, :layout => :home_layout
   end
 
+  post '/giveOwnershipBack' do
+    p 'Give Ownership Back'
+    currentOwner = 'admincloud@cfarco.com' if @domain == 'cfarco.com'
+    currentOwner = 'documentation@watchdog.h2itec.com' if @domain == 'watchdog.h2itec.com'
+    p currentOwner
+    filesIds = params['filesIdsStr']
+
+    @changed = Watchdog::Global::Watchdog.giveOwnershipBack(Files::FilesToChange.unmarshall(filesIds), currentOwner)
+    erb :changed, :layout => :home_layout
+  end
+
+  post '/fixRoot' do
+    usersToProcces = strToArray(params['sortedIdsStrForFixRoot'])
+    Watchdog::Global::Watchdog.fixRoot(usersToProcces)
+    @files = []
+    erb :files, :layout => :home_layout
+  end
+
+  post '/unshare' do
+    p 'Unshare'
+    currentOwner = 'admincloud@cfarco.com' if @domain == 'cfarco.com'
+    currentOwner = 'documentation@watchdog.h2itec.com' if @domain == 'watchdog.h2itec.com'
+    usersToProcces = strToArray(params['sortedIdsStrForUnshare'])
+    Watchdog::Global::Watchdog.unshare(usersToProcces, currentOwner)
+    @files = []
+    erb :files, :layout => :home_layout
+  end
+
   def showError(messageKey)
-      @message = Notifier.message_for messageKey
-      erb :index, :layout => :home_layout
+    @message = Notifier.message_for messageKey
+    erb :index, :layout => :home_layout
   end
 
   def strToArray(usersStr)

@@ -254,7 +254,7 @@ input:focus{
 	margin-left: -1.3em; 
 }
 
-#hiddenForm{
+.hiddenForm{
 	display:none;
 }
 

@@ -23,15 +23,76 @@ module Files
 		def getFiles(users)
 			domainFiles = DomainFiles.new
 			users.each do |user|
-				domainFiles.add getUserFiles(user)
+				userFiles = getUserFiles(user)
+				domainFiles.add userFiles
+				p user + " - " + userFiles.length.to_s
 			end
 			domainFiles
+		end
+
+		def findFilesToRetrieveOwnership(users, currentOwner)
+			domainFiles = DomainFiles.new
+			users.each do |user|
+				userFilesDomain = UserFilesDomain.new(@serviceAccount, @client, @drive, user)
+				userFiles = userFilesDomain.getMyOldOwn currentOwner
+				domainFiles.add userFiles
+				p user + " - " + userFiles.length.to_s
+			end
+			domainFiles
+		end
+
+		def fixRoot users
+			users.each do |user|
+				userFilesDomain = UserFilesDomain.new(@serviceAccount, @client, @drive, user)
+				userFilesDomain.fixRoot
+			end
+		end
+
+		def unshare users, withWho
+			users.each do |user|
+				p "unsharing files for " + user
+				userFilesDomain = UserFilesDomain.new(@serviceAccount, @client, @drive, user)
+				userFilesDomain.unshare withWho
+			end
 		end
 
 		def changePermissions(domainFilesToChange, owner)
 			domainFilesToChange.each do |userFilesToChange|
 				changeUserFilesPermissions(userFilesToChange, owner) if userFilesToChange.getEmail != owner
-  			end
+			end
+		end
+
+		def giveOwnershipBack(domainFilesToChange, currentOwner)
+			domainFilesToChange.each do |userFilesToChange|
+				start = Time.now.to_f
+
+				log = 'giving back ' + userFilesToChange.getFiles.length.to_s + " files for " + userFilesToChange.getEmail + " from " + currentOwner
+				puts log
+				@executionLog.add('changing ' + userFilesToChange.getFiles.length.to_s + " files", extractDomain(userFilesToChange.getEmail), userFilesToChange.getEmail)
+				p currentOwner
+				@client.authorization = @serviceAccount.authorize(currentOwner)
+				counter = userFilesToChange.getFiles.length
+				userFilesToChange.getFiles.each do |fileId|
+					new_permission = getNewPermissionSchema userFilesToChange.getEmail
+					request = buildRequest(new_permission, fileId)
+					result = @client.execute request
+					maxRetries = 5
+					max = 1
+					backoffs = ExponentialBackoff.exp_backoff maxRetries
+					while result.status != 200 && max < maxRetries do
+						p result.status
+						time = backoffs[max - 1]
+						puts 'error processing file ' + fileId + '... retrying in ' + time.to_s
+						sleep time
+						result = @client.execute request
+						max += 1
+					end
+					p counter.to_s + " - final result " + result.status.to_s
+					counter -= 1
+				end
+
+				puts (Time.now.to_f - start).to_s + ' ms'
+			end
 		end
 
 		private 
@@ -42,6 +103,9 @@ module Files
 			log = 'changing ' + userFilesToChange.getFiles.length.to_s + " files for " + userFilesToChange.getEmail
 			puts log
 			@executionLog.add('changing ' + userFilesToChange.getFiles.length.to_s + " files", extractDomain(userFilesToChange.getEmail), userFilesToChange.getEmail)
+			p owner
+			# @client.authorization = @serviceAccount.authorize("documentation@watchdog.h2itec.com")
+			counter = userFilesToChange.getFiles.length
 			userFilesToChange.getFiles.each do |fileId|
 				new_permission = getNewPermissionSchema owner
 				request = buildRequest(new_permission, fileId)
@@ -50,12 +114,15 @@ module Files
 				max = 1
 				backoffs = ExponentialBackoff.exp_backoff maxRetries
 				while result.status != 200 && max < maxRetries do
+					p result.status
 					time = backoffs[max - 1]
 					puts 'error processing file ' + fileId + '... retrying in ' + time.to_s
 					sleep time
 					result = @client.execute request
 					max += 1
 				end
+				p counter.to_s + " - final result " + result.status.to_s
+				counter -= 1
 			end
 
 			puts (Time.now.to_f - start).to_s + ' ms'

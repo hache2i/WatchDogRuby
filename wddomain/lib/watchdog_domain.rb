@@ -46,8 +46,24 @@ module Watchdog
 				watchdog.getFiles users
 			end
 
+			def findFilesToRetrieveOwnership(users, currentOwner)
+				watchdog.findFilesToRetrieveOwnership users, currentOwner
+			end
+
+			def fixRoot(users)
+				watchdog.fixRoot users
+			end
+
+			def unshare(users, withWho)
+				watchdog.unshare users, withWho
+			end
+
 			def changePermissions(files, newOwner)
 				watchdog.changePermissions files, newOwner
+			end
+
+			def giveOwnershipBack(files, currentOwner)
+				watchdog.giveOwnershipBack files, currentOwner
 			end
 
 			def reassingOwnership(admin, docsOwner)

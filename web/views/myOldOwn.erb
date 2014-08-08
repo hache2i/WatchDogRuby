@@ -1,0 +1,38 @@
+<div class="page-header">
+    Domain Drive Files
+</div>
+
+<table class="table table-striped" id="files">
+  <thead>
+    <tr><th>Title</th><th>Owner</th></tr>
+  </thead>
+  <tbody>
+    <% @files.to_a.each do |file| %>
+      <tr class="file-record">
+        <td><%= file.title %></td><td class="owner"><span><%= file.owners %></span></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<div id='hiddenForm' class='hiddenForm'>
+  <form method='POST' action='/domain/giveOwnershipBack' name='changePermissions-form' id='changePermissions-form'>
+    <fieldset>
+      <input name='filesIdsStr' id='filesIdsStr' value="<%= @files.to_s %>"/>
+    <input name='newOwnerHidden' id='newOwnerHidden' />
+    </fieldset>
+  </form>
+</div>
+
+<button id="changePermissions" class="btn arrange" >
+  Give them back
+</button>
+
+  <script>
+    window.onload = function(){
+      $("#changePermissions").click(function(){
+            $('#changePermissions-form').submit();
+          });
+    };
+  </script>
+

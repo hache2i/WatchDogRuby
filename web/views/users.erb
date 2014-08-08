@@ -20,18 +20,52 @@
 	</tbody>
 </table>
 
-<div id='hiddenForm'>
-	<form method='POST' action='/domain/files' name='files-form' id='files-form'>
+<div id='hiddenForm' class="hiddenForm">
+  <form method='POST' action='/domain/files' name='files-form' id='files-form'>
+    <fieldset>
+      <input name='sortedIdsStr' id='sortedIdsStr' />
+    </fieldset>
+  </form>
+</div>
+
+<button id="getFiles" class="btn arrange">
+  Get Files
+</button>
+
+<div id='myOldOwnForm' class="hiddenForm">
+  <form method='POST' action='/domain/old-own' name='my-old-own-form' id='my-old-own-form'>
+    <fieldset>
+      <input name='sortedIdsStr' id='sortedIdsStrForMyOldOwn' />
+    </fieldset>
+  </form>
+</div>
+
+<button id="myOldOwnBtn" class="btn arrange">
+  Get My Old Own Files
+</button>
+
+<div id='fixRootForm' class="hiddenForm">
+  <form method='POST' action='/domain/fixRoot' name='fix-root-form' id='fix-root-form'>
+    <fieldset>
+      <input id='sortedIdsStrForFixRoot' name='sortedIdsStrForFixRoot' />
+    </fieldset>
+  </form>
+</div>
+
+<button id="fixRootBtn" class="btn arrange">
+  Fix Root
+</button>
+
+<div id='unshareForm' class="hiddenForm">
+	<form method='POST' action='/domain/unshare' name='unshare-form' id='unshare-form'>
 	  <fieldset>
-	    <input name='sortedIdsStr' id='sortedIdsStr' />
+	    <input id='sortedIdsStrForUnshare' name='sortedIdsStrForUnshare' />
 	  </fieldset>
 	</form>
 </div>
 
-<button id="getFiles" class="btn arrange">
-	<div id="imgBtnDiv" width="15px" height="15px">
-		<img src='img/files.png' alt='Generate slideshow' id="submitImg"/>
-	</div>
+<button id="unshareBtn" class="btn arrange">
+	Unshare
 </button>
 
   <script>
@@ -42,16 +76,41 @@
 				$(checkboxes[i]).attr('checked', $(this).attr('checked')?$(this).attr('checked'):false);
 			};
   		});
-  		$("#getFiles").click(function(){
+      $("#getFiles").click(function(){
+            var users = $('tbody').find($( "input:checked" ));
+            var for_files = [];
+            for (var i = users.length - 1; i >= 0; i--) {
+              for_files.push(users[i].value);
+            };
+            $('#sortedIdsStr').val(for_files.join());
+            $('#files-form').submit();
+          });
+      $("#myOldOwnBtn").click(function(){
+            var users = $('tbody').find($( "input:checked" ));
+            var for_files = [];
+            for (var i = users.length - 1; i >= 0; i--) {
+              for_files.push(users[i].value);
+            };
+            $('#sortedIdsStrForMyOldOwn').val(for_files.join());
+            $('#my-old-own-form').submit();
+          });
+      $("#fixRootBtn").click(function(){
+            var users = $('tbody').find($( "input:checked" ));
+            var for_files = [];
+            for (var i = users.length - 1; i >= 0; i--) {
+              for_files.push(users[i].value);
+            };
+            $('#sortedIdsStrForFixRoot').val(for_files.join());
+            $('#fix-root-form').submit();
+          });
+  		$("#unshareBtn").click(function(){
   					var users = $('tbody').find($( "input:checked" ));
   					var for_files = [];
   					for (var i = users.length - 1; i >= 0; i--) {
   						for_files.push(users[i].value);
   					};
-  					$('#sortedIdsStr').val(for_files.join());
-  					$('#files-form').submit();
-				      $('#submitImg').css('visibility', 'hidden');
-				      $('#imgBtnDiv').spin(APP.spinOpts);
+  					$('#sortedIdsStrForUnshare').val(for_files.join());
+  					$('#unshare-form').submit();
   				});
   	};
   </script>
