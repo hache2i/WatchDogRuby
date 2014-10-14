@@ -50,6 +50,14 @@ module Watchdog
 				watchdog.findFilesToRetrieveOwnership users, currentOwner
 			end
 
+			def getRootFoldersSharedBy(user, docaccount)
+				watchdog.getRootFoldersSharedBy user, docaccount
+			end
+
+			def getChildren user, docaccount
+				watchdog.getChildren user, docaccount
+			end
+
 			def fixRoot(users)
 				watchdog.fixRoot users
 			end

@@ -22,9 +22,6 @@ class Web < BaseApp
   helpers Sinatra::Activation
   helpers Sinatra::GoogleAuthentication
 
-    # _watchdog = WDDomain::Watchdog.new(Watchdog::Global::Domains)
-    # _watchdog.load
-
   set :public_folder, './web/public'
   set :static, true
 
@@ -105,6 +102,23 @@ class Web < BaseApp
     @files = Watchdog::Global::Watchdog.findFilesToRetrieveOwnership(usersToProcces, currentOwner)
     @users = Watchdog::Global::Watchdog.getUsers @userEmail
     erb :myOldOwn, :layout => :home_layout
+  end
+
+  post '/root-folders' do
+    docaccount = 'admincloud@cfarco.com' if @domain == 'cfarco.com'
+    docaccount = 'documentation@watchdog.h2itec.com' if @domain == 'watchdog.h2itec.com'
+    usersToProcces = strToArray(params['sortedIdsStr'])
+    Watchdog::Global::Watchdog.getRootFoldersSharedBy(usersToProcces[0], docaccount)
+    @files = []
+    erb :myOldOwn, :layout => :home_layout
+  end
+
+  post '/child-folders' do
+    docaccount = 'admincloud@cfarco.com' if @domain == 'cfarco.com'
+    docaccount = 'documentation@watchdog.h2itec.com' if @domain == 'watchdog.h2itec.com'
+    usersToProcces = strToArray(params['sortedIdsStr'])
+    @files = Watchdog::Global::Watchdog.getChildren usersToProcces[0], docaccount
+    erb :child_files, :layout => :home_layout
   end
 
   post '/changePermissions' do

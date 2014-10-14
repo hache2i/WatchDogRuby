@@ -1,5 +1,8 @@
 require_relative '../../files/lib/files_domain'
 require_relative '../../files/lib/files_to_change'
+require_relative '../../files/lib/root_folders'
+require_relative '../../files/lib/children_folders'
+require_relative '../../files/lib/drive_connection'
 require_relative '../../users/lib/users_domain'
 require_relative '../../wdconfig/lib/config_domain'
 require_relative 'scheduler'
@@ -59,6 +62,22 @@ module WDDomain
 
 		def getFiles(users)
 			@filesDomain.getFiles(users)
+		end
+
+		def getRootFoldersSharedBy(user, docaccount)
+			rootFolders = Files::RootFolders.new Files::DriveConnection.new, user
+			folders = rootFolders.get
+			p folders
+			[]
+		end
+
+		def getChildren user, docaccount
+			rootFolders = Files::RootFolders.new Files::DriveConnection.new, docaccount
+			folders = rootFolders.get
+			children = Files::Children.new Files::DriveConnection.new, user, folders
+			children = children.get
+			p children
+			children
 		end
 
 		def findFilesToRetrieveOwnership(users, currentOwner)

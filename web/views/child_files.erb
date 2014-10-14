@@ -1,0 +1,17 @@
+<div class="page-header">
+    Domain Drive Files
+</div>
+
+<table class="table table-striped" id="files">
+  <thead>
+    <tr><th>Title</th><th>Owner</th><th>Id</th><th>Parent</th></tr>
+  </thead>
+  <tbody>
+    <% @files.each do |file| %>
+      <tr class="file-record">
+        <td><%= file[:title] %></td><td><%= file[:owner] %></td><td><%= file[:id] %></td><td><%= file[:parent] %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
