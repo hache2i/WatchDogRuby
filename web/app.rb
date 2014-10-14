@@ -2,6 +2,7 @@ require 'sinatra/base'
 require 'sinatra/contrib'
 require 'mongoid'
 require 'logger'
+require 'json'
 
 $LOAD_PATH.push(File.expand_path(File.join(File.dirname(__FILE__), '../')))
 
@@ -78,10 +79,7 @@ class Web < BaseApp
 
   get '/users' do
     begin
-      currentOwner = 'admincloud@cfarco.com' if @domain == 'cfarco.com'
-      currentOwner = 'documentation@watchdog.h2itec.com' if @domain == 'watchdog.h2itec.com'
-      email = @userEmail
-      @users = Watchdog::Global::Watchdog.getUsers(email)
+      @users = Watchdog::Global::Watchdog.getUsers @userEmail
       erb :users, :layout => :home_layout
     rescue UsersDomainException => e
       showError 'users.domain.exception'
@@ -104,21 +102,18 @@ class Web < BaseApp
     erb :myOldOwn, :layout => :home_layout
   end
 
-  post '/root-folders' do
-    docaccount = 'admincloud@cfarco.com' if @domain == 'cfarco.com'
-    docaccount = 'documentation@watchdog.h2itec.com' if @domain == 'watchdog.h2itec.com'
-    usersToProcces = strToArray(params['sortedIdsStr'])
-    Watchdog::Global::Watchdog.getRootFoldersSharedBy(usersToProcces[0], docaccount)
-    @files = []
-    erb :myOldOwn, :layout => :home_layout
-  end
-
   post '/child-folders' do
     docaccount = 'admincloud@cfarco.com' if @domain == 'cfarco.com'
     docaccount = 'documentation@watchdog.h2itec.com' if @domain == 'watchdog.h2itec.com'
     usersToProcces = strToArray(params['sortedIdsStr'])
-    @files = Watchdog::Global::Watchdog.getChildren usersToProcces[0], docaccount
+    @files = Watchdog::Global::Watchdog.getChildren usersToProcces, docaccount
     erb :child_files, :layout => :home_layout
+  end
+
+  post '/new-change-permissions', :provides => :json do
+    p 'Give Ownership to central account'
+    p params['files']
+    { :msg => "yeah" }.to_json
   end
 
   post '/changePermissions' do

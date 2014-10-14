@@ -44,18 +44,6 @@
   Get My Old Own Files
 </button>
 
-<div id='rootFoldersForm' class="hiddenForm">
-  <form method='POST' action='/domain/root-folders' name='root-folders-form' id='root-folders-form'>
-    <fieldset>
-      <input name='sortedIdsStr' id='sortedIdsStrForRootFolders' />
-    </fieldset>
-  </form>
-</div>
-
-<button id="rootFoldersBtn" class="btn arrange">
-  Get Root Folders
-</button>
-
 <div id='childFoldersForm' class="hiddenForm">
   <form method='POST' action='/domain/child-folders' name='child-folders-form' id='child-folders-form'>
     <fieldset>
@@ -117,15 +105,6 @@
             };
             $('#sortedIdsStrForMyOldOwn').val(for_files.join());
             $('#my-old-own-form').submit();
-          });
-      $("#rootFoldersBtn").click(function(){
-            var users = $('tbody').find($( "input:checked" ));
-            var for_files = [];
-            for (var i = users.length - 1; i >= 0; i--) {
-              for_files.push(users[i].value);
-            };
-            $('#sortedIdsStrForRootFolders').val(for_files.join());
-            $('#root-folders-form').submit();
           });
       $("#childFoldersBtn").click(function(){
             var users = $('tbody').find($( "input:checked" ));

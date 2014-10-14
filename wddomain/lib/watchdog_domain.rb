@@ -54,8 +54,8 @@ module Watchdog
 				watchdog.getRootFoldersSharedBy user, docaccount
 			end
 
-			def getChildren user, docaccount
-				watchdog.getChildren user, docaccount
+			def getChildren users, docaccount
+				watchdog.getChildren users, docaccount
 			end
 
 			def fixRoot(users)

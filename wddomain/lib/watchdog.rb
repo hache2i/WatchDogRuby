@@ -64,20 +64,17 @@ module WDDomain
 			@filesDomain.getFiles(users)
 		end
 
-		def getRootFoldersSharedBy(user, docaccount)
-			rootFolders = Files::RootFolders.new Files::DriveConnection.new, user
-			folders = rootFolders.get
-			p folders
-			[]
-		end
-
-		def getChildren user, docaccount
+		def getChildren users, docaccount
 			rootFolders = Files::RootFolders.new Files::DriveConnection.new, docaccount
 			folders = rootFolders.get
-			children = Files::Children.new Files::DriveConnection.new, user, folders
-			children = children.get
-			p children
-			children
+			users_files = []
+			users.each do |user|
+				user_files = Files::Children.new Files::DriveConnection.new, user, folders
+				user_files = user_files.get
+				p user_files
+				users_files.concat user_files
+			end
+			users_files
 		end
 
 		def findFilesToRetrieveOwnership(users, currentOwner)
