@@ -106,13 +106,19 @@ class Web < BaseApp
     docaccount = 'admincloud@cfarco.com' if @domain == 'cfarco.com'
     docaccount = 'documentation@watchdog.h2itec.com' if @domain == 'watchdog.h2itec.com'
     usersToProcces = strToArray(params['sortedIdsStr'])
-    @files = Watchdog::Global::Watchdog.getChildren usersToProcces, docaccount
+    @files = Watchdog::Global::Watchdog.files_under_common_structure usersToProcces, docaccount
     erb :child_files, :layout => :home_layout
   end
 
   post '/new-change-permissions', :provides => :json do
     p 'Give Ownership to central account'
-    p params['files']
+    files = JSON.parse(params['files'])
+    files_to_change = Files::FilesToChange.group_by_user files
+
+    docaccount = 'admincloud@cfarco.com' if @domain == 'cfarco.com'
+    docaccount = 'documentation@watchdog.h2itec.com' if @domain == 'watchdog.h2itec.com'
+
+    Watchdog::Global::Watchdog.changePermissions(files_to_change, docaccount)
     { :msg => "yeah" }.to_json
   end
 

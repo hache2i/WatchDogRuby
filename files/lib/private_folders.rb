@@ -5,10 +5,8 @@ require_relative 'private_folder_hierarchy_exception'
 
 module Files
 	class PrivateFolders
-		def initialize(aServiceAccount, aDrive, aClient, aUser)
-			@serviceAccount = aServiceAccount
-			@drive = aDrive
-			@client = aClient
+		def initialize(aDriveConnection, aUser)
+			@driveConnection = aDriveConnection
 			@user = aUser
 		end
 
@@ -39,12 +37,13 @@ module Files
 		end
 
 		def findPrivateFoldersIds parentId
-			result = @client.execute(
-				:api_method => @drive.files.list, 
-				:parameters => 
-				{'q' => "'" + parentId + "' in parents and mimeType = 'application/vnd.google-apps.folder'",
+
+			parameters = {'q' => "'" + parentId + "' in parents and mimeType = 'application/vnd.google-apps.folder'",
 					'fields' => 'items(id,ownerNames,title)'
-					})
+					}
+
+			result = DriveApiHelper.list_files @driveConnection, parameters
+
 			raise PrivateFolderHierarchyException if !result.status.eql? 200
 			ids = result.data.items.map{|item| item['id']}
 			ids.each do |id|
@@ -55,13 +54,13 @@ module Files
 		end
 
 		def findPrivateFolder
+
 			userFiles = UserFiles.new @user
-			result = @client.execute(
-				:api_method => @drive.files.list, 
-				:parameters => 
-				{'q' => "'" + @user + "' in owners and (title = 'Private' or title = 'private' or title = 'PRIVATE') and mimeType = 'application/vnd.google-apps.folder'",
+			parameters = {'q' => "'" + @user + "' in owners and (title = 'Private' or title = 'private' or title = 'PRIVATE') and mimeType = 'application/vnd.google-apps.folder'",
 					'fields' => 'items(id,ownerNames,title)'
-					})
+					}
+
+			result = DriveApiHelper.list_files @driveConnection, parameters
 
 			raise MoreThanOnePrivateFolderException if result.data.items.length > 1
 			return nil if result.data.items.length == 0

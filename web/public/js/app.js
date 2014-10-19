@@ -9,6 +9,22 @@ WS.initializeNewFilesPage = function(){
 };
 
 WS.sendChangePermissions = function(){
+  var files = WS.colectFilesFromView();
+  var params = { files: JSON.stringify(files) };
+  $.ajax({
+    type: "POST",
+    url: "/domain/new-change-permissions",
+    data: params,
+    success: function(data){
+      console.log("yeah");
+    },
+    error: function(){
+      console.log("fuck");
+    }
+  });
+};
+
+WS.colectFilesFromView = function(){
   var files = [];
   $(".file-record").each(function(){
     var file = {
@@ -19,17 +35,7 @@ WS.sendChangePermissions = function(){
     }
     files.push(file)
   });
-  console.log(files);
-  $.post(
-    "/domain/new-change-permissions",
-    { files: files },
-    function(){
-      console.log("yeah");
-    },
-    function(){
-      console.log("fuck");
-    }
-  );
+  return files;
 };
 
 $(function() {

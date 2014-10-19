@@ -13,8 +13,9 @@ module WDDomain
 
 		def initialize(aDomains)
 			@executionLog = ExecutionLog.new
+			@driveConnection = Files::DriveConnection.new
 			@usersDomain = Users::UsersDomain.new
-			@filesDomain = Files::FilesDomain.new @executionLog
+			@filesDomain = Files::FilesDomain.new @executionLog, @driveConnection
 			@configDomain = WDConfig::ConfigDomain.new
 			@scheduler = Scheduler.new(self, @executionLog)
 			@domains = aDomains
@@ -64,14 +65,13 @@ module WDDomain
 			@filesDomain.getFiles(users)
 		end
 
-		def getChildren users, docaccount
-			rootFolders = Files::RootFolders.new Files::DriveConnection.new, docaccount
+		def files_under_common_structure users, docaccount
+			rootFolders = Files::RootFolders.new @driveConnection, docaccount
 			folders = rootFolders.get
 			users_files = []
 			users.each do |user|
-				user_files = Files::Children.new Files::DriveConnection.new, user, folders
+				user_files = Files::Children.new @driveConnection, user, folders
 				user_files = user_files.get
-				p user_files
 				users_files.concat user_files
 			end
 			users_files

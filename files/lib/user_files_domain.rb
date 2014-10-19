@@ -4,34 +4,39 @@ require_relative 'private_folders'
 
 module Files
 	class UserFilesDomain
-		def initialize(aServiceAccount, aClient, aDrive, aUser)
-			@client = aClient
-			@drive = aDrive
+		def initialize aDriveConnection, aUser
 			@user = aUser
-			@client.authorization = aServiceAccount.authorize(@user)
-			@privateFolders = PrivateFolders.new(aServiceAccount, @drive, @client, @user)
+
+			@driveConnection = aDriveConnection
+			@driveConnection.authorize @user
+			@client = @driveConnection.client
+			@drive = @driveConnection.drive
+
+			@privateFolders = PrivateFolders.new @driveConnection, @user
 			@privateFolders.load
+		end
+
+		def changeUserFilesPermissions(files, owner)
+			files.each do |fileId|
+				new_owner_permission = DriveApiHelper.get_current_permission_for @driveConnection, owner, fileId
+				new_owner_permission.role = "owner"
+				api_result = DriveApiHelper.update_permission @driveConnection, fileId, new_owner_permission
+			end
 		end
 
 		def unshare withWho
 			userFiles = UserFiles.new @user
 			begin
-				result = @client.execute(:api_method => @drive.files.list, :parameters => assembleParamsMyFiles(getPageToken(result)))
+				result = DriveApiHelper.list_files @driveConnection, assembleParamsMyFiles(getPageToken(result))
 				raise UserFilesException if !result.status.eql? 200
 				items = result.data.items
 				items.each do |item|
-				  api_result = @client.execute(
-				    :api_method => @drive.permissions.list,
-				    :parameters => { 'fileId' => item['id'] })
+					api_result = DriveApiHelper.list_permissions @driveConnection, { 'fileId' => item['id'] }
 				  if api_result.status == 200
 				    permissions = api_result.data
 				    bla = permissions.items.find_all{|item| item['emailAddress'] == 'documentation@watchdog.h2itec.com' }
 				    bla.each do |permission|
-						  unshare_result = @client.execute(
-						    :api_method => @drive.permissions.delete,
-						    :parameters => {
-						      'fileId' => item['id'],
-						      'permissionId' => permission['id'] })
+				    	unshare_result = DriveApiHelper.delete_permission @driveConnection, item['id'], permission['id']
 						  if unshare_result.status != 204
 						    puts "An error occurred: #{result.data}"
 						  end
@@ -46,9 +51,7 @@ module Files
 		def getUserFiles
 			userFiles = UserFiles.new @user
 			begin
-				result = @client.execute(
-					:api_method => @drive.files.list, 
-					:parameters => assembleParamsMyFiles(getPageToken(result)))
+				result = DriveApiHelper.list_files @driveConnection, assembleParamsMyFiles(getPageToken(result))
 				raise UserFilesException if !result.status.eql? 200
 				items = result.data.items
 				nonPrivateItems = items.find_all{|item| !@privateFolders.isPrivate(item) }
@@ -60,9 +63,7 @@ module Files
 		def getMyOldOwn currentOwner
 			userFiles = UserFiles.new @user
 			begin
-				result = @client.execute(
-					:api_method => @drive.files.list, 
-					:parameters => assembleParamsSharedWithMe(getPageToken(result), currentOwner))
+				result = DriveApiHelper.list_files @driveConnection, assembleParamsSharedWithMe(getPageToken(result), currentOwner)
 				raise UserFilesException if !result.status.eql? 200
 				items = result.data.items
 				myOldOwn = items.find_all{|item| item['sharingUser']['emailAddress'] == @user }
@@ -75,7 +76,7 @@ module Files
 			p "fixing root folder for " + @user
 			userFiles = UserFiles.new @user
 			begin
-				result = @client.execute(:api_method => @drive.files.list, :parameters => assembleParamsMyFiles(getPageToken(result)))
+				result = DriveApiHelper.list_files @driveConnection, assembleParamsMyFiles(getPageToken(result))
 				raise UserFilesException if !result.status.eql? 200
 				items = result.data.items
 				items.each do |item|
@@ -89,11 +90,7 @@ module Files
 		end
 
 		def deleteFromRoot file_id, folder_id
-		  result = @client.execute(
-		    :api_method => @drive.parents.delete,
-		    :parameters => {
-		      'fileId' => file_id,
-		      'parentId' => folder_id })
+		  result = DriveApiHelper.remove_parent @driveConnection, file_id, folder_id
 		  if result.status != 204
 		    puts "An error occurred: #{result.data}"
 		  end
