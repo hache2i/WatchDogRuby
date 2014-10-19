@@ -9,8 +9,6 @@ module Files
 
 			@driveConnection = aDriveConnection
 			@driveConnection.authorize @user
-			@client = @driveConnection.client
-			@drive = @driveConnection.drive
 
 			@privateFolders = PrivateFolders.new @driveConnection, @user
 			@privateFolders.load
