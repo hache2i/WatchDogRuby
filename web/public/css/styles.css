@@ -376,3 +376,19 @@ p.title{
   background-repeat: no-repeat;
   filter: none;
 }
+
+#getFiles {
+	display: none;
+}
+
+#myOldOwnBtn {
+	display: none;
+}
+
+#fixRootBtn {
+	display: none;
+}
+
+#unshareBtn {
+	display: none;
+}

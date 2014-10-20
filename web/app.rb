@@ -127,19 +127,18 @@ class Web < BaseApp
     p 'Give Ownership to central account'
     filesIds = params['filesIdsStr']
 
-    @changed = Watchdog::Global::Watchdog.changePermissions(Files::FilesToChange.unmarshall(filesIds), params['newOwnerHidden'])
-    erb :changed, :layout => :home_layout
+    Watchdog::Global::Watchdog.changePermissions(Files::FilesToChange.unmarshall(filesIds), params['newOwnerHidden'])
+    redirect '/domain/changed-page'
   end
 
   post '/giveOwnershipBack' do
     p 'Give Ownership Back'
     currentOwner = 'admincloud@cfarco.com' if @domain == 'cfarco.com'
     currentOwner = 'documentation@watchdog.h2itec.com' if @domain == 'watchdog.h2itec.com'
-    p currentOwner
     filesIds = params['filesIdsStr']
 
-    @changed = Watchdog::Global::Watchdog.giveOwnershipBack(Files::FilesToChange.unmarshall(filesIds), currentOwner)
-    erb :changed, :layout => :home_layout
+    Watchdog::Global::Watchdog.giveOwnershipBack(Files::FilesToChange.unmarshall(filesIds), currentOwner)
+    redirect '/domain/changed-page'
   end
 
   post '/fixRoot' do
