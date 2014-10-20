@@ -1,30 +1,65 @@
-var WS= {};
+var WD= {};
 
-WS.initialize = function(){
-  if ($("#new-files-page").length) WS.initializeNewFilesPage();
+WD.initialize = function(){
+  if ($("#new-files-page").length) WD.initializeNewFilesPage();
+  if ($("#files-changed-page").length) WD.initializeFilesChangedPage();
 };
 
-WS.initializeNewFilesPage = function(){
-  $("#change-permissions-btn").click(WS.sendChangePermissions);
+WD.initializeFilesChangedPage = function(){
+  $.ajax({
+    type: "GET",
+    url: "/domain/changed",
+    success: WD.drawChanged,
+    error: function(){
+      console.log("error getting changed files");
+    }
+  });
 };
 
-WS.sendChangePermissions = function(){
-  var files = WS.colectFilesFromView();
+WD.drawChanged = function(data){
+  var body = $("#files tbody");
+  data.forEach(function(item){
+    var row = $("<tr>");
+    var id = $("<td>");
+    id.html(item.fileId);
+    row.append(id);
+    var title = $("<td>");
+    title.html(item.title);
+    row.append(title);
+    var oldOwner = $("<td>");
+    oldOwner.html(item.oldOwner);
+    row.append(oldOwner);
+    var newOwner = $("<td>");
+    newOwner.html(item.newOwner);
+    row.append(newOwner);
+    var parentId = $("<td>");
+    parentId.html(item.parentId);
+    row.append(parentId);
+    body.append(row);
+  });
+};
+
+WD.initializeNewFilesPage = function(){
+  $("#change-permissions-btn").click(WD.sendChangePermissions);
+};
+
+WD.sendChangePermissions = function(){
+  var files = WD.colectFilesFromView();
   var params = { files: JSON.stringify(files) };
   $.ajax({
     type: "POST",
     url: "/domain/new-change-permissions",
     data: params,
     success: function(data){
-      console.log("yeah");
+      window.location = "/domain/changed-page";
     },
     error: function(){
-      console.log("fuck");
+      console.log("error changing permissions");
     }
   });
 };
 
-WS.colectFilesFromView = function(){
+WD.colectFilesFromView = function(){
   var files = [];
   $(".file-record").each(function(){
     var file = {
@@ -39,5 +74,5 @@ WS.colectFilesFromView = function(){
 };
 
 $(function() {
-  WS.initialize();
+  WD.initialize();
 });

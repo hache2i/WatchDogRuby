@@ -37,24 +37,43 @@ module Files
 
     def exec
       begin
-        result = @driveConnection.client.execute(
-          :api_method => @driveConnection.drive.files.list, 
-          :parameters => assembleParams(getPageToken(result))
-        )
+        result = DriveApiHelper.list_files @driveConnection, assembleParams(getPageToken(result))
         raise UserFilesException if !result.status.eql? 200
         result.data.items.each do |item|
           childData = { :title => item['title'], :id => item['id'], :owner => @user, :parent => @folder[:id] }
-          @children << childData
+          @children << childData if i_own_the_folder(item)
           is_a_folder = item["mimeType"].eql? "application/vnd.google-apps.folder"
           @commands << FolderChildren.new(@driveConnection, @user, childData) if is_a_folder
         end
       end while hasNextPage? result
     end
 
+    def i_own_the_folder item
+      !(item["owners"].find_all { |item| item["emailAddress"].eql? @user }).empty?
+    end
+
     def assembleParams pageToken
-      params = {'q' => "trashed = false and '" + @folder[:id] + "' in parents and '" + @user + "' in owners "}
+      not_trashed = "trashed = false"
+      child_of_folder = "'" + @folder[:id] + "' in parents"
+      i_own = "'" + @user + "' in owners "
+      is_folder = "mimeType = 'application/vnd.google-apps.folder'"
+      is_not_folder = "mimeType != 'application/vnd.google-apps.folder'"
+
+      query = myand [not_trashed, child_of_folder, myor([myand([i_own, is_not_folder]), is_folder])]
+
+      params = { 'q' => query }
       params.merge!('pageToken' => pageToken) if !pageToken.empty?
       params
+    end
+
+    def myand params
+      query = params.inject{ |query, param| query = query + " and " + param }
+      "(" + query + ")"
+    end
+
+    def myor params
+      query = params.inject{ |query, param| query = query + " or " + param }
+      "(" + query + ")"
     end
 
     def getPageToken(result)

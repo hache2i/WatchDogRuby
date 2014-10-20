@@ -1,6 +1,7 @@
 require_relative 'user_files'
 require_relative 'drive_file'
 require_relative 'private_folders'
+require_relative 'changed'
 
 module Files
 	class UserFilesDomain
@@ -15,11 +16,24 @@ module Files
 		end
 
 		def changeUserFilesPermissions(files, owner)
-			files.each do |fileId|
-				new_owner_permission = DriveApiHelper.get_current_permission_for @driveConnection, owner, fileId
+			files.each do |file|
+				new_owner_permission = DriveApiHelper.get_current_permission_for @driveConnection, owner, file["id"]
 				new_owner_permission.role = "owner"
-				api_result = DriveApiHelper.update_permission @driveConnection, fileId, new_owner_permission
+				api_result = DriveApiHelper.update_permission @driveConnection, file["id"], new_owner_permission
+				if api_result.status == 200
+					Changed.create changed @user, owner, file
+				end
 			end
+		end
+
+		def changed currentOwner, newOwner, fileData
+			{
+				:fileId => fileData["id"],
+				:oldOwner => currentOwner,
+				:newOwner => newOwner,
+				:parentId => fileData["parent"],
+				:title => fileData["title"]
+			}
 		end
 
 		def unshare withWho

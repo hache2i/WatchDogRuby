@@ -11,6 +11,7 @@ require_relative '../wddomain/lib/watchdog_domain'
 require_relative '../wdconfig/lib/timing_not_specified_exception'
 require_relative '../wdconfig/lib/docsowner_not_specified_exception'
 require_relative '../users/lib/users_domain_exception'
+require_relative '../files/lib/changed'
 
 require_relative 'base_app'
 require_relative 'login'
@@ -156,6 +157,15 @@ class Web < BaseApp
     Watchdog::Global::Watchdog.unshare(usersToProcces, currentOwner)
     @files = []
     erb :files, :layout => :home_layout
+  end
+
+  get '/changed-page' do
+    erb :changes_log, :layout => :home_layout
+  end
+
+  get '/changed', :provides => :json do
+    p 'Changed'
+    Files::Changed.desc(:created_at).to_json
   end
 
   def showError(messageKey)

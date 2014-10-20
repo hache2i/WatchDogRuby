@@ -11,7 +11,8 @@ module Files
 				user = userMailAndIds[0]
 				ids = userMailAndIds[1].split(',')
 				userFilesToChange = UserFilesToChange.new user
-				userFilesToChange.addFiles ids
+				files = ids.map { |fileId| { "id" => fileId }}
+				userFilesToChange.addFiles files
 				result << userFilesToChange
 			end
 			result
@@ -22,7 +23,7 @@ module Files
 			grouped = files.group_by {|file| file["owner"]}
 			grouped.each do |user, files|
 				userFilesToChange = UserFilesToChange.new user
-				userFilesToChange.addFiles files.map { |file| file["id"] }
+				userFilesToChange.addFiles files
 				result << userFilesToChange
 			end
 			result
