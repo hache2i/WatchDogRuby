@@ -40,7 +40,10 @@ WD.drawChanged = function(data){
 };
 
 WD.initializeNewFilesPage = function(){
-  $("#change-permissions-btn").click(WD.sendChangePermissions);
+  $("#change-permissions-btn").click(function(){
+    $(this).spin(APP.spinOpts);
+    WD.sendChangePermissions();
+  });
 };
 
 WD.sendChangePermissions = function(){
