@@ -1,7 +1,7 @@
 require 'sinatra/base'
 
-require_relative '../wdadmin/lib/domains'
-require_relative '../wddomain/lib/watchdog_domain'
+require_relative './wdadmin/lib/domains'
+require_relative './wddomain/lib/watchdog_domain'
 
 class BaseApp < Sinatra::Base
 

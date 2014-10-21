@@ -1,5 +1,5 @@
 require 'google/api_client'
-require_relative '../../../files/lib/service_account'
+require_relative '../.././files/lib/service_account'
 require_relative '../support/drive_helper'
 require_relative '../support/files_helper'
 require_relative '../support/domain_config'

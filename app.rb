@@ -7,11 +7,11 @@ require 'json'
 $LOAD_PATH.push(File.expand_path(File.join(File.dirname(__FILE__), '../')))
 
 require_relative './lib/notifier'
-require_relative '../wddomain/lib/watchdog_domain'
-require_relative '../wdconfig/lib/timing_not_specified_exception'
-require_relative '../wdconfig/lib/docsowner_not_specified_exception'
-require_relative '../users/lib/users_domain_exception'
-require_relative '../files/lib/changed'
+require_relative './wddomain/lib/watchdog_domain'
+require_relative './wdconfig/lib/timing_not_specified_exception'
+require_relative './wdconfig/lib/docsowner_not_specified_exception'
+require_relative './users/lib/users_domain_exception'
+require_relative './files/lib/changed'
 
 require_relative 'base_app'
 require_relative 'login'
@@ -24,7 +24,7 @@ class Web < BaseApp
   helpers Sinatra::Activation
   helpers Sinatra::GoogleAuthentication
 
-  set :public_folder, './web/public'
+  set :public_folder, './public'
   set :static, true
 
   before do

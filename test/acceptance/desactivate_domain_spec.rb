@@ -1,7 +1,7 @@
 require_relative '../../admin'
 require_relative '../support/spec_helper'
 require_relative '../support/admin_helper'
-require_relative '../../../wdconfig/lib/config_domain'
+require_relative '../.././wdconfig/lib/config_domain'
 
 describe 'Desactivate Domain by WatchDog Admin', :js do
 	include AdminHelper

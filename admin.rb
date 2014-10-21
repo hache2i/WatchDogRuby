@@ -2,7 +2,7 @@ require 'sinatra/base'
 require 'sinatra/contrib'
 require_relative 'base_app'
 require_relative 'lib/notifier'
-require_relative '../wdconfig/lib/config_domain'
+require_relative './wdconfig/lib/config_domain'
 
 $LOAD_PATH.push(File.expand_path(File.join(File.dirname(__FILE__), '../')))
 

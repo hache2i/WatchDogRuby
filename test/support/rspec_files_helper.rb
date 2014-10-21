@@ -1,4 +1,4 @@
-require_relative '../../../files/lib/service_account'
+require_relative '../.././files/lib/service_account'
 require_relative '../../../IntegrationTest/features/support/drive_helper'
 require_relative '../../../IntegrationTest/features/support/files_helper'
 require_relative '../../../IntegrationTest/features/support/domain_config'
