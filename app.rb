@@ -4,7 +4,7 @@ require 'mongoid'
 require 'logger'
 require 'json'
 
-$LOAD_PATH.push(File.expand_path(File.join(File.dirname(__FILE__), '../')))
+$LOAD_PATH.push(File.expand_path(File.join(File.dirname(__FILE__), './')))
 
 require_relative './lib/notifier'
 require_relative './wddomain/lib/watchdog_domain'
