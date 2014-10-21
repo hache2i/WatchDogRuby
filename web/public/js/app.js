@@ -20,9 +20,6 @@ WD.drawChanged = function(data){
   var body = $("#files tbody");
   data.forEach(function(item){
     var row = $("<tr>");
-    var id = $("<td>");
-    id.html(item.fileId);
-    row.append(id);
     var title = $("<td>");
     title.html(item.title);
     row.append(title);
@@ -32,6 +29,9 @@ WD.drawChanged = function(data){
     var newOwner = $("<td>");
     newOwner.html(item.newOwner);
     row.append(newOwner);
+    var id = $("<td>");
+    id.html(item.fileId);
+    row.append(id);
     var parentId = $("<td>");
     parentId.html(item.parentId);
     row.append(parentId);
