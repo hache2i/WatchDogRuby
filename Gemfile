@@ -1,7 +1,7 @@
 source "http://rubygems.org"
 gem "sinatra"
 gem "sinatra-contrib"
-gem "json"
+gem "json", '= 1.8.1'
 gem "rake"
 gem 'google-api-client', '>= 0.6'
 gem 'omniauth', '>= 1.1.1'
