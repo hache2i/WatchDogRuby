@@ -6,8 +6,13 @@ require_relative 'user'
 module Users
 	class UsersDomain
 		def initialize
+      p "creating Users Domain"
 			@serviceAccount = ServiceAccount.new
-			@client = Google::APIClient.new
+      p "initializing client"
+			@client = Google::APIClient.new(
+				:application_name => 'Watchdog', 
+				:application_version => '1.0.0'
+			)
 			@api = @client.discovered_api('admin', 'directory_v1')
 		end
 

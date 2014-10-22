@@ -11,11 +11,10 @@ require_relative 'base_app'
 require_relative 'lib/google_authentication'
 require_relative 'lib/notifier'
 
+p "nainonai"
 CLIENT_SECRETS = Google::APIClient::ClientSecrets.load
-
+p "lelele"
 class Login < BaseApp
-
-  use Rack::Session::Cookie
 
   use OmniAuth::Builder do
     provider OmniAuth::Strategies::Google,
@@ -35,7 +34,7 @@ class Login < BaseApp
   # def client
   #   p "client method"
   #   c = (Thread.current[:client] ||= 
-  #       Google::APIClient.new(:application_name => 'Ruby Google+ sample',
+  #       Google::APIClient.new(:application_name => 'Watchdog',
   #                             :application_version => '1.0.0'))
   #   # It's really important to clear these out,
   #   # since we reuse client objects across requests
@@ -85,6 +84,7 @@ class Login < BaseApp
   end
 
   get '/login' do
+    p "login route"
     redirect '/auth/google'
     # if params["openid_identifier"].nil? || params["openid_identifier"].empty?
     #   # No identifier, just render login form

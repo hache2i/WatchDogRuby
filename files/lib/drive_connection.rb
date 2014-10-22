@@ -8,8 +8,13 @@ module Files
     attr_accessor :client, :drive
 
     def initialize
+      p "creating Drive Connection"
       @serviceAccount = ServiceAccount.new
-      @client = Google::APIClient.new
+      p "initializing client"
+      @client = Google::APIClient.new(
+        :application_name => 'Watchdog', 
+        :application_version => '1.0.0'
+      )
       @drive = @client.discovered_api('drive', 'v2')
     end
 
