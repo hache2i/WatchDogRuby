@@ -5,15 +5,18 @@ module Sinatra
 	    end 
 	    
 	    def authenticated?
-	      !session[:openid].nil?
+	      # !session[:openid].nil?
+	      !session['credentials'].nil?
 	    end
 	    
 	    def get_domain
-	    	session[:domain]
+	    	# session[:domain]
+	    	session['credentials']['decoded_id_token']['hd']
 	    end
 
 	    def get_user_email
-	    	session[:user_attributes][:email]
+	    	# session[:user_attributes][:email]
+	    	session['credentials']['decoded_id_token']['email']
 	    end
 
 	    def get_openid
