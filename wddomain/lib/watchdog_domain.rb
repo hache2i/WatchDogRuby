@@ -66,8 +66,8 @@ module Watchdog
 				watchdog.unshare users, withWho
 			end
 
-			def changePermissions(files, newOwner)
-				watchdog.changePermissions files, newOwner
+			def changePermissions(files, newOwner, domain)
+				watchdog.changePermissions files, newOwner, domain
 			end
 
 			def giveOwnershipBack(files, currentOwner)

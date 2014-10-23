@@ -5,7 +5,8 @@ require_relative 'changed'
 
 module Files
 	class UserFilesDomain
-		def initialize aDriveConnection, aUser
+		def initialize aDriveConnection, aUser, aDomain
+			@domain = aDomain
 			@user = aUser
 
 			@driveConnection = aDriveConnection
@@ -21,18 +22,19 @@ module Files
 				new_owner_permission.role = "owner"
 				api_result = DriveApiHelper.update_permission @driveConnection, file["id"], new_owner_permission
 				if api_result.status == 200
-					Changed.create changed @user, owner, file
+					Changed.create changed @user, owner, file, @domain
 				end
 			end
 		end
 
-		def changed currentOwner, newOwner, fileData
+		def changed currentOwner, newOwner, fileData, domain
 			{
 				:fileId => fileData["id"],
 				:oldOwner => currentOwner,
 				:newOwner => newOwner,
 				:parentId => fileData["parent"],
-				:title => fileData["title"]
+				:title => fileData["title"],
+				:domain => domain
 			}
 		end
 

@@ -5,6 +5,7 @@ require_relative 'private_folders'
 module Files
   class Children
     def initialize(theDriveConnection, theUser, theFolders)
+      theDriveConnection.authorize(theUser)
       @commands = theFolders.map do |folder|
         FolderChildren.new theDriveConnection, theUser, folder
       end
@@ -30,7 +31,6 @@ module Files
       @user = theUser
       @folder = theFolder
       @driveConnection = theDriveConnection
-      @driveConnection.authorize(@user)
       @commands = []
       @children = []
     end

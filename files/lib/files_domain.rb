@@ -61,10 +61,10 @@ module Files
 			end
 		end
 
-		def changePermissions(domainFilesToChange, owner)
+		def changePermissions(domainFilesToChange, owner, domain)
 			domainFilesToChange.each do |userFilesToChange|
 				user = userFilesToChange.getEmail
-				userFilesDomain = UserFilesDomain.new @driveConnection, user
+				userFilesDomain = UserFilesDomain.new @driveConnection, user, domain
 				if user != owner
 					userFilesDomain.changeUserFilesPermissions userFilesToChange.getFiles, owner
 				end

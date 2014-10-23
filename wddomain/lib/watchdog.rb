@@ -89,8 +89,8 @@ module WDDomain
 			@filesDomain.unshare(users, withWho)
 		end
 
-		def changePermissions(files, newOwner)
-	    @filesDomain.changePermissions(files, newOwner)
+		def changePermissions(files, newOwner, domain)
+	    @filesDomain.changePermissions(files, newOwner, domain)
 		end
 
 		def giveOwnershipBack(files, currentOwner)

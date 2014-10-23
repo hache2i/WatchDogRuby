@@ -119,7 +119,7 @@ class Web < BaseApp
     docaccount = 'admincloud@cfarco.com' if @domain == 'cfarco.com'
     docaccount = 'documentation@watchdog.h2itec.com' if @domain == 'watchdog.h2itec.com'
 
-    Watchdog::Global::Watchdog.changePermissions(files_to_change, docaccount)
+    Watchdog::Global::Watchdog.changePermissions(files_to_change, docaccount, @domain)
     { :msg => "yeah" }.to_json
   end
 
@@ -164,7 +164,7 @@ class Web < BaseApp
 
   get '/changed', :provides => :json do
     p 'Changed'
-    Files::Changed.desc(:created_at).to_json
+    Files::Changed.where(:domain => @domain).desc(:created_at).to_json
   end
 
   def showError(messageKey)
