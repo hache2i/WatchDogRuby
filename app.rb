@@ -95,8 +95,7 @@ class Web < BaseApp
   end
 
   post '/old-own' do
-    currentOwner = 'admincloud@cfarco.com' if @domain == 'cfarco.com'
-    currentOwner = 'documentation@watchdog.h2itec.com' if @domain == 'watchdog.h2itec.com'
+    currentOwner = getOwnerByDomain
     usersToProcces = strToArray(params['sortedIdsStr'])
     @files = Watchdog::Global::Watchdog.findFilesToRetrieveOwnership(usersToProcces, currentOwner)
     @users = Watchdog::Global::Watchdog.getUsers @userEmail
@@ -104,8 +103,7 @@ class Web < BaseApp
   end
 
   post '/child-folders' do
-    docaccount = 'admincloud@cfarco.com' if @domain == 'cfarco.com'
-    docaccount = 'documentation@watchdog.h2itec.com' if @domain == 'watchdog.h2itec.com'
+    docaccount = getOwnerByDomain
     usersToProcces = strToArray(params['sortedIdsStr'])
     @files = Watchdog::Global::Watchdog.files_under_common_structure usersToProcces, docaccount
     erb :child_files, :layout => :home_layout
@@ -116,8 +114,7 @@ class Web < BaseApp
     files = JSON.parse(params['files'])
     files_to_change = Files::FilesToChange.group_by_user files
 
-    docaccount = 'admincloud@cfarco.com' if @domain == 'cfarco.com'
-    docaccount = 'documentation@watchdog.h2itec.com' if @domain == 'watchdog.h2itec.com'
+    docaccount = getOwnerByDomain
 
     Watchdog::Global::Watchdog.changePermissions(files_to_change, docaccount, @domain)
     { :msg => "yeah" }.to_json
@@ -133,8 +130,7 @@ class Web < BaseApp
 
   post '/giveOwnershipBack' do
     p 'Give Ownership Back'
-    currentOwner = 'admincloud@cfarco.com' if @domain == 'cfarco.com'
-    currentOwner = 'documentation@watchdog.h2itec.com' if @domain == 'watchdog.h2itec.com'
+    currentOwner = getOwnerByDomain
     filesIds = params['filesIdsStr']
 
     Watchdog::Global::Watchdog.giveOwnershipBack(Files::FilesToChange.unmarshall(filesIds), currentOwner)
@@ -150,8 +146,7 @@ class Web < BaseApp
 
   post '/unshare' do
     p 'Unshare'
-    currentOwner = 'admincloud@cfarco.com' if @domain == 'cfarco.com'
-    currentOwner = 'documentation@watchdog.h2itec.com' if @domain == 'watchdog.h2itec.com'
+    currentOwner = getOwnerByDomain
     usersToProcces = strToArray(params['sortedIdsStrForUnshare'])
     Watchdog::Global::Watchdog.unshare(usersToProcces, currentOwner)
     @files = []
@@ -175,6 +170,13 @@ class Web < BaseApp
   def strToArray(usersStr)
     return [] if usersStr.nil?
     usersStr.split(',')
+  end
+
+  def getOwnerByDomain
+    'admincloud@cfarco.com' if @domain == 'cfarco.com'
+    'documentation@watchdog.h2itec.com' if @domain == 'watchdog.h2itec.com'
+    'documentation@lfp.es' if @domain == 'lfp.es'
+    raise Exception.new("unknown domain")
   end
 
 end
