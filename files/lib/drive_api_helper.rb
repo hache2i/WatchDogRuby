@@ -1,6 +1,19 @@
 module Files
   class DriveApiHelper
 
+    def self.create_owner_permission driveConnection, email, file_id
+      new_permission = driveConnection.drive.permissions.insert.request_schema.new({
+        'value' => email,
+        'type' => 'user',
+        'role' => 'owner'
+      })
+      return driveConnection.client.execute(
+        :api_method => driveConnection.drive.permissions.insert,
+        :body_object => new_permission
+        :parameters => { 'fileId' => file_id }
+      )
+    end
+
     def self.remove_parent driveConnection, fileId, parentId
       driveConnection.client.execute(
         :api_method => driveConnection.drive.parents.delete,
