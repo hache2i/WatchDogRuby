@@ -9,7 +9,7 @@ module Files
       })
       return driveConnection.client.execute(
         :api_method => driveConnection.drive.permissions.insert,
-        :body_object => new_permission
+        :body_object => new_permission,
         :parameters => { 'fileId' => file_id }
       )
     end
