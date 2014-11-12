@@ -173,9 +173,9 @@ class Web < BaseApp
   end
 
   def getOwnerByDomain
-    'admincloud@cfarco.com' if @domain == 'cfarco.com'
-    'documentation@watchdog.h2itec.com' if @domain == 'watchdog.h2itec.com'
-    'documentation@lfp.es' if @domain == 'lfp.es'
+    return 'admincloud@cfarco.com' if @domain == 'cfarco.com'
+    return 'documentation@watchdog.h2itec.com' if @domain == 'watchdog.h2itec.com'
+    return 'documentation@lfp.es' if @domain == 'lfp.es'
     raise Exception.new("unknown domain")
   end
 
