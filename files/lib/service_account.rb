@@ -1,7 +1,7 @@
 require 'google/api_client'
 
 class ServiceAccount
-	P12 = "WATCHDOG-122d396cea06.p12"
+	P12 = "WATCHDOG-4594ec0406a2.p12"
 	MAIL = "867950402393-r4chltcopuocui2abrlv1u2ph1h477a7@developer.gserviceaccount.com"
 	def initialize
 		keyFile = File.read(File.join(File.dirname(__FILE__), P12))

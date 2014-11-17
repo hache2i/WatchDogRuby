@@ -38,6 +38,8 @@ module Files
     def exec
       begin
         result = DriveApiHelper.list_files @driveConnection, assembleParams(getPageToken(result))
+        p "result status"
+        p result.status
         raise UserFilesException if !result.status.eql? 200
         result.data.items.each do |item|
           childData = { :title => item['title'], :id => item['id'], :owner => @user, :parent => @folder[:id] }
