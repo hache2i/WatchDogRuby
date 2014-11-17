@@ -1,4 +1,5 @@
 source "http://rubygems.org"
+gem "unicorn"
 gem "sinatra"
 gem "sinatra-contrib"
 gem "json", '= 1.8.1'
