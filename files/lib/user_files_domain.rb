@@ -20,7 +20,7 @@ module Files
 			files.each do |file|
 				new_owner_permission = DriveApiHelper.get_current_permission_for @driveConnection, owner, file["id"]
 				if new_owner_permission.nil?
-					api_result = newDriveApiHelper.create_owner_permission owner, file["id"]
+					api_result = DriveApiHelper.create_owner_permission owner, file["id"]
 				else
 					new_owner_permission.role = "owner"
 					api_result = DriveApiHelper.update_permission @driveConnection, file["id"], new_owner_permission
