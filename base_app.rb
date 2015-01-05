@@ -2,10 +2,13 @@ require 'sinatra/base'
 
 require_relative './wdadmin/lib/domains'
 require_relative './wddomain/lib/watchdog_domain'
+require_relative './my_sinatra_app_logger'
 
 class BaseApp < Sinatra::Base
 
   use Rack::Session::Cookie, secret: 'change_me'
+
+  include MySinatraAppLogger
 
   configure do
     set :run, false
@@ -14,3 +17,4 @@ class BaseApp < Sinatra::Base
   end
 
 end
+

@@ -79,6 +79,7 @@ class Web < BaseApp
   end
 
   get '/users' do
+    logger.info "getting users"
     begin
       @users = Watchdog::Global::Watchdog.getUsers @userEmail
       erb :users, :layout => :home_layout
