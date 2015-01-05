@@ -17,6 +17,7 @@ module Users
 		end
 
 		def getUsers(email)
+			MySinatraAppLogger.logger().info("get users on users domain")
 			@client.authorization = @serviceAccount.authorize(email)
 			customerId = getCustomerId email
 			mails = [];
