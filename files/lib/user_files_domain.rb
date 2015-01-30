@@ -18,14 +18,16 @@ module Files
 
 		def changeUserFilesPermissions(files, owner)
 			files.each do |file|
+				MySinatraAppLogger.logger().info("change permission file: " + file.inspect)
 				new_owner_permission = DriveApiHelper.get_current_permission_for @driveConnection, owner, file["id"]
 				if new_owner_permission.nil?
-					api_result = DriveApiHelper.create_owner_permission owner, file["id"]
+					api_result = DriveApiHelper.create_owner_permission @driveConnection, owner, file["id"]
 				else
 					new_owner_permission.role = "owner"
 					api_result = DriveApiHelper.update_permission @driveConnection, file["id"], new_owner_permission
 				end
 				if api_result.status == 200
+					MySinatraAppLogger.logger().info("(DONE) change permission file: " + file.inspect)
 					Changed.create changed @user, owner, file, @domain
 				end
 			end
