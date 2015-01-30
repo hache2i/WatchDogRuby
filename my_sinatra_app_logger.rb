@@ -25,6 +25,10 @@ module MySinatraAppLogger
     before { env["rack.errors"] = MySinatraAppLogger.log_file }
   end
 
+  def self.logger
+    MySinatraAppLogger.logger_instance
+  end
+
   def logger
     MySinatraAppLogger.logger_instance
   end
