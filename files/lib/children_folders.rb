@@ -41,7 +41,7 @@ module Files
     end
 
     def exec
-      WDLogger.info "checking folder #{@folder.inspect}"
+      WDLogger.debug "checking folder #{@folder.inspect}"
       begin
         result = DriveApiHelper.list_files @driveConnection, assembleParams(getPageToken(result))
         break unless result.success?
