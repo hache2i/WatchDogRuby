@@ -106,7 +106,7 @@ class Web < BaseApp
   post '/child-folders' do
     docaccount = getOwnerByDomain
     usersToProcces = strToArray(params['sortedIdsStr'])
-    @files = Watchdog::Global::Watchdog.files_under_common_structure usersToProcces, docaccount
+    @files = Watchdog::Global::Watchdog.files_under_common_structure usersToProcces, docaccount, @domain
     erb :child_files, :layout => :home_layout
   end
 

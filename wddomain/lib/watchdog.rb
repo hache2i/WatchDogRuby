@@ -1,3 +1,4 @@
+require_relative '../../wd_logger'
 require_relative '../../files/lib/files_domain'
 require_relative '../../files/lib/files_to_change'
 require_relative '../../files/lib/root_folders'
@@ -65,13 +66,15 @@ module WDDomain
 			@filesDomain.getFiles(users)
 		end
 
-		def files_under_common_structure users, docaccount
+		def files_under_common_structure users, docaccount, domain
 			rootFolders = Files::RootFolders.new @driveConnection, docaccount
 			folders = rootFolders.get
 			users_files = []
 			users.each do |user|
-				user_files = Files::Children.new @driveConnection, user, folders
+				WDLogger.info "getting files for #{ user }"
+				user_files = Files::Children.new @driveConnection, user, folders, docaccount, domain
 				user_files = user_files.get
+				WDLogger.info "getting files for #{ user } - #{ user_files.length } found"
 				users_files.concat user_files
 			end
 			users_files

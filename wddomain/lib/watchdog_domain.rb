@@ -54,8 +54,8 @@ module Watchdog
 				watchdog.getRootFoldersSharedBy user, docaccount
 			end
 
-			def files_under_common_structure users, docaccount
-				watchdog.files_under_common_structure users, docaccount
+			def files_under_common_structure users, docaccount, domain
+				watchdog.files_under_common_structure users, docaccount, domain
 			end
 
 			def fixRoot(users)

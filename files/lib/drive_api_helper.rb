@@ -1,3 +1,5 @@
+require_relative '../../wd_logger'
+
 module Files
   class DriveApiHelper
 
@@ -7,11 +9,14 @@ module Files
         'type' => 'user',
         'role' => 'owner'
       })
-      return driveConnection.client.execute(
+      api_result = driveConnection.client.execute(
         :api_method => driveConnection.drive.permissions.insert,
         :body_object => new_permission,
         :parameters => { 'fileId' => file_id }
       )
+      { :status => api_result.status }
+    rescue
+      { :status => 666 }
     end
 
     def self.remove_parent driveConnection, fileId, parentId
@@ -25,10 +30,25 @@ module Files
     end
 
     def self.list_files driveConnection, parameters
-      driveConnection.client.execute(
+      api_result = driveConnection.client.execute(
         :api_method => driveConnection.drive.files.list, 
         :parameters => parameters
       )
+      DriveApiResult.new api_result.status, api_result
+    rescue => e
+      WDLogger.error "DriveApiHelper.list_files - #{ e.inspect }"
+      DriveApiResult.new 666
+    end
+
+    def self.children driveConnection, parameters
+      api_result = driveConnection.client.execute(
+        :api_method => driveConnection.drive.children.list, 
+        :parameters => parameters
+      )
+      DriveApiResult.new api_result.status, api_result
+    rescue => e
+      WDLogger.error "DriveApiHelper.list_files - #{ e.inspect }"
+      DriveApiResult.new 666
     end
 
     def self.list_permissions driveConnection, parameters
@@ -58,7 +78,9 @@ module Files
           'transferOwnership' => true
         }
       )
-      api_result
+      { :status => api_result.status }
+    rescue
+      { :status => 666 }
     end
 
     def self.get_current_permission_for driveConnection, email, fileId
@@ -75,7 +97,26 @@ module Files
         p "fuck"
       end
       permission
+    rescue
+      nil
     end
 
   end
+
+  class DriveApiResult
+
+    attr_reader :status, :data
+
+    def initialize status, result = nil
+      @status = status
+      @data = result.data unless result.nil?
+    end
+
+    def success?
+      @status == 200
+    end
+
+  end
+
 end
+

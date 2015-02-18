@@ -1,3 +1,4 @@
+require_relative '../../wd_logger'
 require_relative 'user_files'
 require_relative 'drive_file'
 require_relative 'private_folders'
@@ -17,8 +18,9 @@ module Files
 		end
 
 		def changeUserFilesPermissions(files, owner)
+			WDLogger.debug("change permissions for #{files.length.to_s} files")
 			files.each do |file|
-				MySinatraAppLogger.logger().info("change permission file: " + file.inspect)
+				WDLogger.debug("change permission file: " + file.inspect)
 				new_owner_permission = DriveApiHelper.get_current_permission_for @driveConnection, owner, file["id"]
 				if new_owner_permission.nil?
 					api_result = DriveApiHelper.create_owner_permission @driveConnection, owner, file["id"]
@@ -26,9 +28,12 @@ module Files
 					new_owner_permission.role = "owner"
 					api_result = DriveApiHelper.update_permission @driveConnection, file["id"], new_owner_permission
 				end
-				if api_result.status == 200
-					MySinatraAppLogger.logger().info("(DONE) change permission file: " + file.inspect)
+				if api_result[:status] == 200
+					WDLogger.debug("(DONE) change permission file: " + file.inspect)
 					Changed.create changed @user, owner, file, @domain
+	      else
+	      	title = file["title"]
+	        WDLogger.debug("(¡¡¡ FAILED !!!) change permission file '#{title}' #{api_result[:status].to_s}")
 				end
 			end
 		end

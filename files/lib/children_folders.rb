@@ -4,10 +4,11 @@ require_relative 'private_folders'
 
 module Files
   class Children
-    def initialize(theDriveConnection, theUser, theFolders)
+    def initialize(theDriveConnection, theUser, theFolders, docaccount, domain)
       theDriveConnection.authorize(theUser)
+      @user = theUser
       @commands = theFolders.map do |folder|
-        FolderChildren.new theDriveConnection, theUser, folder
+        FolderChildren.new theDriveConnection, theUser, folder, docaccount, domain
       end
     end
 
@@ -16,8 +17,10 @@ module Files
       @commands.each do |command|
         command.exec
         children.concat command.children
+        WDLogger.info "getting files for #{ @user } - #{ command.children.length } more added (not finished yet - #{children.length.to_s} until now)" unless command.children.empty?
         @commands.concat command.commands
       end
+      WDLogger.info "getting files for #{ @user } - #{ children.length } - FINISHED"
       children
     end
 
@@ -27,27 +30,57 @@ module Files
 
     attr_accessor :children, :commands
 
-    def initialize theDriveConnection, theUser, theFolder
+    def initialize theDriveConnection, theUser, theFolder, docaccount, domain
       @user = theUser
       @folder = theFolder
       @driveConnection = theDriveConnection
       @commands = []
       @children = []
+      @docaccount = docaccount
+      @domain = domain
     end
 
     def exec
+      WDLogger.debug "checking folder #{@folder.inspect}"
       begin
         result = DriveApiHelper.list_files @driveConnection, assembleParams(getPageToken(result))
-        p "result status"
-        p result.status
-        raise UserFilesException if !result.status.eql? 200
+        break unless result.success?
         result.data.items.each do |item|
           childData = { :title => item['title'], :id => item['id'], :owner => @user, :parent => @folder[:id] }
-          @children << childData if i_own_the_folder(item)
+          if i_own_the_folder(item)
+            change_file_permission childData
+            @children << childData
+          end
           is_a_folder = item["mimeType"].eql? "application/vnd.google-apps.folder"
-          @commands << FolderChildren.new(@driveConnection, @user, childData) if is_a_folder
+          @commands << FolderChildren.new(@driveConnection, @user, childData, @docaccount, @domain) if is_a_folder
         end
       end while hasNextPage? result
+    end
+
+    def change_file_permission file
+      new_owner_permission = DriveApiHelper.get_current_permission_for @driveConnection, @docaccount, file[:id]
+      if new_owner_permission.nil?
+        api_result = DriveApiHelper.create_owner_permission @driveConnection, @docaccount, file[:id]
+      else
+        new_owner_permission.role = "owner"
+        api_result = DriveApiHelper.update_permission @driveConnection, file[:id], new_owner_permission
+      end
+      if api_result[:status] == 200
+        Changed.create changed file
+      else
+        WDLogger.debug("(¡¡¡ FAILED !!!) change permission file '#{file[:title]}' #{api_result[:status].to_s}")
+      end
+    end
+
+    def changed fileData
+      {
+        :fileId => fileData[:id],
+        :oldOwner => @user,
+        :newOwner => @docaccount,
+        :parentId => fileData[:parent],
+        :title => fileData[:title],
+        :domain => @domain
+      }
     end
 
     def i_own_the_folder item

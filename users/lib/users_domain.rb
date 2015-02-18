@@ -1,10 +1,12 @@
 require 'google/api_client'
 
+require_relative '../../wd_logger'
 require_relative '../../files/lib/service_account'
 require_relative 'user'
 
 module Users
 	class UsersDomain
+	
 		def initialize
       p "creating Users Domain"
 			@serviceAccount = ServiceAccount.new
@@ -17,7 +19,7 @@ module Users
 		end
 
 		def getUsers(email)
-			MySinatraAppLogger.logger().info("get users on users domain")
+			WDLogger.debug("get users on users domain")
 			@client.authorization = @serviceAccount.authorize(email)
 			customerId = getCustomerId email
 			mails = [];
