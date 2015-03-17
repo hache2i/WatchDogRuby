@@ -81,7 +81,7 @@ class Web < BaseApp
   end
 
   get '/users' do
-    logger.info "getting users"
+    logger.info "Getting Users"
     begin
       @users = Watchdog::Global::Watchdog.getUsers @userEmail
       erb :users, :layout => :home_layout
@@ -91,6 +91,7 @@ class Web < BaseApp
   end
 
   post '/child-folders' do
+    logger.info "Getting Files to Change"
     docaccount = getOwnerByDomain
     usersToProcces = strToArray(params['sortedIdsStr'])
     Thread.abort_on_exception = true
@@ -103,7 +104,7 @@ class Web < BaseApp
   end
 
   post '/get-proposals' do
-    logger.info "Getting proposals"
+    logger.info "Getting Change Proposals"
     usersToProcces = strToArray(params['sortedIdsStr'])
     proposed_change_files = usersToProcces.inject([]) do |files, user|
       user_files = Files::Changed.pending_for_user user
@@ -114,7 +115,7 @@ class Web < BaseApp
   end
 
   post '/new-change-permissions', :provides => :json do
-    p 'Give Ownership to central account'
+    logger.info 'Change Permissions'
     files = JSON.parse(params['files'])
     files_to_change = Files::FilesToChange.group_by_user files
 
@@ -123,12 +124,12 @@ class Web < BaseApp
   end
 
   get '/changed-page' do
-    p "Changed Page"
+    logger.info "Changed Page"
     erb :changes_log, :layout => :home_layout
   end
 
   get '/changed', :provides => :json do
-    p 'Changed'
+    logger.info 'Changed Files'
     Files::Changed.where(:domain => @domain).limit(100).desc(:executed).to_json
   end
 
