@@ -14,6 +14,7 @@ WD.initializeProposedFilesPage = function(){
 }
 
 WD.initializeFilesChangedPage = function(){
+  console.log("going for changes");
   $.ajax({
     type: "GET",
     url: "/domain/changed",
@@ -25,6 +26,7 @@ WD.initializeFilesChangedPage = function(){
 };
 
 WD.drawChanged = function(data){
+  console.log("changes fetched");
   var body = $("#files tbody");
   data.forEach(function(item){
     var row = $("<tr>");

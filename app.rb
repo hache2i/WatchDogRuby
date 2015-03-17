@@ -123,6 +123,7 @@ class Web < BaseApp
   end
 
   get '/changed-page' do
+    p "Changed Page"
     erb :changes_log, :layout => :home_layout
   end
 
