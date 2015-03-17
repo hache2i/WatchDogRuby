@@ -24,12 +24,12 @@ module Files
 			if api_result[:status] == 200
 		    	change_proposal.update_attributes!(pending: false, executed: Time.now.to_i)
 			else
-				WDLogger.debug("(¡¡¡ FAILED !!!) change permission file '#{file["title"]}' #{api_result[:status].to_s}")
+				WDLogger.error("(¡¡¡ FAILED !!!) change permission file '#{file["title"]}' #{api_result[:status].to_s}")
 			end
 	    end
 
 		def changeUserFilesPermissions files
-			WDLogger.debug("change permissions for #{files.length.to_s} files")
+			WDLogger.info("change permissions for #{files.length.to_s} files")
 			files.each do |file|
 				WDLogger.debug("change permission file: " + file.inspect)
 				change_file_permission file
