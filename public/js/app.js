@@ -33,6 +33,9 @@ WD.drawChanged = function(data){
     var title = $("<td>");
     title.html(item.title);
     row.append(title);
+    var path = $("<td>");
+    path.html(item.path);
+    row.append(path);
     var oldOwner = $("<td>");
     oldOwner.html(item.oldOwner);
     row.append(oldOwner);
