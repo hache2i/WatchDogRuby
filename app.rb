@@ -129,7 +129,7 @@ class Web < BaseApp
 
   get '/changed', :provides => :json do
     p 'Changed'
-    Files::Changed.where(:domain => @domain).desc(:executed).to_json
+    Files::Changed.where(:domain => @domain).limit(100).desc(:executed).to_json
   end
 
   def showError(messageKey)
