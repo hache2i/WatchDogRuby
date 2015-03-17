@@ -20,30 +20,6 @@
 	</tbody>
 </table>
 
-<div id='hiddenForm' class="hiddenForm">
-  <form method='POST' action='/domain/files' name='files-form' id='files-form'>
-    <fieldset>
-      <input name='sortedIdsStr' id='sortedIdsStr' />
-    </fieldset>
-  </form>
-</div>
-
-<button id="getFiles" class="btn btn-large btn-primary">
-  Get Files
-</button>
-
-<div id='myOldOwnForm' class="hiddenForm">
-  <form method='POST' action='/domain/old-own' name='my-old-own-form' id='my-old-own-form'>
-    <fieldset>
-      <input name='sortedIdsStr' id='sortedIdsStrForMyOldOwn' />
-    </fieldset>
-  </form>
-</div>
-
-<button id="myOldOwnBtn" class="btn btn-large btn-primary">
-  Get My Old Own Files
-</button>
-
 <div id='childFoldersForm' class="hiddenForm">
   <form method='POST' action='/domain/child-folders' name='child-folders-form' id='child-folders-form'>
     <fieldset>
@@ -56,28 +32,16 @@
   Get Files
 </button>
 
-<div id='fixRootForm' class="hiddenForm">
-  <form method='POST' action='/domain/fixRoot' name='fix-root-form' id='fix-root-form'>
+<div id='getProposalsForm' class="hiddenForm">
+  <form method='POST' action='/domain/get-proposals' name='get-proposals-form' id='get-proposals-form'>
     <fieldset>
-      <input id='sortedIdsStrForFixRoot' name='sortedIdsStrForFixRoot' />
+      <input id='sortedIdsStrForGetProposals' name='sortedIdsStr' />
     </fieldset>
   </form>
 </div>
 
-<button id="fixRootBtn" class="btn btn-large btn-primary">
-  Fix Root
-</button>
-
-<div id='unshareForm' class="hiddenForm">
-	<form method='POST' action='/domain/unshare' name='unshare-form' id='unshare-form'>
-	  <fieldset>
-	    <input id='sortedIdsStrForUnshare' name='sortedIdsStrForUnshare' />
-	  </fieldset>
-	</form>
-</div>
-
-<button id="unshareBtn" class="btn btn-large btn-primary">
-	Unshare
+<button id="getProposalsBtn" class="btn btn-large btn-primary">
+  Get Proposals
 </button>
 
   <script>
@@ -88,24 +52,6 @@
 				$(checkboxes[i]).attr('checked', $(this).attr('checked')?$(this).attr('checked'):false);
 			};
   		});
-      $("#getFiles").click(function(){
-            var users = $('tbody').find($( "input:checked" ));
-            var for_files = [];
-            for (var i = users.length - 1; i >= 0; i--) {
-              for_files.push(users[i].value);
-            };
-            $('#sortedIdsStr').val(for_files.join());
-            $('#files-form').submit();
-          });
-      $("#myOldOwnBtn").click(function(){
-            var users = $('tbody').find($( "input:checked" ));
-            var for_files = [];
-            for (var i = users.length - 1; i >= 0; i--) {
-              for_files.push(users[i].value);
-            };
-            $('#sortedIdsStrForMyOldOwn').val(for_files.join());
-            $('#my-old-own-form').submit();
-          });
       $("#childFoldersBtn").click(function(){
         $(this).spin(APP.spinOpts);
             var users = $('tbody').find($( "input:checked" ));
@@ -116,24 +62,15 @@
             $('#sortedIdsStrForChildFolders').val(for_files.join());
             $('#child-folders-form').submit();
           });
-      $("#fixRootBtn").click(function(){
+      $("#getProposalsBtn").click(function(){
             var users = $('tbody').find($( "input:checked" ));
             var for_files = [];
             for (var i = users.length - 1; i >= 0; i--) {
               for_files.push(users[i].value);
             };
-            $('#sortedIdsStrForFixRoot').val(for_files.join());
-            $('#fix-root-form').submit();
+            $('#sortedIdsStrForGetProposals').val(for_files.join());
+            $('#get-proposals-form').submit();
           });
-  		$("#unshareBtn").click(function(){
-  					var users = $('tbody').find($( "input:checked" ));
-  					var for_files = [];
-  					for (var i = users.length - 1; i >= 0; i--) {
-  						for_files.push(users[i].value);
-  					};
-  					$('#sortedIdsStrForUnshare').val(for_files.join());
-  					$('#unshare-form').submit();
-  				});
   	};
   </script>
 

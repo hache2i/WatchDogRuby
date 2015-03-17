@@ -1,2 +1,0 @@
-class PrivateFolderHierarchyException < Exception
-end

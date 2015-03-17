@@ -1,0 +1,30 @@
+<section id="proposed-files-page">
+  <div class="page-header">
+      Domain Drive Files
+  </div>
+
+  <table class="table table-striped" id="files">
+    <thead>
+      <tr><th>Title</th><th>Path</th><th>Type</th><th>Old Owner</th><th>New Owner</th></tr>
+    </thead>
+    <tbody>
+      <% @files.each do |file| %>
+        <tr class="file-record" 
+            data-title="<%= file[:title] %>"
+            data-id="<%= file[:id] %>"
+            data-fileid="<%= file[:fileId] %>"
+            data-oldowner="<%= file[:oldOwner] %>"
+            data-newowner="<%= file[:newOwner] %>"
+            data-parent="<%= file[:parent] %>"
+        >
+          <td class="title"><%= file[:title] %></td>
+          <td class="path"><%= file[:path] %></td>
+          <td class="type"><%= file[:type] %></td>
+          <td class="owner"><%= file[:oldOwner] %></td>
+          <td class="id"><%= file[:newOwner] %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <button id="change-permissions-btn" class="btn btn-large btn-primary">Change Permissions</button>
+</section>

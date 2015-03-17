@@ -1,6 +1,4 @@
 require_relative 'user_files'
-require_relative 'drive_file'
-require_relative 'private_folders'
 
 module Files
   class RootFolders

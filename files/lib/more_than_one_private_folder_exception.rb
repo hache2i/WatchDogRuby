@@ -1,2 +1,0 @@
-class MoreThanOnePrivateFolderException < Exception
-end

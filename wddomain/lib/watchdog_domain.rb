@@ -42,36 +42,12 @@ module Watchdog
 				watchdog.getUsers email
 			end
 
-			def getFiles(users)
-				watchdog.getFiles users
+			def files_under_common_structure users, domain_data
+				watchdog.files_under_common_structure users, domain_data
 			end
 
-			def findFilesToRetrieveOwnership(users, currentOwner)
-				watchdog.findFilesToRetrieveOwnership users, currentOwner
-			end
-
-			def getRootFoldersSharedBy(user, docaccount)
-				watchdog.getRootFoldersSharedBy user, docaccount
-			end
-
-			def files_under_common_structure users, docaccount, domain
-				watchdog.files_under_common_structure users, docaccount, domain
-			end
-
-			def fixRoot(users)
-				watchdog.fixRoot users
-			end
-
-			def unshare(users, withWho)
-				watchdog.unshare users, withWho
-			end
-
-			def changePermissions(files, newOwner, domain)
-				watchdog.changePermissions files, newOwner, domain
-			end
-
-			def giveOwnershipBack(files, currentOwner)
-				watchdog.giveOwnershipBack files, currentOwner
+			def changePermissions(files, domain)
+				watchdog.changePermissions files, domain
 			end
 
 			def reassingOwnership(admin, docsOwner)

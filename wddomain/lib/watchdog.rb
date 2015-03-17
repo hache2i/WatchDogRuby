@@ -62,17 +62,13 @@ module WDDomain
 			@usersDomain.getUsers(email)
 		end
 
-		def getFiles(users)
-			@filesDomain.getFiles(users)
-		end
-
-		def files_under_common_structure users, docaccount, domain
-			rootFolders = Files::RootFolders.new @driveConnection, docaccount
+		def files_under_common_structure users, domain_data
+			rootFolders = Files::RootFolders.new @driveConnection, domain_data.docaccount
 			folders = rootFolders.get
 			users_files = []
 			users.each do |user|
 				WDLogger.info "getting files for #{ user }"
-				user_files = Files::Children.new @driveConnection, user, folders, docaccount, domain
+				user_files = Files::Children.new @driveConnection, user, folders, domain_data
 				user_files = user_files.get
 				WDLogger.info "getting files for #{ user } - #{ user_files.length } found"
 				users_files.concat user_files
@@ -80,42 +76,11 @@ module WDDomain
 			users_files
 		end
 
-		def findFilesToRetrieveOwnership(users, currentOwner)
-			@filesDomain.findFilesToRetrieveOwnership(users, currentOwner)
-		end
-
-		def fixRoot(users)
-			@filesDomain.fixRoot(users)
-		end
-
-		def unshare(users, withWho)
-			@filesDomain.unshare(users, withWho)
-		end
-
-		def changePermissions(files, newOwner, domain)
-	    @filesDomain.changePermissions(files, newOwner, domain)
-		end
-
-		def giveOwnershipBack(files, currentOwner)
-	    @filesDomain.giveOwnershipBack(files, currentOwner)
+		def changePermissions(files, domain)
+		    @filesDomain.changePermissions(files, domain)
 		end
 
 		def reassingOwnership(admin, docsOwner)
-			userNames = @usersDomain.getUsers(admin).map(&:email)
-			nonOwnerUsers = userNames.reject{|userName| userName.eql? docsOwner}
-			domain = extractDomain(admin)
-			if @domains.allowExecution(domain, nonOwnerUsers.length)
-				nonOwnerUsers.each do |user|
-					files = @filesDomain.getFiles([user])
-					@filesDomain.changePermissions(Files::FilesToChange.unmarshall(files.to_s), docsOwner)
-				end
-			end
-		end
-
-		private
-
-		def extractDomain(email)
-			email.scan(/(.+)@(.+)/)[0][1]
 		end
 
 	end

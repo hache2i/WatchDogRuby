@@ -2,8 +2,16 @@ var WD= {};
 
 WD.initialize = function(){
   if ($("#new-files-page").length) WD.initializeNewFilesPage();
+  if ($("#proposed-files-page").length) WD.initializeProposedFilesPage();
   if ($("#files-changed-page").length) WD.initializeFilesChangedPage();
 };
+
+WD.initializeProposedFilesPage = function(){
+  $("#change-permissions-btn").click(function(){
+    $(this).spin(APP.spinOpts);
+    WD.sendChangePermissions();
+  });
+}
 
 WD.initializeFilesChangedPage = function(){
   $.ajax({
@@ -67,9 +75,10 @@ WD.colectFilesFromView = function(){
   $(".file-record").each(function(){
     var file = {
       id: $(this).data("id"),
-      title: $(this).data("title"),
-      owner: $(this).data("owner"),
-      parent: $(this).data("parent")
+      fileId: $(this).data("fileid"),
+      oldOwner: $(this).data("oldowner"),
+      newOwner: $(this).data("newowner"),
+      parent: $(this).data("parent"),
     }
     files.push(file)
   });

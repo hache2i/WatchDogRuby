@@ -8,9 +8,11 @@ $LOAD_PATH.push(File.expand_path(File.join(File.dirname(__FILE__), './')))
 
 require_relative './lib/notifier'
 require_relative './wddomain/lib/watchdog_domain'
+require_relative './wddomain/lib/domain_data'
 require_relative './wdconfig/lib/timing_not_specified_exception'
 require_relative './wdconfig/lib/docsowner_not_specified_exception'
 require_relative './users/lib/users_domain_exception'
+require_relative './files/lib/changed'
 require_relative './files/lib/changed'
 
 require_relative 'base_app'
@@ -88,26 +90,27 @@ class Web < BaseApp
     end
   end
 
-  post '/files' do
-    usersToProcces = strToArray(params['sortedIdsStr'])
-    @files = Watchdog::Global::Watchdog.getFiles(usersToProcces)
-    @users = Watchdog::Global::Watchdog.getUsers @userEmail
-    erb :files, :layout => :home_layout
-  end
-
-  post '/old-own' do
-    currentOwner = getOwnerByDomain
-    usersToProcces = strToArray(params['sortedIdsStr'])
-    @files = Watchdog::Global::Watchdog.findFilesToRetrieveOwnership(usersToProcces, currentOwner)
-    @users = Watchdog::Global::Watchdog.getUsers @userEmail
-    erb :myOldOwn, :layout => :home_layout
-  end
-
   post '/child-folders' do
     docaccount = getOwnerByDomain
     usersToProcces = strToArray(params['sortedIdsStr'])
-    @files = Watchdog::Global::Watchdog.files_under_common_structure usersToProcces, docaccount, @domain
+    Thread.abort_on_exception = true
+    thr = Thread.new {
+      domain_data = DomainData.new @domain, docaccount
+      Watchdog::Global::Watchdog.files_under_common_structure usersToProcces, domain_data
+    }
+    @files = []
     erb :child_files, :layout => :home_layout
+  end
+
+  post '/get-proposals' do
+    logger.info "Getting proposals"
+    usersToProcces = strToArray(params['sortedIdsStr'])
+    proposed_change_files = usersToProcces.inject([]) do |files, user|
+      user_files = Files::Changed.pending_for_user user
+      files.concat user_files
+    end
+    @files = proposed_change_files
+    erb :proposals, :layout => :home_layout
   end
 
   post '/new-change-permissions', :provides => :json do
@@ -115,43 +118,8 @@ class Web < BaseApp
     files = JSON.parse(params['files'])
     files_to_change = Files::FilesToChange.group_by_user files
 
-    docaccount = getOwnerByDomain
-
-    Watchdog::Global::Watchdog.changePermissions(files_to_change, docaccount, @domain)
+    Watchdog::Global::Watchdog.changePermissions(files_to_change, @domain)
     { :msg => "yeah" }.to_json
-  end
-
-  post '/changePermissions' do
-    p 'Give Ownership to central account'
-    filesIds = params['filesIdsStr']
-
-    Watchdog::Global::Watchdog.changePermissions(Files::FilesToChange.unmarshall(filesIds), params['newOwnerHidden'])
-    redirect '/domain/changed-page'
-  end
-
-  post '/giveOwnershipBack' do
-    p 'Give Ownership Back'
-    currentOwner = getOwnerByDomain
-    filesIds = params['filesIdsStr']
-
-    Watchdog::Global::Watchdog.giveOwnershipBack(Files::FilesToChange.unmarshall(filesIds), currentOwner)
-    redirect '/domain/changed-page'
-  end
-
-  post '/fixRoot' do
-    usersToProcces = strToArray(params['sortedIdsStrForFixRoot'])
-    Watchdog::Global::Watchdog.fixRoot(usersToProcces)
-    @files = []
-    erb :files, :layout => :home_layout
-  end
-
-  post '/unshare' do
-    p 'Unshare'
-    currentOwner = getOwnerByDomain
-    usersToProcces = strToArray(params['sortedIdsStrForUnshare'])
-    Watchdog::Global::Watchdog.unshare(usersToProcces, currentOwner)
-    @files = []
-    erb :files, :layout => :home_layout
   end
 
   get '/changed-page' do
@@ -160,7 +128,7 @@ class Web < BaseApp
 
   get '/changed', :provides => :json do
     p 'Changed'
-    Files::Changed.where(:domain => @domain).desc(:created_at).to_json
+    Files::Changed.where(:domain => @domain).desc(:executed).to_json
   end
 
   def showError(messageKey)
@@ -179,5 +147,4 @@ class Web < BaseApp
     return 'documentacion@lfp.es' if @domain == 'lfp.es'
     raise Exception.new("unknown domain")
   end
-
 end

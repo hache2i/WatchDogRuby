@@ -20,7 +20,7 @@ module Files
 
 		def self.group_by_user files
 			result = []
-			grouped = files.group_by {|file| file["owner"]}
+			grouped = files.group_by {|file| file["oldOwner"]}
 			grouped.each do |user, files|
 				userFilesToChange = UserFilesToChange.new user
 				userFilesToChange.addFiles files
