@@ -22,7 +22,7 @@ module Files
     end
 
     def self.pending_for_user user
-        user_files = where(oldOwner: user, pending: true).map do |file|
+        user_files = where(oldOwner: user, pending: true).desc(:created_at).map do |file|
             data = { title: file.title, oldOwner: file.oldOwner, newOwner: file.newOwner, id: file.id, parent: file.parentId }
             data.merge! fileId: file.fileId
             data.merge! path: file.path
