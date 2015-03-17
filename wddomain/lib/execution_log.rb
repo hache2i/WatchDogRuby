@@ -4,7 +4,7 @@ class ExecutionLog
 
 	attr_accessor :records
 
-	MAX_RECORDS = 1000
+	MAX_RECORDS = 10000
 
 	def initialize
 		@records = []

@@ -1,15 +1,19 @@
 require_relative 'my_sinatra_app_logger'
+require_relative 'wddomain/lib/global_execution_log'
 
 module WDLogger
   def self.info msg
+    Watchdog::Global::Logs::Execution.add msg
     MySinatraAppLogger.logger.info "INFO: #{ traced_msg msg }"
   end
 
   def self.error msg
+    Watchdog::Global::Logs::Execution.add msg
     MySinatraAppLogger.logger.error "ERROR: #{ traced_msg msg }"
   end
 
   def self.debug msg
+    Watchdog::Global::Logs::Execution.add msg
     MySinatraAppLogger.logger.debug "DEBUG: #{ traced_msg msg }"
   end
 

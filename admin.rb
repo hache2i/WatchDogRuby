@@ -44,6 +44,11 @@ class Admin < BaseApp
 		erb :log, :layout => :home_layout
 	end
 
+	get '/exec-log' do
+		@log = Watchdog::Global::Logs::Execution.get
+		erb :log, :layout => :home_layout
+	end
+
 	post '/reactivateDomain' do
 		domain = params['domain']
 		Watchdog::Global::Domains.reactivate domain
