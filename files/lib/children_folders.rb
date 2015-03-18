@@ -3,9 +3,9 @@ require_relative 'user_files'
 module Files
   class Children
     def initialize(theDriveConnection, theUser, theFolders, domain_data)
-      WDLogger.debug theFolders.inspect
       theDriveConnection.authorize(domain_data.docaccount)
       @user = theUser
+      @domain_data = domain_data
       @commands = theFolders.map do |folder|
         FolderChildren.new theDriveConnection, theUser, folder, domain_data
       end
@@ -16,10 +16,10 @@ module Files
       @commands.each do |command|
         command.exec
         children.concat command.children
-        WDLogger.debug "getting files for #{ @user } - #{ command.children.length } more added (not finished yet - #{children.length.to_s} until now)" unless command.children.empty?
+        WDLogger.debug "getting files for #{ @user } - #{ command.children.length } more added (not finished yet - #{children.length.to_s} until now)", @domain_data.domain, @user unless command.children.empty?
         @commands.concat command.commands
       end
-      WDLogger.debug "getting files for #{ @user } - #{ children.length } - FINISHED"
+      WDLogger.debug "getting files for #{ @user } - #{ children.length } - FINISHED", @domain_data.domain, @user
       children
     end
 
@@ -40,7 +40,7 @@ module Files
     end
 
     def exec
-      WDLogger.debug "checking folder #{@folder.inspect}"
+      WDLogger.debug "checking folder #{@folder.inspect}", @domain_data.domain, @user
       begin
         result = DriveApiHelper.list_files @driveConnection, assembleParams(getPageToken(result))
         break unless result.success?
@@ -58,7 +58,6 @@ module Files
 
           if i_own_the_item(item)
             change_proposal = changed childData
-            WDLogger.debug change_proposal
             Changed.create_pending change_proposal
             @children << childData
           end
