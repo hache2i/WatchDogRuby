@@ -81,7 +81,7 @@ class Web < BaseApp
   end
 
   get '/users' do
-    logger.info "Getting Users"
+    WDLogger.info "Getting Users"
     begin
       @users = Watchdog::Global::Watchdog.getUsers @userEmail
       erb :users, :layout => :home_layout
@@ -91,7 +91,7 @@ class Web < BaseApp
   end
 
   post '/child-folders' do
-    logger.info "Getting Files to Change"
+    WDLogger.info "Getting Files to Change"
     docaccount = getOwnerByDomain
     usersToProcces = strToArray(params['sortedIdsStr'])
 
@@ -106,7 +106,7 @@ class Web < BaseApp
   end
 
   post '/get-proposals' do
-    logger.info "Getting Change Proposals"
+    WDLogger.info "Getting Change Proposals"
     Thread.list.each {|thr| p thr }
 
     usersToProcces = strToArray(params['sortedIdsStr'])
@@ -119,7 +119,7 @@ class Web < BaseApp
   end
 
   post '/new-change-permissions', :provides => :json do
-    logger.info 'Change Permissions'
+    WDLogger.info 'Change Permissions'
     files = JSON.parse(params['files'])
     files_to_change = Files::FilesToChange.group_by_user files
 
@@ -132,12 +132,12 @@ class Web < BaseApp
   end
 
   get '/changed-page' do
-    logger.info "Changed Page"
+    WDLogger.info "Changed Page"
     erb :changes_log, :layout => :home_layout
   end
 
   get '/changed', :provides => :json do
-    logger.info 'Changed Files'
+    WDLogger.info 'Changed Files'
     Files::Changed.where(:domain => @domain).limit(100).desc(:executed).to_json
   end
 

@@ -4,6 +4,12 @@ WD.initialize = function(){
   if ($("#new-files-page").length) WD.initializeNewFilesPage();
   if ($("#proposed-files-page").length) WD.initializeProposedFilesPage();
   if ($("#files-changed-page").length) WD.initializeFilesChangedPage();
+  if ($("#exec-log").length) WD.initializeExecLog();
+};
+
+WD.initializeExecLog = function(){
+  console.log("going for log records");
+  var execLog = new WD.ExecutionLog();
 };
 
 WD.initializeProposedFilesPage = function(){

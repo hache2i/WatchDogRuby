@@ -45,8 +45,16 @@ class Admin < BaseApp
 	end
 
 	get '/exec-log' do
-		@log = Watchdog::Global::Logs::Execution.get
+		@records = []
 		erb :log, :layout => :home_layout
+	end
+
+	get '/exec-log-records', :provides => :json do
+		from = params[:from] && params[:from].to_i
+		records = []
+		records = Watchdog::Global::Logs::Execution.get if from.nil?
+		records = Watchdog::Global::Logs::Execution.get_from(from) unless from.nil?
+		{ records: records }.to_json
 	end
 
 	post '/reactivateDomain' do
