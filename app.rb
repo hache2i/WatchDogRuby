@@ -94,6 +94,8 @@ class Web < BaseApp
     logger.info "Getting Files to Change"
     docaccount = getOwnerByDomain
     usersToProcces = strToArray(params['sortedIdsStr'])
+
+    Thread.list.each {|thr| p thr }
     Thread.abort_on_exception = true
     thr = Thread.new {
       domain_data = DomainData.new @domain, docaccount
@@ -105,6 +107,8 @@ class Web < BaseApp
 
   post '/get-proposals' do
     logger.info "Getting Change Proposals"
+    Thread.list.each {|thr| p thr }
+
     usersToProcces = strToArray(params['sortedIdsStr'])
     proposed_change_files = usersToProcces.inject([]) do |files, user|
       user_files = Files::Changed.pending_for_user user
@@ -119,10 +123,11 @@ class Web < BaseApp
     files = JSON.parse(params['files'])
     files_to_change = Files::FilesToChange.group_by_user files
 
+    Thread.list.each {|thr| p thr }
     Thread.new{
       Watchdog::Global::Watchdog.changePermissions(files_to_change, @domain)
     }
-    
+
     { :msg => "yeah" }.to_json
   end
 
