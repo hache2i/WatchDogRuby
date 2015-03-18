@@ -119,7 +119,10 @@ class Web < BaseApp
     files = JSON.parse(params['files'])
     files_to_change = Files::FilesToChange.group_by_user files
 
-    Watchdog::Global::Watchdog.changePermissions(files_to_change, @domain)
+    Thread.new{
+      Watchdog::Global::Watchdog.changePermissions(files_to_change, @domain)
+    }
+    
     { :msg => "yeah" }.to_json
   end
 
