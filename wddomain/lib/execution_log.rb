@@ -10,8 +10,8 @@ class ExecutionLog
 		@records = []
 	end
 
-	def add(message, domain = nil, user = nil)
-		@records.unshift LogRecord.new(message, domain, user)
+	def add(message, domain = nil, user = nil, level = nil)
+		@records.unshift LogRecord.new(message, domain, user, level)
 		@records.pop if @records.length > MAX_RECORDS
 	end
 

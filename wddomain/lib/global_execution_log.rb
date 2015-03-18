@@ -4,8 +4,8 @@ module Watchdog
 			module Execution
 				extend self
 
-				def add msg, domain = nil, user = nil
-					log.add msg, domain, user
+				def add msg, domain = nil, user = nil, level = nil
+					log.add msg, domain, user, level
 				end
 
 				def get

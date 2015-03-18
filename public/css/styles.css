@@ -275,7 +275,6 @@ input:focus{
 }
 
 .table td{
-	color: #656959;
 }
 
 .table-bordered{
@@ -391,4 +390,18 @@ p.title{
 
 #unshareBtn {
 	display: none;
+}
+
+.file-record {
+}
+
+.file-record.file-record-error {
+	color: red;
+}
+
+.file-record.file-record-info {
+	color: blue;
+}
+
+.file-record.file-record-debug {
 }
