@@ -2,13 +2,17 @@
 
 	ns.ExecutionLog = function(){
 		var _records = [];
+		var _count = 0;
 		var _debugMode = false;
 
 		var _getFromBackend = function(){
 			console.log("more records from: " + _records.length + " debug mode: " + _debugMode);
+			var countForBackend = _count;
+			if (this.refresh) countForBackend = 0
+			console.log(countForBackend);
 			$.ajax({
 				type: "GET",
-				url: "/admin/exec-log-records?from=" + _records.length + "&debug=" + _debugMode,
+				url: "/admin/exec-log-records?from=" + _records.length + "&debug=" + _debugMode + "&count=" + countForBackend,
 				success: function(data){
 					WD.Bus.send("exec-log-records-fetched", data);
 				},
@@ -70,17 +74,25 @@
 
 		var ButtonsBox = React.createClass({displayName: 'ButtonsBox',
 			handleMore: _getFromBackend,
+			handleRefresh: _getFromBackend.bind({ refresh: true }),
 			render: function() {
 				return (
 					React.createElement('div', {className: "buttonsBox"},
-						React.createElement('a', { className: "btn btn-primary", id: "more-btn", onClick: this.handleMore}, "Más")
+						React.createElement('a', { className: "btn btn-primary", id: "more-btn", onClick: this.handleMore}, "Más"),
+						React.createElement('a', { className: "btn btn-primary", onClick: this.handleRefresh}, "Refrescar")
 					)
 				);
 			}
 		});
 
 		var _recordsFetched = function(data){
-			_records = _records.concat(data.records);
+			if (data.count != _count){
+				$("html, body").animate({ scrollTop: 0 }, "slow");
+				_count = data.count;
+				_records = data.records;
+			}else{
+				_records = _records.concat(data.records);
+			}
 			React.render(
 				React.createElement(Page, { records: _records }),
 				document.getElementById('exec-log')

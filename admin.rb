@@ -52,11 +52,13 @@ class Admin < BaseApp
 	get '/exec-log-records', :provides => :json do
 		debug = params[:debug]
 		p debug
+		count = params[:count] && params[:count].to_i
+		p count
 		from = params[:from] && params[:from].to_i
-		records = []
-		records = Watchdog::Global::Logs::Execution.get if from.nil?
-		records = Watchdog::Global::Logs::Execution.get_from(from) unless from.nil?
-		{ records: records }.to_json
+		records = { records: [], count: 0 }
+		records = Watchdog::Global::Logs::Execution.get if from.nil? || from == 0
+		records = Watchdog::Global::Logs::Execution.get_from(from, count) unless from.nil? || from == 0
+		records.to_json
 	end
 
 	post '/reactivateDomain' do

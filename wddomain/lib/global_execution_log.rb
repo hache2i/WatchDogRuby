@@ -5,7 +5,7 @@ module Watchdog
 				extend self
 
 				DEFAULT_LEVELS = [:info, :error, :debug]
-				PAGE_SIZE = 1000
+				PAGE_SIZE = 25
 
 				def add msg, domain = nil, user = nil, level = nil
 					log.add msg, domain, user, level
@@ -13,12 +13,22 @@ module Watchdog
 
 				def get
 					selected = log.records.select { |record| DEFAULT_LEVELS.include? record.level }
-					selected.take PAGE_SIZE
+					count = selected.size
+					records = selected.take PAGE_SIZE
+					{ records: records, count: count }
 				end
 
-				def get_from from
+				def get_from from, count
+					p "looking for records"
+					p from
+					p count
+					restart = from >= count
+					return get if restart
 					selected = log.records.select { |record| DEFAULT_LEVELS.include? record.level }
-					selected.slice from, PAGE_SIZE
+					p selected.size
+					p selected.size - count + from
+					records = selected.slice selected.size - count + from, PAGE_SIZE
+					{ records: records, count: count }
 				end
 
 				private
