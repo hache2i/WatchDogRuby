@@ -50,6 +50,8 @@ class Admin < BaseApp
 	end
 
 	get '/exec-log-records', :provides => :json do
+		debug = params[:debug]
+		p debug
 		from = params[:from] && params[:from].to_i
 		records = []
 		records = Watchdog::Global::Logs::Execution.get if from.nil?

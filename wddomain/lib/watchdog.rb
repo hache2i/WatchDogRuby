@@ -65,16 +65,25 @@ module WDDomain
 		def files_under_common_structure users, domain_data
 			rootFolders = Files::RootFolders.new @driveConnection, domain_data.docaccount
 			folders = rootFolders.get
-			users_files = []
-			users.each do |user|
-				WDLogger.info "getting files for #{ user }"
-				user_files = Files::Children.new @driveConnection, user, folders, domain_data
-				user_files = user_files.get
-				WDLogger.info "getting files for #{ user } - #{ user_files.length } found"
-				users_files.concat user_files
-			end
-			users_files
+			WDLogger.info "getting files for #{ users }"
+			user_files = Files::Children.new @driveConnection, users, folders, domain_data
+			user_files.get
+			WDLogger.info "getting files for #{ users } - FINISHED"
 		end
+
+		# def files_under_common_structure users, domain_data
+		# 	rootFolders = Files::RootFolders.new @driveConnection, domain_data.docaccount
+		# 	folders = rootFolders.get
+		# 	users_files = []
+		# 	users.each do |user|
+		# 		WDLogger.info "getting files for #{ user }"
+		# 		user_files = Files::Children.new @driveConnection, user, folders, domain_data
+		# 		user_files = user_files.get
+		# 		WDLogger.info "getting files for #{ user } - #{ user_files.length } found"
+		# 		users_files.concat user_files
+		# 	end
+		# 	users_files
+		# end
 
 		def changePermissions(files, domain)
 		    @filesDomain.changePermissions(files, domain)

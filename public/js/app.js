@@ -1,6 +1,7 @@
 var WD= {};
 
 WD.initialize = function(){
+  WD.Bus = new WD.BusConst();
   if ($("#new-files-page").length) WD.initializeNewFilesPage();
   if ($("#proposed-files-page").length) WD.initializeProposedFilesPage();
   if ($("#files-changed-page").length) WD.initializeFilesChangedPage();

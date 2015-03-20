@@ -5,7 +5,7 @@ module Watchdog
 				extend self
 
 				DEFAULT_LEVELS = [:info, :error, :debug]
-				PAGE_SIZE = 100
+				PAGE_SIZE = 1000
 
 				def add msg, domain = nil, user = nil, level = nil
 					log.add msg, domain, user, level
