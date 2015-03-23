@@ -12,7 +12,7 @@ module Watchdog
 				end
 
 				def get
-					p "looking for records from scratch"
+					p "looking for records from scratch #{log.records.count}"
 					selected = log.records.select { |record| DEFAULT_LEVELS.include? record.level }
 					total_at_time = selected.size
 					records = selected.take PAGE_SIZE
@@ -20,7 +20,7 @@ module Watchdog
 				end
 
 				def get_from from, total_at_time
-					p "looking for records from #{from} of #{total_at_time}"
+					p "looking for records from #{from} of #{total_at_time} absolute total #{log.records.count}"
 					restart = from >= total_at_time
 					return get if restart
 					selected = log.records.select { |record| DEFAULT_LEVELS.include? record.level }
