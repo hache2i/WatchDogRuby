@@ -10,7 +10,7 @@ module Watchdog
 				def add msg, domain = nil, user = nil, level = nil
 					users = ""
 					users = user.join(", ") unless user.nil?
-					log.add msg, domain, user.join(", "), level
+					log.add msg, domain, users, level
 				end
 
 				def get
