@@ -51,13 +51,12 @@ class Admin < BaseApp
 
 	get '/exec-log-records', :provides => :json do
 		debug = params[:debug]
-		p debug
-		count = params[:count] && params[:count].to_i
-		p count
+		total_at_time = params[:totalRecordsAtTime] && params[:totalRecordsAtTime].to_i
 		from = params[:from] && params[:from].to_i
-		records = { records: [], count: 0, from_scratch: true }
-		records = Watchdog::Global::Logs::Execution.get if from.nil? || from == 0
-		records = Watchdog::Global::Logs::Execution.get_from(from, count) unless from.nil? || from == 0
+		refresh = params[:refresh] == true.to_s
+		records = { records: [], total_at_time: 0, from_scratch: true }
+		records = Watchdog::Global::Logs::Execution.get if from.nil? || from == 0 || refresh
+		records = Watchdog::Global::Logs::Execution.get_from(from, total_at_time) unless from.nil? || from == 0 || refresh
 		records.to_json
 	end
 

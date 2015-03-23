@@ -7,12 +7,9 @@
 
 		var _getFromBackend = function(){
 			console.log("more records from: " + _records.length + " debug mode: " + _debugMode);
-			var countForBackend = _totalRecordsAtTime;
-			if (this.refresh) countForBackend = 0
-			console.log(countForBackend);
 			$.ajax({
 				type: "GET",
-				url: "/admin/exec-log-records?from=" + _records.length + "&debug=" + _debugMode + "&count=" + countForBackend,
+				url: "/admin/exec-log-records?from=" + _records.length + "&debug=" + _debugMode + "&totalRecordsAtTime=" + _totalRecordsAtTime + "&refresh=" + this.refresh,
 				success: function(data){
 					WD.Bus.send("exec-log-records-fetched", data);
 				},
@@ -88,7 +85,7 @@
 		var _recordsFetched = function(data){
 			if (data.from_scratch){
 				$("html, body").animate({ scrollTop: 0 }, "slow");
-				_totalRecordsAtTime = data.count;
+				_totalRecordsAtTime = data.total_at_time;
 				_records = data.records;
 			}else{
 				_records = _records.concat(data.records);
