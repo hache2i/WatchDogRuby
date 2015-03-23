@@ -32,8 +32,8 @@
 				var createItem = function(item){
 					return React.createElement('tr', { className: "file-record file-record-" + item.level },
 						React.createElement('td', null, item.domain),
-						React.createElement('td', null, item.user),
-						React.createElement('td', null, item.message),
+						React.createElement('td', null, item.user.substr(0, 100)),
+						React.createElement('td', null, item.message.substr(0, 100)),
 						React.createElement('td', null, item.when)
 					)
 				};
