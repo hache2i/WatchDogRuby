@@ -14,6 +14,10 @@ module Files
     field :title, :type => String
     field :pending, :type => Boolean
 
+    def self.count_pending domain
+        where(domain: domain, pending: true).count
+    end
+
     def self.create_pending data
         already_pending = where fileId: data[:fileId], pending: true
         return unless already_pending.empty?

@@ -3,6 +3,8 @@ var WD= {};
 WD.initialize = function(){
   WD.Bus = new WD.BusConst();
   if ($("#new-files-page").length) WD.initializeNewFilesPage();
+  if ($("#common-folders-page").length) WD.initializeCommonFoldersPage();
+  if ($("#pending-files-page").length) WD.initializePendingFilesPage();
   if ($("#proposed-files-page").length) WD.initializeProposedFilesPage();
   if ($("#files-changed-page").length) WD.initializeFilesChangedPage();
   if ($("#exec-log").length) WD.initializeExecLog();
@@ -11,6 +13,14 @@ WD.initialize = function(){
 WD.initializeExecLog = function(){
   console.log("going for log records");
   var execLog = new WD.ExecutionLog();
+};
+
+WD.initializePendingFilesPage = function(){
+  new WD.PendingFiles();
+};
+
+WD.initializeCommonFoldersPage = function(){
+  new WD.CommonFolders();
 };
 
 WD.initializeProposedFilesPage = function(){

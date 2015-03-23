@@ -14,6 +14,9 @@ require_relative './wdconfig/lib/docsowner_not_specified_exception'
 require_relative './users/lib/users_domain_exception'
 require_relative './files/lib/changed'
 require_relative './files/lib/changed'
+require_relative './actions/get_pending_proposals'
+require_relative './actions/get_pending_files_count'
+require_relative './actions/get_common_folders'
 
 require_relative 'base_app'
 require_relative 'login'
@@ -90,12 +93,21 @@ class Web < BaseApp
     end
   end
 
+  get '/common-folders-page' do
+    erb :common_folders, :layout => :home_layout
+  end
+
+  get '/common-folders', :provides => :json do
+    docaccount = getOwnerByDomain
+    common_folders =  Wd::Actions::GetCommonFolders.do docaccount
+    common_folders.to_json
+  end
+
   post '/child-folders' do
     WDLogger.info "Getting Files to Change"
     docaccount = getOwnerByDomain
     usersToProcces = strToArray(params['sortedIdsStr'])
 
-    Thread.list.each {|thr| p thr }
     Thread.abort_on_exception = true
     thr = Thread.new {
       domain_data = DomainData.new @domain, docaccount
@@ -104,16 +116,26 @@ class Web < BaseApp
     redirect "/domain/users"
   end
 
+  get '/pending' do
+    erb :pending_page, :layout => :home_layout
+  end
+
+  get '/pending/count', :provides => :json do
+    WDLogger.info "Getting Pending Files Count"
+
+    pending_files_count = Wd::Actions::GetPendingFilesCount.do @domain
+
+    pending_files_count.to_json
+  end
+
   post '/get-proposals' do
     WDLogger.info "Getting Change Proposals"
-    Thread.list.each {|thr| p thr }
 
     usersToProcces = strToArray(params['sortedIdsStr'])
-    proposed_change_files = usersToProcces.inject([]) do |files, user|
-      user_files = Files::Changed.pending_for_user user
-      files.concat user_files
-    end
-    @files = proposed_change_files
+
+    pending_files = Wd::Actions::GetPendingProposals.do usersToProcces
+    @files = pending_files.values.flatten
+
     erb :proposals, :layout => :home_layout
   end
 
@@ -122,7 +144,6 @@ class Web < BaseApp
     files = JSON.parse(params['files'])
     files_to_change = Files::FilesToChange.group_by_user files
 
-    Thread.list.each {|thr| p thr }
     Thread.new{
       Watchdog::Global::Watchdog.changePermissions(files_to_change, @domain)
     }
