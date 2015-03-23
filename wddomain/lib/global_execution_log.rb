@@ -8,7 +8,7 @@ module Watchdog
 				PAGE_SIZE = 25
 
 				def add msg, domain = nil, user = nil, level = nil
-					log.add msg, domain, user, level
+					log.add msg, domain, user.join(", "), level
 				end
 
 				def get
