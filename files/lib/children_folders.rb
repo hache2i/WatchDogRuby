@@ -51,7 +51,8 @@ module Files
             Changed.create_pending change_proposal
             @children << "bla"
           end
-          should_be_added_to_check = is_a_folder(item) && (is_from_docaccount(item) || is_from_any_of_the_users(item))
+          should_be_added_to_check = is_a_folder(item)
+          # should_be_added_to_check = is_a_folder(item) && (is_from_docaccount(item) || is_from_any_of_the_users(item))
           @commands << FolderChildren.new(@driveConnection, @users, childData, @domain_data, @path) if should_be_added_to_check
         end
       end while hasNextPage? result
@@ -76,7 +77,8 @@ module Files
         :id => item['id'], 
         :owner => current_owners, 
         :parent => @folder[:id],
-        :isFolder => is_a_folder(item)
+        :isFolder => is_a_folder(item),
+        :path => @path
       }
     end
 
@@ -106,7 +108,8 @@ module Files
       is_folder = "(mimeType = 'application/vnd.google-apps.folder')"
       is_not_folder = "(mimeType != 'application/vnd.google-apps.folder')"
 
-      query = myand [not_trashed, child_of_folder, myor([myand([from_users, is_not_folder]), is_folder])]
+      query = myand [not_trashed, child_of_folder]
+      # query = myand [not_trashed, child_of_folder, myor([myand([from_users, is_not_folder]), is_folder])]
 
       params = { 'q' => query }
       params.merge!('pageToken' => pageToken) if !pageToken.empty?

@@ -101,8 +101,7 @@ class Web < BaseApp
       domain_data = DomainData.new @domain, docaccount
       Watchdog::Global::Watchdog.files_under_common_structure usersToProcces, domain_data
     }
-    @files = []
-    erb :child_files, :layout => :home_layout
+    redirect "/domain/users"
   end
 
   post '/get-proposals' do
