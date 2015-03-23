@@ -36,6 +36,7 @@ module Watchdog
 				end
 
 				def init
+					p "initialize execution log"
 					ExecutionLog.new
 				end
 
