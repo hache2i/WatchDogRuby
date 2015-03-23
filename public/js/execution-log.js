@@ -2,12 +2,12 @@
 
 	ns.ExecutionLog = function(){
 		var _records = [];
-		var _count = 0;
+		var _totalRecordsAtTime = 0;
 		var _debugMode = false;
 
 		var _getFromBackend = function(){
 			console.log("more records from: " + _records.length + " debug mode: " + _debugMode);
-			var countForBackend = _count;
+			var countForBackend = _totalRecordsAtTime;
 			if (this.refresh) countForBackend = 0
 			console.log(countForBackend);
 			$.ajax({
@@ -86,9 +86,9 @@
 		});
 
 		var _recordsFetched = function(data){
-			if (data.count != _count){
+			if (data.from_scratch){
 				$("html, body").animate({ scrollTop: 0 }, "slow");
-				_count = data.count;
+				_totalRecordsAtTime = data.count;
 				_records = data.records;
 			}else{
 				_records = _records.concat(data.records);

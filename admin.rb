@@ -55,7 +55,7 @@ class Admin < BaseApp
 		count = params[:count] && params[:count].to_i
 		p count
 		from = params[:from] && params[:from].to_i
-		records = { records: [], count: 0 }
+		records = { records: [], count: 0, from_scratch: true }
 		records = Watchdog::Global::Logs::Execution.get if from.nil? || from == 0
 		records = Watchdog::Global::Logs::Execution.get_from(from, count) unless from.nil? || from == 0
 		records.to_json

@@ -15,7 +15,7 @@ module Watchdog
 					selected = log.records.select { |record| DEFAULT_LEVELS.include? record.level }
 					count = selected.size
 					records = selected.take PAGE_SIZE
-					{ records: records, count: count }
+					{ records: records, count: count, from_scratch: true }
 				end
 
 				def get_from from, count
