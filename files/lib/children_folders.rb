@@ -16,10 +16,10 @@ module Files
       @commands.each do |command|
         command.exec
         children.concat command.children
-        WDLogger.debug "getting files for #{ @users } - #{ command.children.length } more added (not finished yet - #{children.length.to_s} until now)", @domain_data.name, @users unless command.children.empty?
+        WDLogger.debug "getting files for #{ @users } - #{ command.children.length } more added (not finished yet - #{children.length.to_s} until now)", @domain_data.name, @users.join(", ") unless command.children.empty?
         @commands.concat command.commands
       end
-      WDLogger.debug "getting files for #{ @users } - #{ children.length } - FINISHED", @domain_data.name, @users
+      WDLogger.debug "getting files for #{ @users } - #{ children.length } - FINISHED", @domain_data.name, @users.join(", ")
     end
 
   end
@@ -39,7 +39,7 @@ module Files
     end
 
     def exec
-      WDLogger.debug "checking folder #{@folder.inspect}", @domain_data.name, @users
+      WDLogger.debug "checking folder #{@folder.inspect}", @domain_data.name, @users.join(", ")
       begin
         result = DriveApiHelper.list_files @driveConnection, assembleParams(getPageToken(result))
         break unless result.success?
