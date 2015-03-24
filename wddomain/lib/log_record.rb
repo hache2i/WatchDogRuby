@@ -4,8 +4,18 @@ class LogRecord
 		@message = message
 		@domain = domain
 		@user = user
-		@when = Time.now
+		@when = Time.now.to_i
 		@level = :info
 		@level = level unless level.nil?
+	end
+
+	def to_hash
+		aux = {}
+		aux.merge! message: @message
+		aux.merge! domain: @domain
+		aux.merge! user: @user
+		aux.merge! level: @level
+		aux.merge! when: @when
+		aux
 	end
 end

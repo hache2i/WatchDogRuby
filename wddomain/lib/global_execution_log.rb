@@ -1,3 +1,5 @@
+require_relative 'db_execution_log'
+
 module Watchdog
 	module Global
 		module Logs
@@ -25,7 +27,8 @@ module Watchdog
 
 				def init
 					p "initialize execution log"
-					ExecutionLog.new
+					# ExecutionLog.new
+					DbExecutionLog
 				end
 
 			end
