@@ -22,7 +22,7 @@ module Files
         WDLogger.info "getting files - #{ command.children.length } more added (not finished yet - #{children.length.to_s} until now)", @domain_data.name, @users.join(", ") unless command.children.empty?
         @commands.concat command.commands
       end
-      WDLogger.debug "getting files for #{ @users } - #{ children.length } - FINISHED", @domain_data.name, @users.join(", ")
+      WDLogger.debug "getting files - #{ children.length } found - FINISHED", @domain_data.name, @users.join(", ")
     end
 
   end
