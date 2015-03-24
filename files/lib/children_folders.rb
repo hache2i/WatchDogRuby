@@ -13,10 +13,13 @@ module Files
 
     def get
       children = []
+      count = 0
       @commands.each do |command|
         command.exec
         children.concat command.children
-        WDLogger.debug "getting files for #{ @users } - #{ command.children.length } more added (not finished yet - #{children.length.to_s} until now)", @domain_data.name, @users.join(", ") unless command.children.empty?
+        count = count + 1
+        WDLogger.debug "getting files - just checked #{command.file_path} - #{count.to_s} folders checked", @domain_data.name, @users.join(", ")
+        WDLogger.info "getting files - #{ command.children.length } more added (not finished yet - #{children.length.to_s} until now)", @domain_data.name, @users.join(", ") unless command.children.empty?
         @commands.concat command.commands
       end
       WDLogger.debug "getting files for #{ @users } - #{ children.length } - FINISHED", @domain_data.name, @users.join(", ")
@@ -39,7 +42,7 @@ module Files
     end
 
     def exec
-      WDLogger.debug "checking folder #{@folder.inspect}", @domain_data.name, @users.join(", ")
+      # WDLogger.debug "checking folder #{@folder.inspect}", @domain_data.name, @users.join(", ")
       begin
         result = DriveApiHelper.list_files @driveConnection, assembleParams(getPageToken(result))
         break unless result.success?
@@ -56,6 +59,10 @@ module Files
           @commands << FolderChildren.new(@driveConnection, @users, childData, @domain_data, @path) if should_be_added_to_check
         end
       end while hasNextPage? result
+    end
+
+    def file_path
+      "#{@path}"
     end
 
     def is_from_docaccount item
