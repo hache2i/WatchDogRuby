@@ -4,7 +4,7 @@ class LogRecord
 		@message = message
 		@domain = domain
 		@user = user
-		@when = Time.now.to_i
+		@when = DateTime.now.strftime('%Q')
 		@level = :info
 		@level = level unless level.nil?
 	end
