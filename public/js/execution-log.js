@@ -30,11 +30,12 @@
 		var Table = React.createClass({ displayName: 'Table',
 			render: function(){
 				var createItem = function(item){
+					var when = new Date(parseInt(item.when));
 					return React.createElement('tr', { className: "file-record file-record-" + item.level },
 						React.createElement('td', null, item.domain),
 						React.createElement('td', null, (item.user && item.user.substr(0, 100))),
 						React.createElement('td', null, item.message.substr(0, 200)),
-						React.createElement('td', null, (new Date(item.when)).toString())
+						React.createElement('td', null, when.toLocaleString("es-ES"))
 					)
 				};
 				return (
