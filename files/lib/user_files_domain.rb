@@ -9,6 +9,7 @@ module Files
 			@user = aUser
 			@driveConnection = aDriveConnection
 			@driveConnection.authorize @user
+			WDLogger.info "UserFilesDomain initialized for #{@user}"
 		end
 
 	    def change_file_permission file
