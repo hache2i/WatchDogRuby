@@ -7,7 +7,7 @@ module Wd
 		class ChangeAllPendingFiles
 			def self.do domain
 				users_with_pending_files = Files::Changed.users domain
-				users_with_pending_files.each do |user|
+				users_with_pending_files.reverse.each do |user|
 					user_files = Files::Changed.pending_for_user user
 					userFilesDomain = Files::UserFilesDomain.new Files::DriveConnection.new, user, domain
 					userFilesDomain.changeUserFilesPermissions user_files
