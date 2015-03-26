@@ -26,10 +26,23 @@
 		};
 
 		var FilesCount = React.createClass({displayName: "Count",
+			handleChangePermissions: function(){
+				$.ajax({
+					type: "POST",
+					url: "/domain/pending/change/all",
+					success: function(data){
+						WD.Bus.send("pending-files-change-all-process-started");
+					},
+					error: function(){
+						alert("Error cambiando los permisos para todos los ficheros pendientes")
+					}
+				});
+			},
 			render: function(){
 				return React.createElement('div', { className: "files-count-container" },
 					React.createElement('span', null, "Total:"),
-					React.createElement('span', null, this.props.count)
+					React.createElement('span', null, this.props.count),
+					React.createElement('a', { onClick: this.handleChangePermissions }, "Change permissions")
 				)
 			}
 		});
@@ -46,6 +59,9 @@
 		});
 
 		WD.Bus.subscribe("pending-files-summary-fetched", _pendingFilesSummaryFetched);
+		WD.Bus.subscribe("pending-files-change-all-process-started", function(){
+			alert("procesando cambio de permisos para todos los fichero pendientes");
+		});
 
 		_getPendingFilesCount();
 	};

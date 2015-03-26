@@ -18,7 +18,8 @@ module Files
 			domainFilesToChange.each do |userFilesToChange|
 				user = userFilesToChange.getEmail
 				userFilesDomain = UserFilesDomain.new @driveConnection, user, domain
-				userFilesDomain.changeUserFilesPermissions userFilesToChange.getFiles
+				user_files = Changed.find(userFilesToChange.getFiles.map {|file| file["id"]})
+				userFilesDomain.changeUserFilesPermissions user_files
 			end
 		end
 

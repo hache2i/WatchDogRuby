@@ -12,19 +12,19 @@ module Files
 		end
 
 	    def change_file_permission file
-	    	change_proposal = Changed.find(file["id"])
-	    	return unless file["newOwner"] != file["oldOwner"]
-			new_owner_permission = DriveApiHelper.get_current_permission_for @driveConnection, file["newOwner"], file["fileId"]
+	    	change_proposal = file
+	    	return unless file.newOwner != file.oldOwner
+			new_owner_permission = DriveApiHelper.get_current_permission_for @driveConnection, file.newOwner, file.fileId
 			if new_owner_permission.nil?
-				api_result = DriveApiHelper.create_owner_permission @driveConnection, file["newOwner"], file["fileId"]
+				api_result = DriveApiHelper.create_owner_permission @driveConnection, file.newOwner, file.fileId
 			else
 				new_owner_permission.role = "owner"
-				api_result = DriveApiHelper.update_permission @driveConnection, file["fileId"], new_owner_permission
+				api_result = DriveApiHelper.update_permission @driveConnection, file.fileId, new_owner_permission
 			end
 			if api_result[:status] == 200
 		    	change_proposal.update_attributes!(pending: false, executed: Time.now.to_i)
 			else
-				WDLogger.error("(¡¡¡ FAILED !!!) change permission file '#{file["title"]}' #{api_result[:status].to_s}", @domain, @user)
+				WDLogger.error("(¡¡¡ FAILED !!!) change permission file '#{file.title}' #{api_result[:status].to_s}", @domain, @user)
 			end
 	    end
 

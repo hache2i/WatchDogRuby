@@ -14,6 +14,10 @@ module Files
     field :title, :type => String
     field :pending, :type => Boolean
 
+    def self.users domain
+        where(domain: domain).distinct(:oldOwner)
+    end
+
     def self.count_pending domain
         where(domain: domain, pending: true).count
     end
@@ -26,13 +30,7 @@ module Files
     end
 
     def self.pending_for_user user
-        user_files = where(oldOwner: user, pending: true).desc(:created_at).map do |file|
-            data = { title: file.title, oldOwner: file.oldOwner, newOwner: file.newOwner, id: file.id, parent: file.parentId }
-            data.merge! fileId: file.fileId
-            data.merge! path: file.path
-            data.merge! type: strfy_type(file)
-            data
-        end
+        user_files = where(oldOwner: user, pending: true).desc(:created_at)
         user_files
     end
 
