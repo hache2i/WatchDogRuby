@@ -19,6 +19,7 @@ module Files
 				user = userFilesToChange.getEmail
 				userFilesDomain = UserFilesDomain.new @driveConnection, user, domain
 				user_files = Changed.find(userFilesToChange.getFiles.map {|file| file["id"]})
+				WDLogger.info "Found #{user_files.count} for #{user}"
 				userFilesDomain.changeUserFilesPermissions user_files
 			end
 		end
