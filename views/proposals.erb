@@ -11,7 +11,7 @@
       <% @files.each do |file| %>
         <tr class="file-record" 
             data-title="<%= file[:title] %>"
-            data-id="<%= file[:id] %>"
+            data-id="<%= file[:_id] %>"
             data-fileid="<%= file[:fileId] %>"
             data-oldowner="<%= file[:oldOwner] %>"
             data-newowner="<%= file[:newOwner] %>"
