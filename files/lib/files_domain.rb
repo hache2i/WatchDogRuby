@@ -19,11 +19,8 @@ module Files
 			domainFilesToChange.each do |userFilesToChange|
 				user = userFilesToChange.getEmail
 				userFilesDomain = UserFilesDomain.new @driveConnection, user, domain
-				WDLogger.info "going to get ids"
 				files_ids = userFilesToChange.getFiles.map {|file| file["id"]}
-				WDLogger.info "going to get ids: #{files_ids}"
 				user_files = Changed.find(files_ids)
-				WDLogger.info "Found #{user_files.count} for #{user}"
 				userFilesDomain.changeUserFilesPermissions user_files
 			end
 		end
