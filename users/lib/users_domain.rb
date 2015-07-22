@@ -18,6 +18,13 @@ module Users
 			@api = @client.discovered_api('admin', 'directory_v1')
 		end
 
+		def getDocsAdmin(domain)
+		    return 'admincloud@cfarco.com' if domain == 'cfarco.com'
+		    return 'documentation@watchdog.h2itec.com' if domain == 'watchdog.h2itec.com'
+		    return 'documentacion@lfp.es' if domain == 'lfp.es'
+		    raise Exception.new("unknown domain")
+		end
+
 		def getUsers(email)
 			WDLogger.debug("get users on users domain")
 			@client.authorization = @serviceAccount.authorize(email)

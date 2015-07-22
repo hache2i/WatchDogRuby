@@ -54,6 +54,10 @@ module Watchdog
 				watchdog.reassingOwnership admin, docsOwner
 			end
 
+			def getDocsAdmin(domain)
+				watchdog.getDocsAdmin(domain)
+			end
+
 			private 
 
 			def watchdog

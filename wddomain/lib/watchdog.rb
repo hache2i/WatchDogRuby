@@ -92,5 +92,9 @@ module WDDomain
 		def reassingOwnership(admin, docsOwner)
 		end
 
+		def getDocsAdmin(domain)
+			@usersDomain.getDocsAdmin(domain)
+		end
+
 	end
 end

@@ -99,14 +99,14 @@ class Web < BaseApp
   end
 
   get '/common-folders', :provides => :json do
-    docaccount = getOwnerByDomain
+    docaccount = Watchdog::Global::Watchdog.getDocsAdmin(@domain)
     common_folders =  Wd::Actions::GetCommonFolders.do docaccount
     common_folders.to_json
   end
 
   post '/child-folders' do
     WDLogger.info "Getting Files to Change"
-    docaccount = getOwnerByDomain
+    docaccount = Watchdog::Global::Watchdog.getDocsAdmin(@domain)
     usersToProcces = strToArray(params['sortedIdsStr'])
 
     Thread.abort_on_exception = true
@@ -182,10 +182,4 @@ class Web < BaseApp
     usersStr.split(',')
   end
 
-  def getOwnerByDomain
-    return 'admincloud@cfarco.com' if @domain == 'cfarco.com'
-    return 'documentation@watchdog.h2itec.com' if @domain == 'watchdog.h2itec.com'
-    return 'documentacion@lfp.es' if @domain == 'lfp.es'
-    raise Exception.new("unknown domain")
-  end
 end
