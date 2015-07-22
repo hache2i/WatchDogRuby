@@ -4,6 +4,8 @@ require_relative 'base_app'
 require_relative 'lib/notifier'
 require_relative './wdconfig/lib/config_domain'
 
+require_relative './actions/activate_domain'
+
 $LOAD_PATH.push(File.expand_path(File.join(File.dirname(__FILE__), '../')))
 
 class Admin < BaseApp
@@ -18,14 +20,17 @@ class Admin < BaseApp
 
 	post '/activateDomain' do
 		begin
+			docs_admin = params['docs_admin']
 			domain = params['domain']
 			licenses = params['licenses']
-			Watchdog::Global::Domains.activate domain, licenses
+			Wd::Actions::ActivateDomain.do domain, docs_admin, licenses
 			redirect '/admin/listDomains'
 		rescue DomainNotSpecifiedException => e 
 			errorOnActivation 'activate.domain.domain.required'
 		rescue LicensesNotSpecifiedException => e 
 			errorOnActivation 'activate.domain.licenses.required'
+		rescue ActivateDomainWrongParams => e 
+			errorOnActivation e.message
 		end
 	end
 

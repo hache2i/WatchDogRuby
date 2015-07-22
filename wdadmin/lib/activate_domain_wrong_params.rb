@@ -1,0 +1,2 @@
+class ActivateDomainWrongParams < Exception
+end

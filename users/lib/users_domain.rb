@@ -3,6 +3,7 @@ require 'google/api_client'
 require_relative '../../wd_logger'
 require_relative '../../files/lib/service_account'
 require_relative 'user'
+require_relative 'docs_admins'
 
 module Users
 	class UsersDomain
@@ -19,10 +20,8 @@ module Users
 		end
 
 		def getDocsAdmin(domain)
-		    return 'admincloud@cfarco.com' if domain == 'cfarco.com'
-		    return 'documentation@watchdog.h2itec.com' if domain == 'watchdog.h2itec.com'
-		    return 'documentacion@lfp.es' if domain == 'lfp.es'
-		    raise Exception.new("unknown domain")
+			docs_admin = DocsAdmins.find_by(domain: domain)
+			docs_admin[:admin]
 		end
 
 		def getUsers(email)

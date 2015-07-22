@@ -1,6 +1,7 @@
 class Notifier
 
 	Messages = {
+		'activate.domain.docsadmin.required' => 'Docs admin has to be specified.',
 		'activate.domain.licenses.required' => 'Licenses has to be specified.',
 		'activate.domain.domain.required' => 'Domain has to be specified.',
 		'users.domain.exception' => 'There was a problem with the Users functionality.',
