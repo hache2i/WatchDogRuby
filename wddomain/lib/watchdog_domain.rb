@@ -38,8 +38,8 @@ module Watchdog
 				watchdog.isAdmin email
 			end
 
-			def getUsers(email)
-				watchdog.getUsers email
+			def getUsers(email, domain)
+				watchdog.getUsers email, domain
 			end
 
 			def files_under_common_structure users, domain_data

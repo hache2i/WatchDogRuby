@@ -53,7 +53,7 @@ class Web < BaseApp
   get '/users' do
     WDLogger.info "Getting Users"
     begin
-      @users = Watchdog::Global::Watchdog.getUsers @userEmail
+      @users = Watchdog::Global::Watchdog.getUsers @userEmail, @domain
       erb :users, :layout => :home_layout
     rescue UsersDomainException => e
       showError 'users.domain.exception'

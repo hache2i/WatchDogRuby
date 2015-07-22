@@ -24,19 +24,20 @@ module Users
 			docs_admin[:admin]
 		end
 
-		def getUsers(email)
+		def getUsers(email, domain)
 			WDLogger.debug("get users on users domain")
 			@client.authorization = @serviceAccount.authorize(email)
 			customerId = getCustomerId email
-			mails = [];
+			users = [];
 			begin
 				result = @client.execute(
 					:api_method => @api.users.list, 
 					:parameters => assembleParams(getPageToken(result), customerId))
 				raise UsersDomainException if !result.status.eql? 200
-				mails.concat(result.data.users.map{|user| User.new(user['primaryEmail'])})
+				users.concat(result.data.users.map{|user| User.new(user['primaryEmail'])})
 			end while hasNextPage? result
-			mails
+			docs_admin = getDocsAdmin domain
+			users.select { |user| user.email != docs_admin}
 		end
 
 		def assembleParams(pageToken, customerId)

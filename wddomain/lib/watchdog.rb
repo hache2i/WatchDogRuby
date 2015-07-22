@@ -58,8 +58,8 @@ module WDDomain
 			@usersDomain.isAdmin email
 		end
 
-		def getUsers(email)
-			@usersDomain.getUsers(email)
+		def getUsers(email, domain)
+			@usersDomain.getUsers(email, domain)
 		end
 
 		def files_under_common_structure users, domain_data
