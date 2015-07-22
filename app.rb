@@ -50,40 +50,6 @@ class Web < BaseApp
     erb :index, :layout => :home_layout
   end
 
-  get '/config' do
-    executionConfig = Watchdog::Global::Watchdog.getScheduledExecutionConfig(@domain)
-    @timing = executionConfig.getTiming
-    @newOwner = executionConfig.getDocsOwner
-    @scheduled = executionConfig.scheduled?
-    erb :config, :layout => :home_layout
-  end
-
-  post '/config' do
-    begin
-      Watchdog::Global::Watchdog.configScheduledExecution(@domain, @userEmail, params['newOwner'], params['timing'])
-      @message = Notifier.message_for 'config.saved'
-    rescue TimingNotSpecifiedException => e
-      showError 'scheduled.execution.config.timing.required'
-    rescue DocsownerNotSpecifiedException => e
-      showError 'scheduled.execution.config.docsowner.required'
-    end
-    erb :index, :layout => :home_layout
-  end
-
-  post '/scheduleOnce' do
-    puts "running once for " + @domain
-    Watchdog::Global::Watchdog.scheduleOnce(@domain, @userEmail, params['newOwner'])
-    erb :index, :layout => :home_layout
-  end
-
-  get '/unschedule' do
-    executionConfig = Watchdog::Global::Watchdog.unschedule(@domain)
-    @timing = executionConfig.getTiming
-    @newOwner = executionConfig.getDocsOwner
-    @scheduled = executionConfig.scheduled?
-    erb :config, :layout => :home_layout
-  end
-
   get '/users' do
     WDLogger.info "Getting Users"
     begin
