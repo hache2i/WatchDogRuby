@@ -60,6 +60,18 @@ class Web < BaseApp
     end
   end
 
+  get '/api/users', provides: :json do
+    users = Watchdog::Global::Watchdog.getUsers @userEmail, @domain
+    users_data = users.map do |user|
+      { email: user.email, name: user.name }
+    end
+    users_data.to_json
+  end
+
+  get '/discover' do
+    erb :discover, :layout => :home_layout
+  end
+
   get '/common-folders-page' do
     erb :common_folders, :layout => :home_layout
   end
@@ -80,7 +92,7 @@ class Web < BaseApp
       domain_data = DomainData.new @domain, docaccount
       Watchdog::Global::Watchdog.files_under_common_structure usersToProcces, domain_data
     }
-    redirect "/domain/users"
+    redirect "/domain/"
   end
 
   get '/pending' do

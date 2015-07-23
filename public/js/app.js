@@ -2,12 +2,74 @@ var WD= {};
 
 WD.initialize = function(){
   WD.Bus = new WD.BusConst();
+  if ($("#discover-page").length) WD.initializeDiscoverPage();
   if ($("#new-files-page").length) WD.initializeNewFilesPage();
   if ($("#common-folders-page").length) WD.initializeCommonFoldersPage();
   if ($("#pending-files-page").length) WD.initializePendingFilesPage();
   if ($("#proposed-files-page").length) WD.initializeProposedFilesPage();
   if ($("#files-changed-page").length) WD.initializeFilesChangedPage();
   if ($("#exec-log").length) WD.initializeExecLog();
+};
+
+WD.initializeDiscoverPage = function(){
+  $.ajax({
+    type: "GET",
+    url: "/domain/api/users",
+    success: function(data){
+      WD.buildUsersList($("#discover-container"));
+      data.forEach(function(user){
+        var userItem = $("<tr class='user'>");
+        var td = $("<td id='userName'></td>");
+        td.append(user.email);
+        userItem.append(td);
+
+        var selectBoxItem = $("<td>");
+        var selectBox = $("<input type='checkbox' class='select_files' />");
+        selectBox.attr("id", user.name);
+        selectBox.attr("value", user.email);
+        selectBoxItem.append(selectBox);
+        userItem.append(selectBoxItem);
+
+        $("#users-container").append(userItem);
+      });
+      var button = $("<button id='childFoldersBtn' class='btn btn-large btn-primary'>Descubrir</button>");
+      $("#discover-container").append(button);
+
+      $('#select_all').click(function(){
+      checkboxes = $( "input[type='checkbox']" );
+      for (var i = checkboxes.length - 1; i >= 0; i--) {
+        $(checkboxes[i]).attr('checked', $(this).attr('checked')?$(this).attr('checked'):false);
+      };
+      });
+      $("#childFoldersBtn").click(function(){
+        $(this).spin(APP.spinOpts);
+        var users = $('tbody').find($( "input:checked" ));
+        var for_files = [];
+        for (var i = users.length - 1; i >= 0; i--) {
+          for_files.push(users[i].value);
+        };
+        console.log(for_files);
+        $('#sortedIdsStrForChildFolders').val(for_files.join());
+        $('#child-folders-form').submit();
+      });
+    },
+    error: function(){
+      console.log("error getting changed files");
+    }
+  });
+
+};
+
+WD.buildUsersList = function(container){
+  var usersList = $("<table class='table table-striped users no_caducity' id='users'>");
+
+  var header = $("<thead><tr><th>Email</th><th><input type='checkbox' id='select_all' /></th></tr></thead>")
+  usersList.append(header);
+
+  var body = $("<tbody id='users-container'>");
+  usersList.append(body);
+
+  container.append(usersList);
 };
 
 WD.initializeExecLog = function(){
