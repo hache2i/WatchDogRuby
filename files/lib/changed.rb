@@ -34,6 +34,11 @@ module Files
         user_files
     end
 
+    def self.pending_for_users users, from
+        user_files = self.in(oldOwner: users).where(pending: true).limit(5).skip(from).desc(:created_at)
+        user_files
+    end
+
     def self.strfy_type file
         type = "Folder"
         type = "File" unless file.isFolder

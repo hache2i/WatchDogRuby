@@ -16,6 +16,7 @@ require_relative './files/lib/changed'
 require_relative './files/lib/changed'
 require_relative './actions/get_pending_proposals'
 require_relative './actions/get_pending_files_count'
+require_relative './actions/get_pending_files'
 require_relative './actions/get_common_folders'
 require_relative './actions/change_all_pending_files'
 
@@ -105,6 +106,17 @@ class Web < BaseApp
     pending_files_count = Wd::Actions::GetPendingFilesCount.do @domain
 
     pending_files_count.to_json
+  end
+
+  post '/pending/files', :provides => :json do
+    WDLogger.info "Getting Pending Files"
+    p "Getting Pending Files"
+    from = params[:from].to_i
+
+    access_data = { userEmail: @userEmail, domain: @domain }
+    files = Wd::Actions::GetPendingFiles.do from, nil, access_data
+
+    files.to_json
   end
 
   post '/pending/change/all', :provides => :json do
