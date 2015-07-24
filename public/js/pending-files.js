@@ -72,12 +72,33 @@
 			},
 			render: function(){
 				var filesNodes = this.props.files.map(function(file){
-					var fileData = file.title + " ## " + file.oldOwner + " ## " + file.newOwner;
-					return React.createElement("li", {}, fileData);
+					return React.createElement("tr", {},
+						React.createElement("td", {}, file.title),
+						React.createElement("td", {}, file.path),
+						React.createElement("td", {}, file.type),
+						React.createElement("td", {}, file.oldOwner),
+						React.createElement("td", {}, file.newOwner)
+					);
 				});
-				var listNode = React.createElement("ul", {}, filesNodes);
-				var moreBtn = React.createElement("a", { onClick: this.handleClick }, "Más");
-				return React.createElement("div", {}, listNode, moreBtn);
+				return React.createElement("table", { className: "table table-striped", id: "files" },
+					React.createElement("thead", {},
+						React.createElement("tr", {},
+							React.createElement("td", {}, "Titulo"),
+							React.createElement("td", {}, "Path"),
+							React.createElement("td", {}, "Tipo"),
+							React.createElement("td", {}, "Antiguo Propietario"),
+							React.createElement("td", {}, "Nuevo Propietario")
+						)
+					),
+					React.createElement("tbody", {}, filesNodes)
+				);
+				// var filesNodes = this.props.files.map(function(file){
+				// 	var fileData = file.title + " ## " + file.oldOwner + " ## " + file.newOwner;
+				// 	return React.createElement("li", {}, fileData);
+				// });
+				// var listNode = React.createElement("ul", {}, filesNodes);
+				// var moreBtn = React.createElement("a", { onClick: this.handleClick }, "Más");
+				// return React.createElement("div", {}, listNode, moreBtn);
 			}
 		});
 
