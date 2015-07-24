@@ -72,7 +72,8 @@
 			},
 			render: function(){
 				var filesNodes = this.props.files.map(function(file){
-					return React.createElement("li", {}, file.name);
+					var fileData = file.title + " ## " + file.oldOwner + " ## " + file.newOwner;
+					return React.createElement("li", {}, fileData);
 				});
 				var listNode = React.createElement("ul", {}, filesNodes);
 				var moreBtn = React.createElement("a", { onClick: this.handleClick }, "Más");
