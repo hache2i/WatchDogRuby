@@ -9,7 +9,7 @@ module Wd
                 p "pending id: #{pendingId} for domain: #{domain}"
                 pendingFile = Files::Changed.find(pendingId)
                 userFilesDomain = Files::UserFilesDomain.new Files::DriveConnection.new, pendingFile.oldOwner, domain
-                userFilesDomain.changeFilePermission pendingFile
+                userFilesDomain.change_file_permission pendingFile
             end
         end
     end
