@@ -13,6 +13,7 @@ module Files
 		end
 
 	    def change_file_permission file
+			WDLogger.info "changing file #{file.inspect}"
 	    	change_proposal = file
 	    	return unless file.newOwner != file.oldOwner
 			new_owner_permission = DriveApiHelper.get_current_permission_for @driveConnection, file.newOwner, file.fileId
