@@ -9,11 +9,11 @@ module Files
 			@user = aUser
 			@driveConnection = aDriveConnection
 			@driveConnection.authorize @user
-			WDLogger.info "UserFilesDomain initialized for #{@user}"
+			WDLogger.debug "UserFilesDomain initialized for #{@user}"
 		end
 
 	    def change_file_permission file
-			WDLogger.info "changing file #{file.inspect}"
+			WDLogger.info "changing permission for file #{file.path} from #{file.oldOwner} to #{file.newOwner}"
 	    	change_proposal = file
 	    	return unless file.newOwner != file.oldOwner
 			new_owner_permission = DriveApiHelper.get_current_permission_for @driveConnection, file.newOwner, file.fileId
