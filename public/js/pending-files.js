@@ -5,39 +5,20 @@
 		var index = 0;
 		var _files = [];
 
-		var _getPendingFiles = function(){
-			$.ajax({
-				type: "POST",
-				url: "/domain/pending/files",
-				data: { from: index },
-				success: function(data){
-					data.forEach(function(newFile){
-						_files.push(newFile);
-					});
-					index = index + data.length;
-					_pendingFilesSummaryFetched();
-				},
-				error: function(){
-					alert("Error obteniendo la cuenta de pendientes");
-				}
+		var _pendingFilesFetched = function(data){
+			data.forEach(function(newFile){
+				_files.push(newFile);
 			});
+			index = index + data.length;
+			renderEverything();
 		};
 
-		var _getPendingFilesCount = function(){
-			$.ajax({
-				type: "GET",
-				url: "/domain/pending/count",
-				success: function(data){
-					_summary = data;
-					WD.Bus.send("pending-files-summary-fetched", data);
-				},
-				error: function(){
-					alert("Error obteniendo la cuenta de pendientes");
-				}
-			});
+		var _pendingFilesSummaryFetched = function(data){
+			_summary = data;
+			renderEverything();
 		};
 
-		var _pendingFilesSummaryFetched = function(){
+		var renderEverything = function(){
 			React.render(
 				React.createElement(Page, { summary: _summary, files: _files }),
 				document.getElementById('pending-files-page')
@@ -46,16 +27,7 @@
 
 		var FilesCount = React.createClass({displayName: "Count",
 			handleChangePermissions: function(){
-				$.ajax({
-					type: "POST",
-					url: "/domain/pending/change/all",
-					success: function(data){
-						WD.Bus.send("pending-files-change-all-process-started");
-					},
-					error: function(){
-						alert("Error cambiando los permisos para todos los ficheros pendientes")
-					}
-				});
+				WD.Backend.changeAllPendingPermissions();
 			},
 			render: function(){
 				return React.createElement('div', { className: "files-count-container" },
@@ -66,17 +38,30 @@
 			}
 		});
 
-		var Files = React.createClass({displayName: 'Files',
+		var ChangeLink = React.createClass({displayName: 'ChangeLink',
 			handleClick: function(){
-				_getPendingFiles();
+				WD.Backend.changePermission(this.props.permissionId);
 			},
 			render: function(){
+				return React.createElement("a", { onClick: this.handleClick }, "Cambiar");
+			}
+		});
+
+		var Files = React.createClass({displayName: 'Files',
+			handleClick: function(){
+				WD.Backend.getPendingFiles(index);
+			},
+			render: function(){
+				var changePermissionFn = this.changePermission;
 				var filesNodes = this.props.files.map(function(file){
 					return React.createElement("tr", {},
 						React.createElement("td", {}, file.title),
 						React.createElement("td", {}, file.path),
 						React.createElement("td", {}, file.oldOwner),
-						React.createElement("td", {}, file.newOwner)
+						React.createElement("td", {}, file.newOwner),
+						React.createElement("td", {}, 
+							React.createElement(ChangeLink, { permissionId: file._id })
+						)
 					);
 				});
 				var filesTable = React.createElement("table", { className: "table table-striped", id: "files" },
@@ -85,7 +70,8 @@
 							React.createElement("td", {}, "Titulo"),
 							React.createElement("td", {}, "Path"),
 							React.createElement("td", {}, "Antiguo Propietario"),
-							React.createElement("td", {}, "Nuevo Propietario")
+							React.createElement("td", {}, "Nuevo Propietario"),
+							React.createElement("td", {}, "")
 						)
 					),
 					React.createElement("tbody", {}, filesNodes)
@@ -107,18 +93,15 @@
 			}
 		});
 
+		WD.Bus.subscribe("pending-files-fetched", _pendingFilesFetched);
 		WD.Bus.subscribe("pending-files-summary-fetched", _pendingFilesSummaryFetched);
 		WD.Bus.subscribe("pending-files-change-all-process-started", function(){
 			alert("procesando cambio de permisos para todos los fichero pendientes");
 		});
 
-		React.render(
-			React.createElement(Page, { summary: _summary, files: _files }),
-			document.getElementById('pending-files-page')
-		);
-
-		_getPendingFilesCount();
-		_getPendingFiles();
+		renderEverything();
+		WD.Backend.getPendingFilesCount();
+		WD.Backend.getPendingFiles(index);
 	};
 
 	return ns;

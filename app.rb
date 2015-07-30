@@ -19,6 +19,7 @@ require_relative './actions/get_pending_files_count'
 require_relative './actions/get_pending_files'
 require_relative './actions/get_common_folders'
 require_relative './actions/change_all_pending_files'
+require_relative './actions/change_pending_file'
 
 require_relative 'base_app'
 require_relative 'login'
@@ -126,6 +127,12 @@ class Web < BaseApp
       Wd::Actions::ChangeAllPendingFiles.do @domain
     }
 
+    { msg: "yeah" }.to_json
+  end
+
+  post '/pending/change', :provides => :json do
+    WDLogger.info "Changing permission for a pending file"
+    Wd::Actions::ChangePendingFile.do params[:permissionId], @domain
     { msg: "yeah" }.to_json
   end
 
