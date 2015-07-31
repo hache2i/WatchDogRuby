@@ -12,7 +12,7 @@ class DbExecutionLog
     field :when, :type => String
 
 	MAX_RECORDS = 10000
-	DEFAULT_LEVELS = [:info, :error, :debug]
+	DEFAULT_LEVELS = [:info, :error]
 	PAGE_SIZE = 25
 
 

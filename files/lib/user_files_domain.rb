@@ -36,6 +36,7 @@ module Files
 				WDLogger.debug("change permission file: " + file.inspect, @domain, @user)
 				change_file_permission file
 			end
+			WDLogger.info("change permissions for #{files.length.to_s} files FINISHED", @domain, @user)
 		end
 
 
