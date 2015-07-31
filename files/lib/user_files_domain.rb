@@ -12,10 +12,10 @@ module Files
 			WDLogger.debug "UserFilesDomain initialized for #{@user}"
 		end
 
-	    def change_file_permission file
+		def change_file_permission file
 			WDLogger.info "changing permission for file #{file.path} from #{file.oldOwner} to #{file.newOwner}"
-	    	change_proposal = file
-	    	return unless file.newOwner != file.oldOwner
+			change_proposal = file
+			return unless file.newOwner != file.oldOwner
 			new_owner_permission = DriveApiHelper.get_current_permission_for @driveConnection, file.newOwner, file.fileId
 			if new_owner_permission.nil?
 				api_result = DriveApiHelper.create_owner_permission @driveConnection, file.newOwner, file.fileId
@@ -24,11 +24,11 @@ module Files
 				api_result = DriveApiHelper.update_permission @driveConnection, file.fileId, new_owner_permission
 			end
 			if api_result[:status] == 200
-		    	change_proposal.update_attributes!(pending: false, executed: Time.now.to_i)
+				change_proposal.update_attributes!(pending: false, executed: Time.now.to_i)
 			else
 				WDLogger.error("(¡¡¡ FAILED !!!) change permission file '#{file.title}' #{api_result[:status].to_s}", @domain, @user)
 			end
-	    end
+		end
 
 		def changeUserFilesPermissions files
 			WDLogger.info("change permissions for #{files.length.to_s} files", @domain, @user)

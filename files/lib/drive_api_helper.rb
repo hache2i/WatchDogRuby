@@ -15,7 +15,8 @@ module Files
         :parameters => { 'fileId' => file_id }
       )
       { :status => api_result.status }
-    rescue
+    rescue => e
+      WDLogger.error "DriveApiHelper.create_owner_permission - #{ e.inspect }"
       { :status => 666 }
     end
 
@@ -79,7 +80,8 @@ module Files
         }
       )
       { :status => api_result.status }
-    rescue
+    rescue => e
+      WDLogger.error "DriveApiHelper.update_permission - #{ e.inspect }"
       { :status => 666 }
     end
 
