@@ -10,12 +10,12 @@ module Watchdog
 					log.add msg, domain, user, level
 				end
 
-				def get
-					log.get
+				def get debug
+					log.get debug
 				end
 
-				def get_from from, total_at_time
-					log.get_from from, total_at_time
+				def get_from from, total_at_time, debug
+					log.get_from from, total_at_time, debug
 				end
 
 				private
