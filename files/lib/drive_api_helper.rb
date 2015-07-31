@@ -4,6 +4,7 @@ module Files
   class DriveApiHelper
 
     def self.create_owner_permission driveConnection, email, file_id
+      WDLogger.debug("DriveApiHelper.create_owner_permission")
       new_permission = driveConnection.drive.permissions.insert.request_schema.new({
         'value' => email,
         'type' => 'user',
@@ -70,6 +71,7 @@ module Files
     end
 
     def self.update_permission driveConnection, fileId, permission
+      WDLogger.debug("DriveApiHelper.update_permission")
       api_result = driveConnection.client.execute(
         :api_method => driveConnection.drive.permissions.update,
         :body_object => permission,
