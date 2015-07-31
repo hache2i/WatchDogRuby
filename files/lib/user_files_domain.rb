@@ -32,9 +32,12 @@ module Files
 
 		def changeUserFilesPermissions files
 			WDLogger.info("change permissions for #{files.length.to_s} files", @domain, @user)
+			pending = files.size
 			files.each do |file|
 				WDLogger.debug("change permission file: " + file.inspect, @domain, @user)
 				change_file_permission file
+				pending = pending.pred
+				WDLogger.info("#{pending} pending", @domain, @user)
 			end
 			WDLogger.info("change permissions for #{files.length.to_s} files FINISHED", @domain, @user)
 		end
