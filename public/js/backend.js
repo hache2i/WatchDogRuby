@@ -2,24 +2,38 @@
 
     ns.Backend = ns.Backend || {};
 
-    ns.Backend.getPendingFiles = function(from){
+    ns.Backend.getUsersWithPendingFiles = function(){
         $.ajax({
-            type: "POST",
-            url: "/domain/pending/files",
-            data: { from: from },
+            type: "GET",
+            url: "/domain/pending/files/users",
             success: function(data){
-                WD.Bus.send("pending-files-fetched", data);
+                WD.Bus.send("users-pending-files-fetched", data);
             },
             error: function(){
-                alert("Error obteniendo la cuenta de pendientes");
+                alert("Error obteniendo los usuarios con ficheros pendientes");
             }
         });
     };
 
-    ns.Backend.getPendingFilesCount = function(){
+    ns.Backend.getPendingFiles = function(from, filter){
+        $.ajax({
+            type: "POST",
+            url: "/domain/pending/files",
+            data: { from: from, filter: filter },
+            success: function(data){
+                WD.Bus.send("pending-files-fetched", data);
+            },
+            error: function(){
+                alert("Error obteniendo los ficheros pendientes");
+            }
+        });
+    };
+
+    ns.Backend.getPendingFilesCount = function(filter){
         $.ajax({
             type: "GET",
             url: "/domain/pending/count",
+            data: { filter: filter },
             success: function(data){
                 WD.Bus.send("pending-files-summary-fetched", data);
             },
@@ -29,10 +43,11 @@
         });
     };
 
-    ns.Backend.changeAllPendingPermissions = function(){
+    ns.Backend.changeAllPendingPermissions = function(filter){
         $.ajax({
             type: "POST",
             url: "/domain/pending/change/all",
+            data: { filter: filter },
             success: function(data){
                 WD.Bus.send("pending-files-change-all-process-started");
             },

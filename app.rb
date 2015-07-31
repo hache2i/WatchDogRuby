@@ -16,6 +16,7 @@ require_relative './files/lib/changed'
 require_relative './files/lib/changed'
 require_relative './actions/get_pending_proposals'
 require_relative './actions/get_pending_files_count'
+require_relative './actions/get_users_with_pending_files'
 require_relative './actions/get_pending_files'
 require_relative './actions/get_common_folders'
 require_relative './actions/change_all_pending_files'
@@ -104,18 +105,32 @@ class Web < BaseApp
   get '/pending/count', :provides => :json do
     WDLogger.info "Getting Pending Files Count"
 
-    pending_files_count = Wd::Actions::GetPendingFilesCount.do @domain
+    filter = params[:filter]
+    filter = nil if filter.eql? "nil"
+
+    pending_files_count = Wd::Actions::GetPendingFilesCount.do @domain, filter
 
     pending_files_count.to_json
   end
 
-  post '/pending/files', :provides => :json do
-    WDLogger.info "Getting Pending Files"
-    p "Getting Pending Files"
-    from = params[:from].to_i
+  get '/pending/files/users', :provides => :json do
+    WDLogger.info "Getting Users with Pending Files"
 
     access_data = { userEmail: @userEmail, domain: @domain }
-    files = Wd::Actions::GetPendingFiles.do from, nil, access_data
+    users = Wd::Actions::GetUsersWithPendingFiles.do access_data
+
+    users.to_json
+  end
+
+  post '/pending/files', :provides => :json do
+    WDLogger.info "Getting Pending Files"
+
+    from = params[:from].to_i
+    filter = params[:filter]
+    filter = nil if filter.eql? "nil"
+
+    access_data = { userEmail: @userEmail, domain: @domain }
+    files = Wd::Actions::GetPendingFiles.do from, filter, access_data
 
     files.to_json
   end
@@ -123,8 +138,11 @@ class Web < BaseApp
   post '/pending/change/all', :provides => :json do
     WDLogger.info "Changing permission for all pending files"
 
+    filter = params[:filter]
+    filter = nil if filter.eql? "nil"
+
     Thread.new {
-      Wd::Actions::ChangeAllPendingFiles.do @domain
+      Wd::Actions::ChangeAllPendingFiles.do @domain, filter
     }
 
     { msg: "yeah" }.to_json
