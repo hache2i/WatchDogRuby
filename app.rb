@@ -54,7 +54,7 @@ class Web < BaseApp
   end
 
   get '/users' do
-    WDLogger.info "Getting Users"
+    WDLogger.debug "Getting Users"
     begin
       @users = Watchdog::Global::Watchdog.getUsers @userEmail, @domain
       erb :users, :layout => :home_layout
@@ -86,7 +86,7 @@ class Web < BaseApp
   end
 
   post '/child-folders' do
-    WDLogger.info "Getting Files to Change"
+    WDLogger.debug "Getting Files to Change"
     docaccount = Watchdog::Global::Watchdog.getDocsAdmin(@domain)
     usersToProcces = strToArray(params['sortedIdsStr'])
 
@@ -103,7 +103,7 @@ class Web < BaseApp
   end
 
   get '/pending/count', :provides => :json do
-    WDLogger.info "Getting Pending Files Count"
+    WDLogger.debug "Getting Pending Files Count"
 
     filter = params[:filter]
     filter = nil if filter.eql? "nil"
@@ -114,7 +114,7 @@ class Web < BaseApp
   end
 
   get '/pending/files/users', :provides => :json do
-    WDLogger.info "Getting Users with Pending Files"
+    WDLogger.debug "Getting Users with Pending Files"
 
     access_data = { userEmail: @userEmail, domain: @domain }
     users = Wd::Actions::GetUsersWithPendingFiles.do access_data
@@ -123,7 +123,7 @@ class Web < BaseApp
   end
 
   post '/pending/files', :provides => :json do
-    WDLogger.info "Getting Pending Files"
+    WDLogger.debug "Getting Pending Files"
 
     from = params[:from].to_i
     filter = params[:filter]
@@ -136,7 +136,7 @@ class Web < BaseApp
   end
 
   post '/pending/change/all', :provides => :json do
-    WDLogger.info "Changing permission for all pending files"
+    WDLogger.debug "Changing permission for all pending files"
 
     filter = params[:filter]
     filter = nil if filter.eql? "nil"
@@ -149,13 +149,13 @@ class Web < BaseApp
   end
 
   post '/pending/change', :provides => :json do
-    WDLogger.info "Changing permission for a pending file"
+    WDLogger.debug "Changing permission for a pending file"
     Wd::Actions::ChangePendingFile.do params[:permissionId], @domain
     { msg: "yeah" }.to_json
   end
 
   post '/get-proposals' do
-    WDLogger.info "Getting Change Proposals"
+    WDLogger.debug "Getting Change Proposals"
 
     usersToProcces = strToArray(params['sortedIdsStr'])
 
@@ -166,7 +166,7 @@ class Web < BaseApp
   end
 
   post '/new-change-permissions', :provides => :json do
-    WDLogger.info 'Change Permissions'
+    WDLogger.debug 'Change Permissions'
     files = JSON.parse(params['files'])
     files_to_change = Files::FilesToChange.group_by_user files
 
@@ -178,12 +178,12 @@ class Web < BaseApp
   end
 
   get '/changed-page' do
-    WDLogger.info "Changed Page"
+    WDLogger.debug "Changed Page"
     erb :changes_log, :layout => :home_layout
   end
 
   get '/changed', :provides => :json do
-    WDLogger.info 'Changed Files'
+    WDLogger.debug 'Changed Files'
     Files::Changed.where(:domain => @domain).limit(100).desc(:executed).to_json
   end
 
