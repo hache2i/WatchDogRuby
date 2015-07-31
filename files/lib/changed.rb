@@ -15,7 +15,7 @@ module Files
     field :pending, :type => Boolean
 
     def self.users domain
-        where(domain: domain).distinct(:oldOwner)
+        where(domain: domain, pending: true).distinct(:oldOwner)
     end
 
     def self.count_pending domain
