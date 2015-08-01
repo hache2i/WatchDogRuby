@@ -90,7 +90,6 @@ module Files
     end
 
     def self.get_current_permission_for driveConnection, email, fileId
-      raise BlaException.new
       WDLogger.debug("DriveApiHelper.get_current_permission_for")
       api_result = driveConnection.client.execute(
         :api_method => driveConnection.drive.permissions.list,
@@ -127,7 +126,4 @@ module Files
 
   end
 
-end
-
-class BlaException < Exception
 end
