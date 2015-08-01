@@ -16,7 +16,7 @@ module Files
         :parameters => { 'fileId' => file_id }
       )
       { :status => api_result.status }
-    rescue => e
+    rescue Exception => e
       WDLogger.error "DriveApiHelper.create_owner_permission - #{ e.inspect }"
       { :status => 666 }
     end
@@ -90,6 +90,7 @@ module Files
     end
 
     def self.get_current_permission_for driveConnection, email, fileId
+      WDLogger.debug("DriveApiHelper.get_current_permission_for")
       api_result = driveConnection.client.execute(
         :api_method => driveConnection.drive.permissions.list,
         :parameters => {
@@ -103,7 +104,8 @@ module Files
         p "fuck"
       end
       permission
-    rescue
+    rescue Exception => e
+      WDLogger.error("DriveApiHelper.get_current_permission_for - #{ e.inspect }")
       nil
     end
 
