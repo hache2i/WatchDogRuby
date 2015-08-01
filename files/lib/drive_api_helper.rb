@@ -84,7 +84,7 @@ module Files
       )
       WDLogger.debug("DriveApiHelper.update_permission api_result fetched")
       { :status => api_result.status }
-    rescue => e
+    rescue Exception => e
       WDLogger.error "DriveApiHelper.update_permission - #{ e.inspect }"
       { :status => 666 }
     end
