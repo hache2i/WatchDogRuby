@@ -142,9 +142,11 @@ class Web < BaseApp
     filter = nil if filter.eql? "nil"
 
     Thread.abort_on_exception = true
-    Thread.new {
+    t1 = Thread.new {
       Wd::Actions::ChangeAllPendingFiles.do @domain, filter
     }
+
+    t1.join
 
     { msg: "yeah" }.to_json
   end
