@@ -13,7 +13,7 @@ module WDLogger
   end
 
   def self.debug msg, domain = nil, user = nil
-    p msg
+    p "#{Time.now.to_s} => #{msg}"
     Watchdog::Global::Logs::Execution.add msg, domain, user, :debug
     MySinatraAppLogger.logger.debug "DEBUG: #{ traced_msg msg }"
   end
