@@ -72,6 +72,7 @@ module Files
 
     def self.update_permission driveConnection, fileId, permission
       WDLogger.debug("DriveApiHelper.update_permission")
+      WDLogger.debug(driveConnection.client)
       api_result = driveConnection.client.execute(
         :api_method => driveConnection.drive.permissions.update,
         :body_object => permission,
@@ -81,6 +82,7 @@ module Files
           'transferOwnership' => true
         }
       )
+      WDLogger.debug("DriveApiHelper.update_permission api_result fetched")
       { :status => api_result.status }
     rescue => e
       WDLogger.error "DriveApiHelper.update_permission - #{ e.inspect }"
