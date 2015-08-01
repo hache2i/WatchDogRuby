@@ -90,7 +90,7 @@ class Web < BaseApp
     docaccount = Watchdog::Global::Watchdog.getDocsAdmin(@domain)
     usersToProcces = strToArray(params['sortedIdsStr'])
 
-    # Thread.abort_on_exception = true
+    Thread.abort_on_exception = true
     thr = Thread.new {
       domain_data = DomainData.new @domain, docaccount
       Watchdog::Global::Watchdog.files_under_common_structure usersToProcces, domain_data
