@@ -141,6 +141,7 @@ class Web < BaseApp
     filter = params[:filter]
     filter = nil if filter.eql? "nil"
 
+    Thread.abort_on_exception = true
     Thread.new {
       Wd::Actions::ChangeAllPendingFiles.do @domain, filter
     }
