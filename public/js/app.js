@@ -3,7 +3,6 @@ var WD= {};
 WD.initialize = function(){
   WD.Bus = new WD.BusConst();
   if ($("#discover-page").length) WD.initializeDiscoverPage();
-  if ($("#new-files-page").length) WD.initializeNewFilesPage();
   if ($("#common-folders-page").length) WD.initializeCommonFoldersPage();
   if ($("#pending-files-page").length) WD.initializePendingFilesPage();
   if ($("#proposed-files-page").length) WD.initializeProposedFilesPage();
@@ -128,13 +127,6 @@ WD.drawChanged = function(data){
     parentId.html(item.parentId);
     row.append(parentId);
     body.append(row);
-  });
-};
-
-WD.initializeNewFilesPage = function(){
-  $("#change-permissions-btn").click(function(){
-    $(this).spin(APP.spinOpts);
-    WD.sendChangePermissions();
   });
 };
 
