@@ -16,8 +16,12 @@ module Wd
 					thrs << Thread.new {
 						WDLogger.debug "started thread to change permissions for #{user}"
 						user_files = Files::Changed.pending_for_user user
-						userFilesDomain = Files::UserFilesDomain.new Files::DriveConnection.new, user, domain
-						userFilesDomain.changeUserFilesPermissions user_files
+						user_files.each_slice(1000).to_a.each do |files|
+							Thread.new {
+								userFilesDomain = Files::UserFilesDomain.new Files::DriveConnection.new, user, domain
+								userFilesDomain.changeUserFilesPermissions files
+							}
+						end
 					}
 				end
 
