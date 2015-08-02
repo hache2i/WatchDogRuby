@@ -21,7 +21,7 @@ module Wd
 					}
 				end
 
-				# thrs.each { |thr| thr.join }
+				thrs.each { |thr| thr.join }
 			end
 		end
 	end
