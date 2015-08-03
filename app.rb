@@ -92,6 +92,7 @@ class Web < BaseApp
       domain_data = DomainData.new @domain, docaccount
       Watchdog::Global::Watchdog.files_under_common_structure usersToProcces, domain_data
     }
+    thr.join
     redirect "/domain/"
   end
 
