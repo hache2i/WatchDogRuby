@@ -7,6 +7,7 @@ require 'json'
 $LOAD_PATH.push(File.expand_path(File.join(File.dirname(__FILE__), './')))
 
 require_relative './lib/notifier'
+require_relative './wddomain/lib/threads'
 require_relative './wddomain/lib/watchdog_domain'
 require_relative './wddomain/lib/domain_data'
 require_relative './users/lib/users_domain_exception'
@@ -92,8 +93,17 @@ class Web < BaseApp
       domain_data = DomainData.new @domain, docaccount
       Watchdog::Global::Watchdog.files_under_common_structure usersToProcces, domain_data
     }
-    thr.join
+    thr[:name] = "child-folders process started at #{Time.now.to_s}"
+    Watchdog::Global::Threads.add thr
+    # thr.join
     redirect "/domain/"
+  end
+
+  get '/thread-status', :provides => :json do
+    threads_statuses = Watchdog::Global::Threads.get.map do |thr|
+      "#{thr[:name]} - #{thr.alive?} - #{thr.status}"
+    end
+    threads_statuses.to_json
   end
 
   get '/pending' do
