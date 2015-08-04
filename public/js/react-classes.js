@@ -77,6 +77,36 @@
     }
   });
 
+  ns.ReactClasses.FilesFilter = React.createClass({ displayName: "Filter",
+    getInitialState: function () {
+      return {
+        colors: []
+      }
+    },
+    handleMultiChange: function (colors) {
+      this.setState({ colors: colors });
+      this.props.filterBy("oldOwner", colors);
+    },
+    render: function(){
+      var SelectBox = React.createFactory(WD.SelectBox);
+      var option = React.createElement.bind(null,'option')
+      var options = this.props.users.map(function(user){
+        return option({ value: user}, user);
+      });
+      return React.createElement("div", { className: "pending-filter" },
+        SelectBox(
+          {
+            label: "Favorite Colors",
+            onChange: this.handleMultiChange,
+            value: this.state.colors,
+            multiple: true
+          },
+          options
+        )
+      )
+    }
+  });
+
   return ns;
 
 }( WD || {} ));

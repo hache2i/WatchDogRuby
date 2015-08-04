@@ -1,22 +1,18 @@
 (function(ns){
 
   ns.Files = function(aFilter, Files, mountPoint){
-    var SelectBox = React.createFactory(WD.SelectBox);
-
-    var option = React.createElement.bind(null,'option')
-
     var _summary = { count: 0 };
     var index = 0;
     var _files = [];
     var _users = [];
     var _filter = aFilter;
 
-    var _usersWithPendingFilesFetched = function(data){
+    var _usersWithFilesFetched = function(data){
       _users = data;
       renderEverything();
     };
 
-    var _pendingFilesFetched = function(data){
+    var _filesFetched = function(data){
       if (index == 0) _files = [];
       data.forEach(function(newFile){
         _files.push(newFile);
@@ -25,14 +21,14 @@
       renderEverything();
     };
 
-    var _pendingFilesSummaryFetched = function(data){
+    var _filesSummaryFetched = function(data){
       _summary = data;
       renderEverything();
     };
 
     var renderEverything = function(){
       React.render(
-        React.createElement(Page, { summary: _summary, files: _files, users: _users }),
+        React.createElement(Page, { summary: _summary, files: _files, users: _users, getMore: getMore }),
         document.getElementById(mountPoint)
       );
     };
@@ -61,34 +57,6 @@
       WD.Backend.getFiles(index, _filter);
     };
 
-    var FilesFilter = React.createClass({ displayName: "Filter",
-      getInitialState: function () {
-        return {
-          colors: []
-        }
-      },
-      handleMultiChange: function (colors) {
-        this.setState({ colors: colors });
-        _filterBy("oldOwner", colors);
-      },
-      render: function(){
-        var options = this.props.users.map(function(user){
-          return option({ value: user}, user);
-        });
-        return React.createElement("div", { className: "pending-filter" },
-          SelectBox(
-            {
-              label: "Favorite Colors",
-              onChange: this.handleMultiChange,
-              value: this.state.colors,
-              multiple: true
-            },
-            options
-          )
-        )
-      }
-    });
-
     var getMore = function(){
      WD.Backend.getFiles(index, _filter);
     };
@@ -98,17 +66,17 @@
         return (
           React.createElement('div', {className: "page"},
             React.createElement(WD.ReactClasses.Header, { title: "Ficheros Pendientes" }),
-            React.createElement(FilesFilter, { users: this.props.users }),
+            React.createElement(WD.ReactClasses.FilesFilter, { users: this.props.users, filterBy: _filterBy }),
             React.createElement(FilesCount, { count: this.props.summary.count }),
-            React.createElement(Files, { files: this.props.files, moreHandler: getMore })
+            React.createElement(Files, { files: this.props.files, moreHandler: this.props.getMore })
           )
         );
       }
     });
 
-    WD.Bus.subscribe("users-pending-files-fetched", _usersWithPendingFilesFetched);
-    WD.Bus.subscribe("pending-files-fetched", _pendingFilesFetched);
-    WD.Bus.subscribe("pending-files-summary-fetched", _pendingFilesSummaryFetched);
+    WD.Bus.subscribe("users-pending-files-fetched", _usersWithFilesFetched);
+    WD.Bus.subscribe("pending-files-fetched", _filesFetched);
+    WD.Bus.subscribe("pending-files-summary-fetched", _filesSummaryFetched);
     WD.Bus.subscribe("pending-files-change-all-process-started", function(){
       alert("procesando cambio de permisos para todos los fichero pendientes");
     });
