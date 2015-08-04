@@ -21,7 +21,6 @@
 
   ns.ReactClasses.PendingFiles = React.createClass({displayName: 'Files',
     render: function(){
-      var changePermissionFn = this.changePermission;
       var filesNodes = this.props.files.map(function(file){
         return React.createElement("tr", {},
           React.createElement("td", {}, file.title),
@@ -52,7 +51,6 @@
 
   ns.ReactClasses.ChangedFiles = React.createClass({displayName: 'Files',
     render: function(){
-      var changePermissionFn = this.changePermission;
       var filesNodes = this.props.files.map(function(file){
         return React.createElement("tr", {},
           React.createElement("td", {}, file.title),
