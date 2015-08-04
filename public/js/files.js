@@ -1,6 +1,6 @@
 (function(ns){
 
-  ns.ChangedFiles = function(){
+  ns.Files = function(aFilter, Files, mountPoint){
     var SelectBox = React.createFactory(WD.SelectBox);
 
     var div = React.createElement.bind(null,'div')
@@ -11,7 +11,7 @@
     var index = 0;
     var _files = [];
     var _users = [];
-    var _filter = { "pending": false };
+    var _filter = aFilter;
 
     var _usersWithPendingFilesFetched = function(data){
       _users = data;
@@ -35,7 +35,7 @@
     var renderEverything = function(){
       React.render(
         React.createElement(Page, { summary: _summary, files: _files, users: _users }),
-        document.getElementById('changed-files-page')
+        document.getElementById(mountPoint)
       );
     };
 
@@ -58,40 +58,6 @@
       },
       render: function(){
         return React.createElement("a", { onClick: this.handleClick }, "Cambiar");
-      }
-    });
-
-    var Files = React.createClass({displayName: 'Files',
-      handleClick: function(){
-        WD.Backend.getFiles(index, _filter);
-      },
-      render: function(){
-        var changePermissionFn = this.changePermission;
-        var filesNodes = this.props.files.map(function(file){
-          return React.createElement("tr", {},
-            React.createElement("td", {}, file.title),
-            React.createElement("td", {}, file.path),
-            React.createElement("td", {}, file.oldOwner),
-            React.createElement("td", {}, file.newOwner),
-            React.createElement("td", {}, 
-              React.createElement(ChangeLink, { permissionId: file._id })
-            )
-          );
-        });
-        var filesTable = React.createElement("table", { className: "table table-striped", id: "files" },
-          React.createElement("thead", {},
-            React.createElement("tr", {},
-              React.createElement("td", {}, "Titulo"),
-              React.createElement("td", {}, "Path"),
-              React.createElement("td", {}, "Antiguo Propietario"),
-              React.createElement("td", {}, "Nuevo Propietario"),
-              React.createElement("td", {}, "")
-            )
-          ),
-          React.createElement("tbody", {}, filesNodes)
-        );
-        var moreBtn = React.createElement("a", { onClick: this.handleClick }, "Más");
-        return React.createElement("div", {}, filesTable, moreBtn);
       }
     });
 
@@ -134,14 +100,18 @@
       }
     });
 
+    var getMore = function(){
+     WD.Backend.getFiles(index, _filter);
+    };
+
     var Page = React.createClass({displayName: 'Page', 
       render: function(){
         return (
           React.createElement('div', {className: "page"},
-            React.createElement(WD.React.Header, { title: "Ficheros Pendientes" }),
+            React.createElement(WD.ReactClasses.Header, { title: "Ficheros Pendientes" }),
             React.createElement(FilesFilter, { users: this.props.users }),
             React.createElement(FilesCount, { count: this.props.summary.count }),
-            React.createElement(Files, { files: this.props.files })
+            React.createElement(Files, { files: this.props.files, moreHandler: getMore })
           )
         );
       }

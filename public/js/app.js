@@ -78,11 +78,15 @@ WD.initializeExecLog = function(){
 };
 
 WD.initializePendingFilesPage = function(){
-  new WD.PendingFiles();
+  var filter = { "pending": true };
+  var filesView = WD.ReactClasses.Files;
+  new WD.Files(filter, filesView, "pending-files-page");
 };
 
 WD.initializeChangedFilesPage = function(){
-  new WD.ChangedFiles();
+  var filter = { "pending": false };
+  var filesView = WD.ReactClasses.Files;
+  new WD.Files(filter, filesView, "changed-files-page");
 };
 
 WD.initializeCommonFoldersPage = function(){
