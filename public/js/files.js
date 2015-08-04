@@ -3,9 +3,7 @@
   ns.Files = function(aFilter, Files, mountPoint){
     var SelectBox = React.createFactory(WD.SelectBox);
 
-    var div = React.createElement.bind(null,'div')
     var option = React.createElement.bind(null,'option')
-    var h1 = React.createElement.bind(null,'h1')
 
     var _summary = { count: 0 };
     var index = 0;
@@ -49,15 +47,6 @@
           React.createElement('span', null, this.props.count),
           React.createElement('a', { onClick: this.handleChangePermissions }, "Change permissions")
         )
-      }
-    });
-
-    var ChangeLink = React.createClass({displayName: 'ChangeLink',
-      handleClick: function(){
-        WD.Backend.changePermission(this.props.permissionId);
-      },
-      render: function(){
-        return React.createElement("a", { onClick: this.handleClick }, "Cambiar");
       }
     });
 
