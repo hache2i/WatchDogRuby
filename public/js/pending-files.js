@@ -11,7 +11,7 @@
 		var index = 0;
 		var _files = [];
 		var _users = [];
-		var _filter = {};
+		var _filter = { "pending": true };
 
 		var _usersWithPendingFilesFetched = function(data){
 			_users = data;
@@ -63,7 +63,7 @@
 
 		var Files = React.createClass({displayName: 'Files',
 			handleClick: function(){
-				WD.Backend.getPendingFiles(index, _filter);
+				WD.Backend.getFiles(index, _filter);
 			},
 			render: function(){
 				var changePermissionFn = this.changePermission;
@@ -102,8 +102,8 @@
 				_filter[field] = value;
 			}
 			index = 0;
-			WD.Backend.getPendingFilesCount(_filter);
-			WD.Backend.getPendingFiles(index, _filter);
+			WD.Backend.getFilesCount(_filter);
+			WD.Backend.getFiles(index, _filter);
 		};
 
 		var FilesFilter = React.createClass({ displayName: "Filter",
@@ -155,9 +155,9 @@
 		});
 
 		renderEverything();
-		WD.Backend.getUsersWithPendingFiles();
-		WD.Backend.getPendingFilesCount(_filter);
-		WD.Backend.getPendingFiles(index, _filter);
+		WD.Backend.getUsersWithFiles(_filter);
+		WD.Backend.getFilesCount(_filter);
+		WD.Backend.getFiles(index, _filter);
 	};
 
 	return ns;

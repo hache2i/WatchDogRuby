@@ -13,9 +13,9 @@ require_relative './wddomain/lib/domain_data'
 require_relative './users/lib/users_domain_exception'
 require_relative './files/lib/changed'
 require_relative './actions/get_pending_proposals'
-require_relative './actions/get_pending_files_count'
-require_relative './actions/get_users_with_pending_files'
-require_relative './actions/get_pending_files'
+require_relative './actions/get_files_count'
+require_relative './actions/get_users_with_files'
+require_relative './actions/get_files'
 require_relative './actions/get_common_folders'
 require_relative './actions/change_all_pending_files'
 require_relative './actions/change_pending_file'
@@ -106,41 +106,54 @@ class Web < BaseApp
     threads_statuses.to_json
   end
 
+  def to_domain_filter params_filter
+    params_filter = nil if params_filter.eql? "nil"
+    domain_filter = nil
+    unless params_filter.nil?
+      domain_filter = {}
+      domain_filter[:pending] = params_filter["pending"].to_bool unless params_filter["pending"].nil?
+      domain_filter[:oldOwner] = params_filter["oldOwner"] unless params_filter["oldOwner"].nil?
+    end
+    domain_filter
+  end
+
+  get '/changed' do
+    erb :changed_page, :layout => :home_layout
+  end
+
   get '/pending' do
     erb :pending_page, :layout => :home_layout
   end
 
-  get '/pending/count', :provides => :json do
-    WDLogger.debug "Getting Pending Files Count"
+  get '/files/count', :provides => :json do
+    WDLogger.debug "Getting Files Count"
 
-    filter = params[:filter]
-    filter = nil if filter.eql? "nil"
+    domain_filter = to_domain_filter params["filter"]
+    files_count = Wd::Actions::GetFilesCount.do @domain, domain_filter
 
-    pending_files_count = Wd::Actions::GetPendingFilesCount.do @domain, filter
-
-    pending_files_count.to_json
+    files_count.to_json
   end
 
-  get '/pending/files/users', :provides => :json do
-    WDLogger.debug "Getting Users with Pending Files"
-
-    access_data = { userEmail: @userEmail, domain: @domain }
-    users = Wd::Actions::GetUsersWithPendingFiles.do access_data
-
-    users.to_json
-  end
-
-  post '/pending/files', :provides => :json do
-    WDLogger.debug "Getting Pending Files"
+  post '/files/list', :provides => :json do
+    WDLogger.debug "Getting Files"
 
     from = params[:from].to_i
-    filter = params[:filter]
-    filter = nil if filter.eql? "nil"
 
+    domain_filter = to_domain_filter params["filter"]
     access_data = { userEmail: @userEmail, domain: @domain }
-    files = Wd::Actions::GetPendingFiles.do from, filter, access_data
+    files = Wd::Actions::GetFiles.do from, domain_filter, access_data
 
     files.to_json
+  end
+
+  get '/files/users', :provides => :json do
+    WDLogger.debug "Getting Users with Pending Files"
+
+    domain_filter = to_domain_filter params["filter"]
+    access_data = { userEmail: @userEmail, domain: @domain }
+    users = Wd::Actions::GetUsersWithFiles.do access_data, domain_filter
+
+    users.to_json
   end
 
   post '/pending/change/all', :provides => :json do
@@ -205,4 +218,33 @@ class Web < BaseApp
     usersStr.split(',')
   end
 
+end
+class String
+  def to_bool
+    return true if self == true || self =~ (/^(true|t|yes|y|1)$/i)
+    return false if self == false || self.blank? || self =~ (/^(false|f|no|n|0)$/i)
+    raise ArgumentError.new("invalid value for Boolean: \"#{self}\"")
+  end
+end
+
+class Fixnum
+  def to_bool
+    return true if self == 1
+    return false if self == 0
+    raise ArgumentError.new("invalid value for Boolean: \"#{self}\"")
+  end
+end
+
+class TrueClass
+  def to_i; 1; end
+  def to_bool; self; end
+end
+
+class FalseClass
+  def to_i; 0; end
+  def to_bool; self; end
+end
+
+class NilClass
+  def to_bool; false; end
 end

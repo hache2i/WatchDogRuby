@@ -8,7 +8,7 @@ module Wd
 	module Actions
 		class ChangeAllPendingFiles
 			def self.do domain, filter
-				users_with_pending_files = Files::Changed.users domain if filter.nil?
+				users_with_pending_files = Files::Changed.users_with_pending_files domain if filter.nil?
 				users_with_pending_files = filter["oldOwner"] unless filter.nil?
 	
 				thrs = []			

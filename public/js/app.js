@@ -5,6 +5,7 @@ WD.initialize = function(){
   if ($("#discover-page").length) WD.initializeDiscoverPage();
   if ($("#common-folders-page").length) WD.initializeCommonFoldersPage();
   if ($("#pending-files-page").length) WD.initializePendingFilesPage();
+  if ($("#changed-files-page").length) WD.initializeChangedFilesPage();
   if ($("#proposed-files-page").length) WD.initializeProposedFilesPage();
   if ($("#files-changed-page").length) WD.initializeFilesChangedPage();
   if ($("#exec-log").length) WD.initializeExecLog();
@@ -78,6 +79,10 @@ WD.initializeExecLog = function(){
 
 WD.initializePendingFilesPage = function(){
   new WD.PendingFiles();
+};
+
+WD.initializeChangedFilesPage = function(){
+  new WD.ChangedFiles();
 };
 
 WD.initializeCommonFoldersPage = function(){

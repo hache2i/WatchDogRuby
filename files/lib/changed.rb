@@ -14,12 +14,8 @@ module Files
     field :title, :type => String
     field :pending, :type => Boolean
 
-    def self.users domain
+    def self.users_with_pending_files domain
         where(domain: domain, pending: true).distinct(:oldOwner)
-    end
-
-    def self.count_pending domain
-        where(domain: domain, pending: true).count
     end
 
     def self.create_pending data
@@ -31,11 +27,6 @@ module Files
 
     def self.pending_for_user user
         user_files = where(oldOwner: user, pending: true).desc(:created_at)
-        user_files
-    end
-
-    def self.pending_for_users users, from
-        user_files = self.in(oldOwner: users).where(pending: true).limit(50).skip(from).desc(:created_at)
         user_files
     end
 

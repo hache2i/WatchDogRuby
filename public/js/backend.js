@@ -2,10 +2,11 @@
 
     ns.Backend = ns.Backend || {};
 
-    ns.Backend.getUsersWithPendingFiles = function(){
+    ns.Backend.getUsersWithFiles = function(filter){
         $.ajax({
             type: "GET",
-            url: "/domain/pending/files/users",
+            url: "/domain/files/users",
+            data: { filter: filter },
             success: function(data){
                 WD.Bus.send("users-pending-files-fetched", data);
             },
@@ -15,10 +16,10 @@
         });
     };
 
-    ns.Backend.getPendingFiles = function(from, filter){
+    ns.Backend.getFiles = function(from, filter){
         $.ajax({
             type: "POST",
-            url: "/domain/pending/files",
+            url: "/domain/files/list",
             data: { from: from, filter: filter },
             success: function(data){
                 WD.Bus.send("pending-files-fetched", data);
@@ -29,10 +30,10 @@
         });
     };
 
-    ns.Backend.getPendingFilesCount = function(filter){
+    ns.Backend.getFilesCount = function(filter){
         $.ajax({
             type: "GET",
-            url: "/domain/pending/count",
+            url: "/domain/files/count",
             data: { filter: filter },
             success: function(data){
                 WD.Bus.send("pending-files-summary-fetched", data);
