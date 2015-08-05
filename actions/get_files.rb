@@ -8,6 +8,7 @@ module Wd
 
                 mongo_filter = {}
                 mongo_filter.merge!(pending: filter[:pending]) unless filter.nil? || filter[:pending].nil?
+                mongo_filter.merge!(title: Regexp.new(".*" + filter[:title] + ".*", "i")) unless filter.nil? || filter[:title].nil?
                 mongo_filter.merge!(domain: access_data[:domain])
 
                 files = Files::Changed.in(in_filter).where(mongo_filter).limit(50).skip(from).desc(:created_at)

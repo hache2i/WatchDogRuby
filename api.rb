@@ -57,7 +57,6 @@ class Api < BaseApp
   get '/files/count', :provides => :json do
     WDLogger.debug "Getting Files Count"
 
-    p params["filter"]
     domain_filter = to_domain_filter params["filter"]
     files_count = Wd::Actions::GetFilesCount.do @domain, domain_filter
 
@@ -124,6 +123,7 @@ class Api < BaseApp
       domain_filter = {}
       domain_filter[:pending] = params_filter["pending"].to_bool unless params_filter["pending"].nil?
       domain_filter[:oldOwner] = params_filter["oldOwner"] unless params_filter["oldOwner"].nil?
+      domain_filter[:title] = params_filter["title"] unless params_filter["title"].nil?
     end
     domain_filter
   end

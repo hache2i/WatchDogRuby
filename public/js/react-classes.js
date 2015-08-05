@@ -88,7 +88,7 @@
       this.props.filterBy("oldOwner", users);
     },
     handleInputChange: function(){
-      this.props.filterBy("title", this.refs.bla.getDOMNode().value.trim());
+      this.props.filterBy("title", this.refs.titleSearch.getDOMNode().value.trim());
     },
     render: function(){
       var SelectBox = React.createFactory(WD.SelectBox);
@@ -104,7 +104,7 @@
       };
       return React.createElement("div", { className: "pending-filter" },
         SelectBox(selectConfig, options),
-        React.createElement("input", { onChange: this.handleInputChange, ref: "bla" })
+        React.createElement("input", { onChange: this.handleInputChange, ref: "titleSearch", placeholder: "Título" })
       )
     }
   });
