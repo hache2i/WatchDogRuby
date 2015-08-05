@@ -73,13 +73,15 @@ WD.initializeExecLog = function(){
 WD.initializePendingFilesPage = function(){
   var filter = { "pending": true };
   var filesView = WD.ReactClasses.PendingFiles;
-  new WD.Files(filter, filesView, "pending-files-page");
+  var countChange = WD.ReactClasses.CountChange;
+  new WD.Files(filter, filesView, countChange, "pending-files-page");
 };
 
 WD.initializeChangedFilesPage = function(){
   var filter = { "pending": false };
   var filesView = WD.ReactClasses.ChangedFiles;
-  new WD.Files(filter, filesView, "changed-files-page");
+  var filesCount = WD.ReactClasses.FilesCount;
+  new WD.Files(filter, filesView, filesCount, "changed-files-page");
 };
 
 WD.initializeCommonFoldersPage = function(){

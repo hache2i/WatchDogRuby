@@ -403,20 +403,49 @@ p.title{
 	margin-top: 1em;
 }
 
-.thumbnail.wd-btn {
+.wd-btn {
 	background-color: #BDBDBD;
+	cursor: pointer;
 }
 
-.thumbnail.wd-btn:hover {
+.wd-btn:hover {
 	background-color: grey;
 }
 
-.thumbnail.wd-btn a{
+.wd-btn a{
 	color: white;
 }
 
-.thumbnail.wd-btn a:hover{
+.wd-btn a:hover{
 	text-decoration: none;
+}
+
+.wd-btn-change-ownership {
+  width: 240px;
+  border-radius: 4px;
+  padding: 12px 0px;
+  padding-left: 15px;
+  color: white;
+  text-align: center;
+}
+
+.wd-btn-change-ownership .files-count{
+	font-size: 24px;
+}
+
+.wd-files-count {
+	border: 1px solid black;
+	border-radius: 4px;
+  width: 240px;
+  border-radius: 4px;
+  padding: 12px 0px;
+  padding-left: 15px;
+  color: black;
+  text-align: center;
+}
+
+.wd-files-count .files-count{
+	font-size: 24px;
 }
 
 .filter-input {

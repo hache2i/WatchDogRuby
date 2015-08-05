@@ -108,7 +108,26 @@
         React.createElement("div", { className: "span3"}, SelectBox(selectConfig, options)),
         React.createElement("div", { className: "span3"},
           React.createElement("input", { onChange: this.handleInputChange, className: "filter-input", ref: "titleSearch", placeholder: "Título" })
+        ),
+        React.createElement("div", { className: "span3"},
+          React.createElement(this.props.filesCount, { count: this.props.count, changePermissions: this.props.changePermissions })
         )
+      )
+    }
+  });
+
+  ns.ReactClasses.FilesCount = React.createClass({displayName: "Count",
+    render: function(){
+      return React.createElement('div', { className: "wd-files-count" },
+        React.createElement('span', { className: "files-count" }, this.props.count), " ficheros"
+      )
+    }
+  });
+
+  ns.ReactClasses.CountChange = React.createClass({displayName: "Count",
+    render: function(){
+      return React.createElement('div', { className: "wd-btn wd-btn-change-ownership", onClick: this.props.changePermissions },
+        "Cambiar ", React.createElement('span', { className: "files-count" }, this.props.count), " ficheros"
       )
     }
   });
