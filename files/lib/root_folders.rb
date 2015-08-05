@@ -19,7 +19,7 @@ module Files
         raise UserFilesException if !result.status.eql? 200
         result.data.items.each do |item|
           changes = Changed.where(fileId: item['id'])
-          changes.each{ |change| p "#{item['title']} - #{change[:oldOwner]}" }
+          changes.each{ |change| p "#{item['title']} - #{change.inspect}" }
           folders << { :title => item['title'], :id => item['id'] }
         end
       end while hasNextPage? result
