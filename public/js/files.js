@@ -33,15 +33,16 @@
       );
     };
 
+    var changePermissions = function(){
+      WD.Backend.changeAllPendingPermissions(_filter);
+    };
+
     var FilesCount = React.createClass({displayName: "Count",
-      handleChangePermissions: function(){
-        WD.Backend.changeAllPendingPermissions(_filter);
-      },
       render: function(){
         return React.createElement('div', { className: "files-count-container" },
           React.createElement('span', null, "Total:"),
           React.createElement('span', null, this.props.count),
-          React.createElement('a', { onClick: this.handleChangePermissions }, "Cambiar permisos")
+          React.createElement('a', { onClick: this.props.changePermissions }, "Cambiar permisos")
         )
       }
     });
@@ -67,7 +68,7 @@
           React.createElement('div', {className: "page"},
             React.createElement(WD.ReactClasses.Header, { title: "Ficheros Pendientes" }),
             React.createElement(WD.ReactClasses.FilesFilter, { users: this.props.users, filterBy: _filterBy }),
-            React.createElement(FilesCount, { count: this.props.summary.count }),
+            React.createElement(FilesCount, { count: this.props.summary.count, changePermissions: changePermissions }),
             React.createElement(Files, { files: this.props.files, moreHandler: this.props.getMore })
           )
         );
