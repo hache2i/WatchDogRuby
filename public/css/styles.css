@@ -393,10 +393,11 @@ p.title{
 }
 
 .file-record.file-record-info {
-	color: blue;
+	color: #333333;
 }
 
 .file-record.file-record-debug {
+	color: blue;
 }
 
 .thumbnail {
