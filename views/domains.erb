@@ -1,11 +1,11 @@
 <div class="page-header">
-    Registered Domains
+    <h1>Dominios registrados</h1>
 </div>
 
 <% if !@domains.empty? %>
 <table id="domains" class="table table-striped domains" >
 	<thead>
-		<tr><th>Active Domains</th><th>Licenses</th></tr>
+		<tr><th>Dominios activos</th><th>Licencias</th></tr>
 	</thead>
 	<tbody>
 		<% @domains.each do |domain| %>
@@ -25,7 +25,7 @@
 <% if !@inactive.empty? %>
 	<table id="inactive-domains" class="table table-striped domains" >
 		<thead>
-			<tr><th>Inactive Domains</th><th>Licenses</th></tr>
+			<tr><th>Dominios inactivos</th><th>Licencias</th></tr>
 		</thead>
 		<tbody>
 			<% @inactive.each do |domain| %>

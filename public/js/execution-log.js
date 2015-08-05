@@ -22,7 +22,9 @@
 		var Header = React.createClass({displayName: 'Header',
 			render: function(){
 				return (
-					React.createElement('div', { className: "page-header" }, this.props.title)
+					React.createElement('div', { className: "page-header" }, 
+						React.createElement("h1", {}, this.props.title)
+					)
 				);
 			}
 		});
