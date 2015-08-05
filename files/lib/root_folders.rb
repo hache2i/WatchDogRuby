@@ -21,7 +21,7 @@ module Files
           p "watching changes"
           changes = Changed.where(fileId: item['id'])
           changes.each{ |change| p "#{item['title']} - #{change.inspect}" }
-          folders << { :title => item['title'], :id => item['id'] }
+          folders << { :title => item['title'], :id => item['id'] } unless changes.count > 0
         end
       end while hasNextPage? result
       folders
