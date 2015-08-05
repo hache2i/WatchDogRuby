@@ -50,7 +50,6 @@
             url: "/domain/pending/change/all",
             data: { filter: filter },
             success: function(data){
-                console.log(data);
                 WD.Bus.send("pending-files-change-all-process-started");
             },
             error: function(){

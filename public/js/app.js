@@ -48,7 +48,6 @@ WD.initializeDiscoverPage = function(){
         for (var i = users.length - 1; i >= 0; i--) {
           for_files.push(users[i].value);
         };
-        console.log(for_files);
         $('#sortedIdsStrForChildFolders').val(for_files.join());
         $('#child-folders-form').submit();
       });

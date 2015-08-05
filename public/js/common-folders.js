@@ -25,7 +25,6 @@
 		});
 
 		var _commonsFoldersFetched = function(data){
-			console.log(data.folders);
 			_folders = data.folders;
 
 			React.render(
