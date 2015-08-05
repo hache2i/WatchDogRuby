@@ -407,3 +407,20 @@ p.title{
 .thumbnail {
 	margin-top: 1em;
 }
+
+.thumbnail.wd-btn {
+	background-color: #BDBDBD;
+}
+
+.thumbnail.wd-btn:hover {
+	background-color: grey;
+}
+
+.thumbnail.wd-btn a{
+	color: white;
+}
+
+.thumbnail.wd-btn a:hover{
+	text-decoration: none;
+}
+
