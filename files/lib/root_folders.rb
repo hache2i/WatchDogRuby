@@ -21,6 +21,10 @@ module Files
           p "watching changes"
           changes = Changed.where(fileId: item['id'])
           changes.each{ |change| p "#{item['title']} - #{change.inspect}" }
+          parents_result = @driveConnection.client.execute(
+            :api_method => @driveConnection.drive.parents.list,
+            :parameters => { 'fileId' => item['id'] })
+          p parents_result.inspect
           folders << { :title => item['title'], :id => item['id'] } unless changes.count > 0
         end
       end while hasNextPage? result
