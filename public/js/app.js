@@ -74,14 +74,14 @@ WD.initializePendingFilesPage = function(){
   var filter = { "pending": true };
   var filesView = WD.ReactClasses.PendingFiles;
   var countChange = WD.ReactClasses.CountChange;
-  new WD.Files(filter, filesView, countChange, "pending-files-page");
+  new WD.Files(filter, filesView, countChange, "Ficheros pendientes", "pending-files-page");
 };
 
 WD.initializeChangedFilesPage = function(){
   var filter = { "pending": false };
   var filesView = WD.ReactClasses.ChangedFiles;
   var filesCount = WD.ReactClasses.FilesCount;
-  new WD.Files(filter, filesView, filesCount, "changed-files-page");
+  new WD.Files(filter, filesView, filesCount, "Ficheros cambiados", "changed-files-page");
 };
 
 WD.initializeCommonFoldersPage = function(){

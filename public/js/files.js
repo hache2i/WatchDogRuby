@@ -1,6 +1,6 @@
 (function(ns){
 
-  ns.Files = function(aFilter, Files, FilesCount, mountPoint){
+  ns.Files = function(aFilter, Files, FilesCount, title, mountPoint){
     var _summary = { count: 0 };
     var index = 0;
     var _files = [];
@@ -56,7 +56,7 @@
       render: function(){
         return (
           React.createElement('div', {className: "page"},
-            React.createElement(WD.ReactClasses.Header, { title: "Ficheros Pendientes" }),
+            React.createElement(WD.ReactClasses.Header, { title: title }),
             React.createElement(WD.ReactClasses.FilesFilter, { users: this.props.users, filterBy: _filterBy, count: this.props.summary.count, changePermissions: changePermissions, filesCount: FilesCount }),
             React.createElement(Files, { files: this.props.files, moreHandler: this.props.getMore })
           )
