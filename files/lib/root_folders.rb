@@ -24,7 +24,7 @@ module Files
           parents_result = @driveConnection.client.execute(
             :api_method => @driveConnection.drive.parents.list,
             :parameters => { 'fileId' => item['id'] })
-          p parents_result.inspect
+          p parents_result.data.inspect
           folders << { :title => item['title'], :id => item['id'] } unless changes.count > 0
         end
       end while hasNextPage? result
