@@ -17,14 +17,14 @@ module Wd
 				Thread.abort_on_exception = true
 				users_with_pending_files.reverse.each do |user|
 					thr = Thread.new {
-						WDLogger.debug "started thread to change permissions for #{user}"
+						WDLogger.debug "started thread to change ownership for #{user}"
 						user_files = Files::Changed.where(filter.merge(oldOwner: user))
 						unless user_files.empty?
 							userFilesDomain = Files::UserFilesDomain.new Files::DriveConnection.new, user, domain
 							userFilesDomain.changeUserFilesPermissions user_files
 						end
 					}
-					thr[:name] = "change permissions process for #{user} started at #{Time.now.to_s}"
+					thr[:name] = "change ownership process for #{user} started at #{Time.now.to_s}"
 					thrs << thr
 					Watchdog::Global::Threads.add thr
 				end

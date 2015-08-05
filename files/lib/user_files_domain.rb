@@ -13,7 +13,6 @@ module Files
 		end
 
 		def change_file_permission file
-			WDLogger.info "changing permission for file #{file.path} from #{file.oldOwner} to #{file.newOwner}"
 			change_proposal = file
 			return unless file.newOwner != file.oldOwner
 			new_owner_permission = DriveApiHelper.get_current_permission_for @driveConnection, file.newOwner, file.fileId
@@ -26,20 +25,23 @@ module Files
 			if api_result[:status] == 200
 				change_proposal.update_attributes!(pending: false, executed: Time.now.to_i)
 			else
-				WDLogger.error("(¡¡¡ FAILED !!!) change permission file '#{file.title}' #{api_result[:status].to_s}", @domain, @user)
+				WDLogger.error("(¡ FALLO !) cambio de propiedad '#{file.title}' - #{api_result[:status].to_s}", @domain, @user)
 			end
 		end
 
 		def changeUserFilesPermissions files
-			WDLogger.info("change permissions for #{files.length.to_s} files", @domain, @user)
+			return if files.nil? || files.empty?
+
+			WDLogger.info("cambiando propiedad de #{files.length.to_s} ficheros", @domain, @user)
 			pending = files.size
 			files.each do |file|
-				WDLogger.debug("change permission file: " + file.inspect, @domain, @user)
+				WDLogger.info "cambiando propiedad de #{file.path} a #{file.newOwner}", @domain, @user
+				WDLogger.debug("change ownership file: " + file.inspect, @domain, @user)
 				change_file_permission file
 				pending = pending.pred
-				WDLogger.info("#{pending} pending", @domain, @user)
+				WDLogger.info("#{pending} ficheros pendientes", @domain, @user)
 			end
-			WDLogger.info("change permissions for #{files.length.to_s} files FINISHED", @domain, @user)
+			WDLogger.info("cambiando propiedad de #{files.length.to_s} ficheros TERMINADO", @domain, @user)
 		end
 
 
