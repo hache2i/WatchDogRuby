@@ -104,9 +104,11 @@
         value: this.state.users,
         multiple: true
       };
-      return React.createElement("div", { className: "pending-filter" },
-        SelectBox(selectConfig, options),
-        React.createElement("input", { onChange: this.handleInputChange, ref: "titleSearch", placeholder: "Título" })
+      return React.createElement("div", { className: "pending-filter row" },
+        React.createElement("div", { className: "span3"}, SelectBox(selectConfig, options)),
+        React.createElement("div", { className: "span3"},
+          React.createElement("input", { onChange: this.handleInputChange, className: "filter-input", ref: "titleSearch", placeholder: "Título" })
+        )
       )
     }
   });

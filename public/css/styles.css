@@ -149,11 +149,6 @@ input.small-number{
 	width: 100px;
 }
 
-button{
-    padding: 15px;
-    margin: 15px 0 15px 0;
-}
-
 select#newOwner{
 	height: 75px;
 	margin: 15px 0px;
@@ -265,7 +260,7 @@ input:focus{
 }
 
 .table {
-	font-size: 12px;
+	font-size: 14px;
 }
 
 .table th{
@@ -424,3 +419,11 @@ p.title{
 	text-decoration: none;
 }
 
+.filter-input {
+  width: 240px;
+  padding: 12px 0px;
+  padding-left: 15px;
+  border-radius: 4px;
+  outline: none;
+  border: 1px solid #dddddd;
+}
