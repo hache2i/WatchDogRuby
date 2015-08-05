@@ -65,10 +65,10 @@ module WDDomain
 		def files_under_common_structure users, domain_data
 			rootFolders = Files::RootFolders.new @driveConnection, domain_data.docaccount
 			folders = rootFolders.get
-			WDLogger.info "getting files for #{ users }"
+			WDLogger.info "Obteniendo ficheros para #{ users }"
 			user_files = Files::Children.new @driveConnection, users, folders, domain_data
 			user_files.get
-			WDLogger.info "getting files for #{ users } - FINISHED"
+			WDLogger.info "Obteniendo ficheros para #{ users } - TERMINADO"
 		end
 
 		def changePermissions(files, domain)

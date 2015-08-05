@@ -18,8 +18,8 @@ module Files
         command.exec
         children.concat command.children
         count = count + 1
-        WDLogger.debug "getting files - just checked #{command.file_path} - #{count.to_s} folders checked", @domain_data.name, @users.join(", ")
-        WDLogger.info "getting files - #{ command.children.length } more added (not finished yet - #{children.length.to_s} until now)", @domain_data.name, @users.join(", ") unless command.children.empty?
+        WDLogger.info "Obteniendo ficheros - comprobado directorio #{command.file_path} - #{count.to_s} directorios comprobados", @domain_data.name, @users.join(", ")
+        WDLogger.info "Obteniendo ficheros - #{ command.children.length } más añadidos (no terminado aún - #{children.length.to_s} por el momento)", @domain_data.name, @users.join(", ") unless command.children.empty?
         @commands.concat command.commands
       end
       WDLogger.debug "getting files - #{ children.length } found - FINISHED", @domain_data.name, @users.join(", ")
