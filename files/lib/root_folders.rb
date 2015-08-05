@@ -1,4 +1,5 @@
 require_relative 'user_files'
+require_relative 'changed'
 
 module Files
   class RootFolders
@@ -17,6 +18,8 @@ module Files
         )
         raise UserFilesException if !result.status.eql? 200
         result.data.items.each do |item|
+          changes = Changed.where(fileId: item['id'])
+          changes.each{ |change| p change[:oldOwner] }
           folders << { :title => item['title'], :id => item['id'] }
         end
       end while hasNextPage? result
