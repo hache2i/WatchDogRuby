@@ -41,7 +41,7 @@
         return React.createElement('div', { className: "files-count-container" },
           React.createElement('span', null, "Total:"),
           React.createElement('span', null, this.props.count),
-          React.createElement('a', { onClick: this.handleChangePermissions }, "Change permissions")
+          React.createElement('a', { onClick: this.handleChangePermissions }, "Cambiar permisos")
         )
       }
     });

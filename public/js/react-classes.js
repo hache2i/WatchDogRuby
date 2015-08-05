@@ -80,12 +80,12 @@
   ns.ReactClasses.FilesFilter = React.createClass({ displayName: "Filter",
     getInitialState: function () {
       return {
-        colors: []
+        users: []
       }
     },
-    handleMultiChange: function (colors) {
-      this.setState({ colors: colors });
-      this.props.filterBy("oldOwner", colors);
+    handleMultiChange: function (users) {
+      this.setState({ users: users });
+      this.props.filterBy("oldOwner", users);
     },
     render: function(){
       var SelectBox = React.createFactory(WD.SelectBox);
@@ -96,9 +96,9 @@
       return React.createElement("div", { className: "pending-filter" },
         SelectBox(
           {
-            label: "Favorite Colors",
+            label: "Usuarios",
             onChange: this.handleMultiChange,
-            value: this.state.colors,
+            value: this.state.users,
             multiple: true
           },
           options
