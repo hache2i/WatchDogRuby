@@ -87,22 +87,24 @@
       this.setState({ users: users });
       this.props.filterBy("oldOwner", users);
     },
+    handleInputChange: function(){
+      this.props.filterBy("title", this.refs.bla.getDOMNode().value.trim());
+    },
     render: function(){
       var SelectBox = React.createFactory(WD.SelectBox);
       var option = React.createElement.bind(null,'option')
       var options = this.props.users.map(function(user){
         return option({ value: user}, user);
       });
+      var selectConfig = {
+        label: "Usuarios",
+        onChange: this.handleMultiChange,
+        value: this.state.users,
+        multiple: true
+      };
       return React.createElement("div", { className: "pending-filter" },
-        SelectBox(
-          {
-            label: "Usuarios",
-            onChange: this.handleMultiChange,
-            value: this.state.users,
-            multiple: true
-          },
-          options
-        )
+        SelectBox(selectConfig, options),
+        React.createElement("input", { onChange: this.handleInputChange, ref: "bla" })
       )
     }
   });

@@ -2,10 +2,49 @@
 
     ns.Backend = ns.Backend || {};
 
+    ns.Backend.getCommonFolders = function(){
+        $.ajax({
+            type: "GET",
+            url: "/api/common-folders",
+            success: function(data){
+                WD.Bus.send("common-folders-fetched", data);
+            },
+            error: function(){
+                alert("Error obteniendo carpetas comunes");
+            }
+        });
+    };
+
+    ns.Backend.getDomainUsers = function(callback){
+        $.ajax({
+            type: "GET",
+            url: "/api/users",
+            success: callback,
+            error: function(){
+              console.log("error getting changed files");
+            }
+          });
+    };
+
+    ns.Backend.newChangePermissions = function(files){
+      var params = { files: JSON.stringify(files) };
+      $.ajax({
+        type: "POST",
+        url: "/api/new-change-permissions",
+        data: params,
+        success: function(data){
+          window.location = "/domain";
+        },
+        error: function(){
+          console.log("error changing permissions");
+        }
+      });
+    };
+
     ns.Backend.getUsersWithFiles = function(filter){
         $.ajax({
             type: "GET",
-            url: "/domain/files/users",
+            url: "/api/files/users",
             data: { filter: filter },
             success: function(data){
                 WD.Bus.send("users-pending-files-fetched", data);
@@ -19,7 +58,7 @@
     ns.Backend.getFiles = function(from, filter){
         $.ajax({
             type: "POST",
-            url: "/domain/files/list",
+            url: "/api/files/list",
             data: { from: from, filter: filter },
             success: function(data){
                 WD.Bus.send("pending-files-fetched", data);
@@ -33,7 +72,7 @@
     ns.Backend.getFilesCount = function(filter){
         $.ajax({
             type: "GET",
-            url: "/domain/files/count",
+            url: "/api/files/count",
             data: { filter: filter },
             success: function(data){
                 WD.Bus.send("pending-files-summary-fetched", data);
@@ -47,7 +86,7 @@
     ns.Backend.changeAllPendingPermissions = function(filter){
         $.ajax({
             type: "POST",
-            url: "/domain/pending/change/all",
+            url: "/api/pending/change/all",
             data: { filter: filter },
             success: function(data){
                 WD.Bus.send("pending-files-change-all-process-started");
@@ -61,7 +100,7 @@
     ns.Backend.changePermission = function(permissionId){
         $.ajax({
             type: "POST",
-            url: "/domain/pending/change",
+            url: "/api/pending/change",
             data: { permissionId: permissionId },
             success: function(data){
                 WD.Bus.send("pending-file-permission-changed");

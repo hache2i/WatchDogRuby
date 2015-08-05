@@ -35,16 +35,7 @@
 
 		WD.Bus.subscribe("common-folders-fetched", _commonsFoldersFetched);
 
-		$.ajax({
-			type: "GET",
-			url: "/domain/common-folders",
-			success: function(data){
-				WD.Bus.send("common-folders-fetched", data);
-			},
-			error: function(){
-				alert("Error obteniendo carpetas comunes");
-			}
-		});
+		WD.Backend.getCommonFolders();
 
 	};
 
