@@ -269,9 +269,9 @@ input:focus{
 }
 
 .table th{
-	font-size: 25px;
+	font-size: 20px;
 	font-weight: bold;
-	color: green;
+	color: black;
 }
 
 .table td{
@@ -315,19 +315,17 @@ table#inactive-domains th{
 	text-align: center;
 }
 
-.page-header{
-	text-align: left;
+/*.page-header{
+	text-align: center;
 	vertical-align: middle;
 	font-size: 50px;
 	margin: 25px;
-	/*color: #656959;*/
-	color: green;
-/*	border-bottom: 4px solid #eeeeee;
-	border-right: 4px solid #eeeeee;
-*/	background-color: #eeeeee;
+	padding-bottom: 5px;
+	color: black;
 	padding-bottom: 9px;
+	height: 60px;
 }
-
+*/
 .page-header .domain-name{
 	font-weight: bold;
 }
@@ -343,7 +341,7 @@ p.title{
 .footer{
 	width: 100%;
 	text-align: center;
-	background-color: #5a5555;
+	background-color: black;
 	color: white;
 	height: 100px;
 	margin: 20px;
@@ -370,7 +368,7 @@ p.title{
 }
 
 .navbar-inverse .navbar-inner {
-  background-color: #5a5555;
+  background-color: black;
   background-image: none;
   background-repeat: no-repeat;
   filter: none;

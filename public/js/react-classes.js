@@ -5,7 +5,9 @@
   ns.ReactClasses.Header = React.createClass({displayName: 'Header',
     render: function(){
       return (
-        React.createElement('div', { className: "page-header" }, this.props.title)
+        React.createElement('div', { className: "page-header" }, 
+          React.createElement('h1', {}, this.props.title)
+        )
       );
     }
   });
@@ -35,11 +37,11 @@
       var filesTable = React.createElement("table", { className: "table table-striped", id: "files" },
         React.createElement("thead", {},
           React.createElement("tr", {},
-            React.createElement("td", {}, "Titulo"),
-            React.createElement("td", {}, "Path"),
-            React.createElement("td", {}, "Antiguo Propietario"),
-            React.createElement("td", {}, "Nuevo Propietario"),
-            React.createElement("td", {}, "")
+            React.createElement("th", {}, "Titulo"),
+            React.createElement("th", {}, "Path"),
+            React.createElement("th", {}, "Antiguo Propietario"),
+            React.createElement("th", {}, "Nuevo Propietario"),
+            React.createElement("th", {}, "")
           )
         ),
         React.createElement("tbody", {}, filesNodes)
@@ -63,11 +65,11 @@
       var filesTable = React.createElement("table", { className: "table table-striped", id: "files" },
         React.createElement("thead", {},
           React.createElement("tr", {},
-            React.createElement("td", {}, "Titulo"),
-            React.createElement("td", {}, "Path"),
-            React.createElement("td", {}, "Antiguo Propietario"),
-            React.createElement("td", {}, "Nuevo Propietario"),
-            React.createElement("td", {}, "")
+            React.createElement("th", {}, "Titulo"),
+            React.createElement("th", {}, "Path"),
+            React.createElement("th", {}, "Antiguo Propietario"),
+            React.createElement("th", {}, "Nuevo Propietario"),
+            React.createElement("th", {}, "")
           )
         ),
         React.createElement("tbody", {}, filesNodes)
