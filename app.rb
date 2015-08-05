@@ -95,7 +95,7 @@ class Web < BaseApp
     }
     thr[:name] = "child-folders process started at #{Time.now.to_s}"
     Watchdog::Global::Threads.add thr
-    # thr.join
+    thr.join
     redirect "/domain/"
   end
 
