@@ -19,8 +19,10 @@ module Wd
 					thr = Thread.new {
 						WDLogger.debug "started thread to change permissions for #{user}"
 						user_files = Files::Changed.where(filter.merge(oldOwner: user))
-						userFilesDomain = Files::UserFilesDomain.new Files::DriveConnection.new, user, domain
-						userFilesDomain.changeUserFilesPermissions user_files
+						unless user_files.empty?
+							userFilesDomain = Files::UserFilesDomain.new Files::DriveConnection.new, user, domain
+							userFilesDomain.changeUserFilesPermissions user_files
+						end
 					}
 					thr[:name] = "change permissions process for #{user} started at #{Time.now.to_s}"
 					thrs << thr
