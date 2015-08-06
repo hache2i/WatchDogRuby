@@ -22,22 +22,22 @@ class DbExecutionLog
 	end
 
 	def self.get debug
-		p "looking for records from scratch"
+		p "looking for records from scratch #{debug.to_s}"
 
-    levels = DEFAULT_LEVELS
+    levels = DEFAULT_LEVELS.clone
     levels << :debug if debug
 
-		total_at_time = self.in(level: levels).desc(:when).count
-		records = self.in(level: levels).desc(:when).limit(PAGE_SIZE)
-		{ records: records, total_at_time: total_at_time, from_scratch: true }
-	end
+    total_at_time = self.in(level: levels).desc(:when).count
+    records = self.in(level: levels).desc(:when).limit(PAGE_SIZE)
+    { records: records, total_at_time: total_at_time, from_scratch: true }
+  end
 
-	def self.get_from from, total_at_time, debug
-		p "looking for records from #{from} of #{total_at_time} absolute total"
-		restart = from >= total_at_time
-		return get if restart
+  def self.get_from from, total_at_time, debug
+    p "looking for records from #{from} of #{total_at_time} absolute total"
+    restart = from >= total_at_time
+    return get if restart
 
-    levels = DEFAULT_LEVELS
+    levels = DEFAULT_LEVELS.clone
     levels << :debug if debug
 
 		total_now = self.in(level: levels).desc(:when).count

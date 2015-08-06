@@ -57,6 +57,7 @@
 		});
 
 		var Page = React.createClass({displayName: 'Page', 
+			handleRefresh: _getFromBackend.bind({ refresh: true }),
 			handleDebugMode: function(e){
 				WD.Bus.send("debug-mode-status-changed", e.target.checked);
 			},
@@ -64,8 +65,11 @@
 				return (
 					React.createElement('div', {className: "page"},
 						React.createElement(Header, { title: "Log de Ejecución" }),
-						React.createElement(Table, { records: this.props.records }),
+						React.createElement("div", { className: "wd-btn", onClick: this.handleRefresh }, 
+							React.createElement("h4", {}, "Refrescar")
+						),
 						React.createElement('input', { type: "checkbox", onClick: this.handleDebugMode }, "Debug Mode"),
+						React.createElement(Table, { records: this.props.records }),
 						React.createElement(ButtonsBox, null)
 					)
 				);
@@ -74,12 +78,10 @@
 
 		var ButtonsBox = React.createClass({displayName: 'ButtonsBox',
 			handleMore: _getFromBackend,
-			handleRefresh: _getFromBackend.bind({ refresh: true }),
 			render: function() {
 				return (
-					React.createElement('div', {className: "buttonsBox"},
-						React.createElement('a', { className: "btn btn-primary", id: "more-btn", onClick: this.handleMore}, "Más"),
-						React.createElement('a', { className: "btn btn-primary", onClick: this.handleRefresh}, "Refrescar")
+					React.createElement('div', {className: "wd-btn", onClick: this.handleMore},
+						React.createElement('h4', {}, "Más")
 					)
 				);
 			}

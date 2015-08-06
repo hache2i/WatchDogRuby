@@ -55,7 +55,7 @@ class Admin < BaseApp
 	end
 
 	get '/exec-log-records', :provides => :json do
-		debug = params[:debug] == "true"
+		debug = params[:debug].to_bool
 		total_at_time = params[:totalRecordsAtTime] && params[:totalRecordsAtTime].to_i
 		from = params[:from] && params[:from].to_i
 		refresh = params[:refresh] == true.to_s
