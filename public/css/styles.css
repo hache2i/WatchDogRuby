@@ -407,10 +407,8 @@ p.title{
 .wd-btn {
 	background-color: #BDBDBD;
 	cursor: pointer;
-  width: 240px;
   border-radius: 4px;
   padding: 12px 0px;
-  padding-left: 15px;
   color: white;
   text-align: center;
 }
@@ -428,6 +426,8 @@ p.title{
 }
 
 .wd-btn-change-ownership {
+  width: 240px;
+  padding-left: 15px;
 }
 
 .wd-btn-change-ownership .files-count{
