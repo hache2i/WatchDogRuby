@@ -46,7 +46,9 @@
         ),
         React.createElement("tbody", {}, filesNodes)
       );
-      var moreBtn = React.createElement("a", { onClick: this.props.moreHandler }, "Más");
+      var moreBtn = React.createElement("div", { className: "wd-btn", onClick: this.props.moreHandler }, 
+        React.createElement("h4", {}, "Más")
+      );
       return React.createElement("div", {}, filesTable, moreBtn);
     }
   });
@@ -74,7 +76,9 @@
         ),
         React.createElement("tbody", {}, filesNodes)
       );
-      var moreBtn = React.createElement("a", { onClick: this.props.moreHandler }, "Más");
+      var moreBtn = React.createElement("div", { className: "wd-btn", onClick: this.props.moreHandler }, 
+        React.createElement("h4", {}, "Más")
+      );
       return React.createElement("div", {}, filesTable, moreBtn);
     }
   });
