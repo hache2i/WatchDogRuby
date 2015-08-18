@@ -20,21 +20,27 @@ module Files
         result.data.items.each do |item|
           changes = Changed.where fileId: item['id']
 
-          status = "2p" if item.parents.count > 1
-          if item.parents.count > 1 && !changes.empty?
-            parent_id = changes[0].parentId
-            parent_change = Changed.where fileId: parent_id
-            status = "fuck"
-            status = "2p1pc" if parent_change.count == 1
+          if item.parents.count == 1
+            if changes.empty?
+              status = "r"
+            else
+              parent_id = changes[0].parentId
+              parent_change = Changed.where fileId: parent_id
+              status = "fuck"
+              status = "1p1pc" if parent_change.count == 1
+            end
           end
 
-          status = "r" if item.parents.count == 1 && changes.empty?
-
-          if item.parents.count == 1 && !changes.empty?
-            parent_id = changes[0].parentId
-            parent_change = Changed.where fileId: parent_id
-            status = "fuck"
-            status = "1p1pc" if parent_change.count == 1
+          if item.parents.count > 1
+            if changes.empty?
+              status = "2p"
+            else
+              parent_id = changes[0].parentId
+              parent_change = Changed.where fileId: parent_id
+              coincidence = item.parents.select { |parent| parent['id'] == parent_id }
+              status = "fuck"
+              status = "2p1pc" if parent_change.count == 1 && coincidence.count > 0
+            end
           end
 
           folders << { :title => item['title'], :id => item['id'], :status => status }
