@@ -12,7 +12,7 @@ module Wd
 
         parent_change = {}
         if item_data.parents.count == 1
-          parent_id = item_data.parents[0].id
+          parent_id = changes[0].parentId
           parent_change = Files::Changed.where fileId: parent_id
         end
 
