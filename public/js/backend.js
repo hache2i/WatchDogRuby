@@ -2,6 +2,20 @@
 
     ns.Backend = ns.Backend || {};
 
+    ns.Backend.getDetails = function(itemId){
+        $.ajax({
+            type: "POST",
+            url: "/api/details",
+            data: { itemId: itemId },
+            success: function(data){
+                console.log(data);
+            },
+            error: function(){
+                alert("Error obteniendo carpetas comunes");
+            }
+        });
+    }
+
     ns.Backend.getCommonFolders = function(){
         $.ajax({
             type: "GET",

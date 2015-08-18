@@ -457,3 +457,7 @@ p.title{
   outline: none;
   border: 1px solid #dddddd;
 }
+
+.multiple-parents {
+  color: red;
+}

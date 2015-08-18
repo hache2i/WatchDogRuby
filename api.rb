@@ -17,6 +17,8 @@ require_relative './actions/get_files'
 require_relative './actions/get_common_folders'
 require_relative './actions/change_all_pending_files'
 require_relative './actions/change_pending_file'
+require_relative './actions/get_item_details'
+require_relative './actions/get_everything_in_root'
 
 require_relative 'base_app'
 
@@ -43,7 +45,8 @@ class Api < BaseApp
 
   get '/common-folders', :provides => :json do
     docaccount = Watchdog::Global::Watchdog.getDocsAdmin(@domain)
-    common_folders =  Wd::Actions::GetCommonFolders.do docaccount
+    # common_folders =  Wd::Actions::GetCommonFolders.do docaccount
+    common_folders =  Wd::Actions::GetEverythingInRoot.do docaccount
     common_folders.to_json
   end
 
@@ -61,6 +64,17 @@ class Api < BaseApp
     files_count = Wd::Actions::GetFilesCount.do @domain, domain_filter
 
     files_count.to_json
+  end
+
+  post '/details', :provides => :json do
+    WDLogger.debug "Getting Details"
+
+    item_id = params[:itemId]
+    p item_id
+    docaccount = Watchdog::Global::Watchdog.getDocsAdmin(@domain)
+    details_result = Wd::Actions::GetItemDetails.do docaccount, item_id
+
+    details_result.to_json
   end
 
   post '/files/list', :provides => :json do

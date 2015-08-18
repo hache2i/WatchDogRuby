@@ -3,6 +3,15 @@ require_relative '../../wd_logger'
 module Files
   class DriveApiHelper
 
+    def self.get_item driveConnection, fileId
+      driveConnection.client.execute(
+        :api_method => driveConnection.drive.files.get,
+        :parameters => {
+          'fileId' => fileId
+        }
+      )
+    end
+
     def self.create_owner_permission driveConnection, email, file_id
       WDLogger.debug("DriveApiHelper.create_owner_permission")
       new_permission = driveConnection.drive.permissions.insert.request_schema.new({
