@@ -7,7 +7,7 @@
 		var Table = React.createClass({ displayName: 'Table',
 			render: function(){
 				var createItem = function(item){
-					return React.createElement('tr', { className: "file-record status-" + item.status },
+					return React.createElement('tr', { className: "file-record status-default status-" + item.status },
 						React.createElement('td', null, item.title),
 						React.createElement('td', null, item.status)
 					)

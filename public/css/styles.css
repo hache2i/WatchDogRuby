@@ -458,6 +458,10 @@ p.title{
   border: 1px solid #dddddd;
 }
 
+.status-default {
+  color: red;
+}
+
 .status-2p {
   color: green;
 }
