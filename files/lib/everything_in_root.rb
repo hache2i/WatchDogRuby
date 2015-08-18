@@ -38,7 +38,7 @@ module Files
               parent_change = Changed.where fileId: parent_id
               coincidence = item.parents.select { |parent| parent['id'] == parent_id }
               status = "2p#{ parent_change.count }pc"
-              status = "2p1pc" if parent_change.count == 1 && coincidence.count > 0
+              status = "2p1pc1c" if parent_change.count == 1 && coincidence.count > 0
             end
           end
 
