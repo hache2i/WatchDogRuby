@@ -9,7 +9,9 @@
             data: { itemId: itemId },
             success: function(data){
                 console.log(data);
-                callback(data);
+                if (callback){
+                    callback(data);
+                }
             },
             error: function(){
                 console.log("Error obteniendo detalles");

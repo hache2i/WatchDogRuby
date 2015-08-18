@@ -9,7 +9,10 @@
 				var createItem = function(item){
 					return React.createElement('tr', { className: "file-record status-default status-" + item.status },
 						React.createElement('td', null, item.title),
-						React.createElement('td', null, item.status)
+						React.createElement('td', null, item.status),
+						React.createElement('td', null, React.createElement("a", { onClick: function(){
+							WD.Backend.getDetails(item.id);
+						}}, "Detalles"))
 					)
 				};
 				return (
@@ -17,6 +20,7 @@
 						React.createElement('thead', {},
 							React.createElement('tr', {},
 								React.createElement('th', {}, "Nombre"),
+								React.createElement('th', {}, "Status"),
 								React.createElement('th', {}, "")
 							)
 						),
