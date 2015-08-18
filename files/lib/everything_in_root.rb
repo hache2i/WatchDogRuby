@@ -18,9 +18,19 @@ module Files
         )
         raise UserFilesException if !result.status.eql? 200
         result.data.items.each do |item|
-          # changes = Changed.where(fileId: item['id'])
-          # changes.each{ |change| p "#{item['title']} - #{change.inspect}" }
-          folders << { :title => item['title'], :id => item['id'], :parents => item['parents'].length }
+          changes = Changed.where fileId: item['id']
+
+          status = "2p" if item.parents.count > 1
+          status = "r" if item.parents.count == 1 && changes.empty?
+
+          if item.parents.count == 1 && !changes.empty?
+            parent_id = changes[0].parentId
+            parent_change = Changed.where fileId: parent_id
+            status = "fuck"
+            status = "1p1pc" if parent_change.count == 1
+          end
+
+          folders << { :title => item['title'], :id => item['id'], :status => status }
         end
       end while hasNextPage? result
       folders

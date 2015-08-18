@@ -458,6 +458,19 @@ p.title{
   border: 1px solid #dddddd;
 }
 
-.multiple-parents {
+.status-2p {
+  color: green;
+}
+
+.status-fuck {
   color: red;
 }
+
+.status-1p1pc {
+  color: yellow;
+}
+
+.status-r {
+  color: blue;
+}
+
