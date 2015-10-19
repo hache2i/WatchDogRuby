@@ -28,6 +28,7 @@ module Files
 				p change_proposal.inspect
 				change_proposal.update_attributes!(pending: false, executed: Time.now.to_i)
 				p change_proposal.inspect
+				change_proposal.save
 				p Changed.find(change_proposal.id)
 			else
 				p "__________________change permissions - fail"
