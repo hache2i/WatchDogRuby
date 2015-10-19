@@ -28,6 +28,7 @@ module Files
 				p change_proposal.inspect
 				change_proposal.update_attributes!(pending: false, executed: Time.now.to_i)
 				p change_proposal.inspect
+				p Changed.find(change_proposal.id)
 			else
 				p "__________________change permissions - fail"
 				WDLogger.error("(¡ FALLO !) cambio de propiedad '#{file.title}' - #{api_result[:status].to_s}", @domain, @user)
