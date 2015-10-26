@@ -2,6 +2,7 @@ require 'sinatra/base'
 
 require_relative './wdadmin/lib/domains'
 require_relative './wddomain/lib/watchdog_domain'
+require_relative './wddomain/lib/db_execution_log'
 require_relative './my_sinatra_app_logger'
 
 class BaseApp < Sinatra::Base
