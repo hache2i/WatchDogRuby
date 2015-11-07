@@ -22,7 +22,6 @@ module Watchdog
 
 				def log
 					@exec_log ||= init
-					@exec_log.destroy_all
 					@exec_log
 				end
 
